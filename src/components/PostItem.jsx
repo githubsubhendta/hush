@@ -2,14 +2,16 @@ import React from "react";
 import { View, Text, Image,StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 // import { styles } from "../styles/styles";
-import post1 from "../images/post1.png"
+import post1 from "../images/post1.png";
+import avatar from "../images/avatar.png"
 
 
 const PostItem = ({ item }) => {
   return (
     <View style={styles.postCard}>
       <View style={styles.header}>
-        <Image source={{ uri: "https://source.unsplash.com/50x50" }} style={styles.avatar} />
+        {/* <Image source={{ uri: "https://source.unsplash.com/50x50" }} style={styles.avatar} /> */}
+        <Image source={avatar} style={styles.avatar} />
         <View>
           <Text style={styles.username}>{item.user}</Text>
           <Text style={styles.time}>{item.time}</Text>
