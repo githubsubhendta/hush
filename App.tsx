@@ -1,131 +1,130 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+// import React from "react";
+// import { View, Text, Image, FlatList, StyleSheet } from "react-native";
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// import { NavigationContainer } from "@react-navigation/native";
+// import Ionicons from "react-native-vector-icons/Ionicons";
+// // import { tapHandlerName } from "react-native-gesture-handler/lib/typescript/handlers/TapGestureHandler";
+// import {SvgXml} from "react-native-svg"
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+// import { ChatIcon, GroupIcon, HomeIcon, WatchIcon } from "./src/utils/constant/TabSVGimage.js";
+// const posts = [
+//   {
+//     id: "1",
+//     user: "user_1234",
+//     time: "1h ago",
+//     image: "https://source.unsplash.com/random/300x200",
+//     text: "anyone want to rate me or not can you tell me??",
+//     likes: 70,
+//     comments: "OMG, this place is literally the bomb! 🎉 Can't even handle how epic...",
+//   },
+//   {
+//     id: "2",
+//     user: "user_1234",
+//     time: "1h ago",
+//     image: "https://source.unsplash.com/random/301x201",
+//     text: "this is you love, anyone online here to chat",
+//     likes: 50,
+//     comments: "",
+//   },
+//   {
+//     id: "3",
+//     user: "user_1234",
+//     time: "1h ago",
+//     image: "https://source.unsplash.com/random/301x201",
+//     text: "this is you love, anyone online here to chat",
+//     likes: 50,
+//     comments: "",
+//   },
+//   {
+//     id: "4",
+//     user: "user_1234",
+//     time: "1h ago",
+//     image: "https://source.unsplash.com/random/301x201",
+//     text: "this is you love, anyone online here to chat",
+//     likes: 50,
+//     comments: "",
+//   },
+// ];
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// const FeedScreen = () => {
+//   return (
+//     <View style={styles.container}>
+//       <FlatList
+//         data={posts}
+//         keyExtractor={(item) => item.id}
+//         renderItem={({ item }) => (
+//           <View style={styles.postCard}>
+//             <View style={styles.header}>
+//               <Image source={{ uri: "https://source.unsplash.com/50x50" }} style={styles.avatar} />
+//               <View>
+//                 <Text style={styles.username}>{item.user}</Text>
+//                 <Text style={styles.time}>{item.time}</Text>
+//               </View>
+//             </View>
+//             <Image source={{ uri: item.image }} style={styles.postImage} />
+//             <Text style={styles.postText}>{item.text}</Text>
+//             <View style={styles.actions}>
+//               <Ionicons name="heart" size={20} color="red" />
+//               <Text style={styles.likes}>{item.likes}</Text>
+//             </View>
+//           </View>
+//         )}
+//       />
+//     </View>
+//   );
+// };
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+// const Tab = createBottomTabNavigator();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <Tab.Navigator screenOptions={({ route }) => ({
+//         tabBarIcon: ({ color, size }) => {
+//           let iconName="";
+//           if (route.name === "Home") {
+//             iconName = HomeIcon;
+//           } else if (route.name === "Watch") {
+//             iconName = WatchIcon;
+//           } else if (route.name === "Groups") {
+//             iconName = GroupIcon;
+//           } else if (route.name === "Chat") {
+//             iconName = ChatIcon;
+//           }
+//           return <SvgXml  xml={iconName} width="100%" height="100%" color={color} />;
+//         },
+//       })}>
+//         <Tab.Screen name="Home" component={FeedScreen} />
+//         <Tab.Screen name="Watch" component={FeedScreen} />
+//         <Tab.Screen name="Groups" component={FeedScreen} />
+//         <Tab.Screen name="Chat" component={FeedScreen} />
+//       </Tab.Navigator>
+//     </NavigationContainer>
+//   );
+// };
+// const styles = StyleSheet.create({
+//   container: { flex: 1, backgroundColor: "#fff" },
+//   postCard: { backgroundColor: "#fff", padding: 10, margin: 10, borderRadius: 10 },
+//   header: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
+//   avatar: { width: 40, height: 40, borderRadius: 20, marginRight: 10 },
+//   username: { fontWeight: "bold" },
+//   time: { color: "gray", fontSize: 12 },
+//   postImage: { width: "100%", height: 200, borderRadius: 10, marginTop: 5 },
+//   postText: { marginTop: 10, fontSize: 14, fontWeight: "bold" },
+//   actions: { flexDirection: "row", alignItems: "center", marginTop: 5 },
+//   likes: { marginLeft: 5 },
+// });
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// export default App;
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+import React from "react";
+import BottomTabNavigator from "./src/navigation/BottomTabNavigator";
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+const App = () => {
+  return <BottomTabNavigator />;
+};
 
 export default App;
+
+
+
