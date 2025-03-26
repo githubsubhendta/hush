@@ -67,6 +67,6 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f0f0f0" },
+  container: { flex: 1, borderRadius:20,backgroundColor:'#fff'},
   listContent: { padding: 3, paddingBottom: 10 },
 });

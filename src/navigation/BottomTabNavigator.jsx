@@ -36,8 +36,6 @@
 //   );
 // };
 
-
-
 // import React, { useState } from 'react';
 // import {
 //   Dimensions,
@@ -142,17 +140,17 @@
 
 // export default BottomTabNavigator;
 
-
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   StatusBar,
   View,
+  ImageBackground,
 } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SvgXml } from 'react-native-svg';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {SvgXml} from 'react-native-svg';
 import {
   ChatIcon,
   GroupIcon,
@@ -166,16 +164,17 @@ import CustomHeader from '../components/CustomHeader.jsx';
 import ChatScreen from '../screens/ChatScreen.jsx';
 import GroupScreen from '../screens/GroupScreen.jsx';
 import WatchScreen from '../screens/WatchScreen.jsx';
-import Loader from '../components/Loader.jsx'; 
+import Loader from '../components/Loader.jsx';
+import Header from '../components/Header.jsx';
 
 // Initialize Bottom Tabs
 const Tab = createBottomTabNavigator();
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const iconSize = width * 0.08;
 const plusIconSize = width * 0.12;
 
 // Custom Plus Button Component
-const CustomPlusButton = ({ onPress }) => (
+const CustomPlusButton = ({onPress}) => (
   <TouchableOpacity style={styles.plusButton} onPress={onPress}>
     <SvgXml xml={PlusIcon} width={plusIconSize} height={plusIconSize} />
   </TouchableOpacity>
@@ -184,26 +183,36 @@ const CustomPlusButton = ({ onPress }) => (
 // Main BottomTabNavigator Component
 const BottomTabNavigator = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   return (
+    <ImageBackground source={require('../images/headerBg.png')}
+     style={styles.backgroundImage}
+    resizeMode="cover">
     <View style={styles.container}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      
+
       {/* ✅ Global Loader */}
       <Loader visible={loading} />
 
       <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ color }) => {
+        screenOptions={({route}) => ({
+          tabBarIcon: ({color}) => {
             let iconName = '';
             if (route.name === 'Home') iconName = HomeIcon;
             else if (route.name === 'Watch') iconName = WatchIcon;
             else if (route.name === 'Groups') iconName = GroupIcon;
             else if (route.name === 'Chat') iconName = ChatIcon;
-            return <SvgXml xml={iconName} width={iconSize} height={iconSize} color={color} />;
+            return (
+              <SvgXml
+                xml={iconName}
+                width={iconSize}
+                height={iconSize}
+                color={color}
+              />
+            );
           },
-          header: ({ options }) => <CustomHeader title={options.headerTitle} />,
+          header: ({options}) => <CustomHeader title={options.headerTitle} />,
           tabBarStyle: {
             height: 75,
             alignItems: 'center',
@@ -211,35 +220,66 @@ const BottomTabNavigator = () => {
             paddingTop: 15,
           },
           tabBarLabelStyle: {
-            fontSize: 12,
+            fontSize: 12, 
           },
+          tabBarActiveTintColor: 'black',
+          tabBarInactiveTintColor: 'gray',
           tabBarPressOpacity: 1,
           tabBarPressColor: 'transparent',
-          tabBarButton: props => <TouchableOpacity {...props} activeOpacity={1} />,
+          tabBarButton: props => (
+            <TouchableOpacity {...props} activeOpacity={1} />
+          ),
         })}
         screenListeners={{
           state: e => {
-            setLoading(true); 
-            setTimeout(() => setLoading(false), 500); // Hide after animation
+            setLoading(true);
+            setTimeout(() => setLoading(false), 500);
           },
-        }}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} options={{ headerTitle: '🏠 My Home' }} />
-        <Tab.Screen name="Watch" component={WatchScreen} options={{ headerTitle: '📺 Watch Videos' }} />
+        }}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            header: () => (
+              <Header onTabPress={tab => console.log('Selected:', tab)} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Watch"
+          component={WatchScreen}
+          options={{headerTitle: '📺 Watch Videos'}}
+        />
         <Tab.Screen
           name="Plus"
           component={() => <View />} // ✅ Fix: Prevent navigation issue
           options={{
-            tabBarButton: () => <CustomPlusButton onPress={() => setModalVisible(true)} />,
+            tabBarButton: () => (
+              <CustomPlusButton onPress={() => setModalVisible(true)} />
+            ),
           }}
         />
-        <Tab.Screen name="Groups" component={GroupScreen} options={{ headerTitle: '👥 My Groups' }} />
-        <Tab.Screen name="Chat" component={ChatScreen} options={{ headerTitle: '💬 Messages' }} />
+        <Tab.Screen
+          name="Groups"
+          component={GroupScreen}
+          options={{headerTitle: '👥 My Groups'}}
+        />
+        <Tab.Screen
+          name="Chat"
+          component={ChatScreen}
+          options={{headerTitle: '💬 Messages'}}
+        />
       </Tab.Navigator>
 
       {/* Render PlusScreen Modal */}
-      {modalVisible && <PlusScreen visible={modalVisible} onClose={() => setModalVisible(false)} />}
+      {modalVisible && (
+        <PlusScreen
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
+      )}
     </View>
+    </ImageBackground>
   );
 };
 
@@ -247,7 +287,12 @@ const BottomTabNavigator = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
   plusButton: {
     width: 50,

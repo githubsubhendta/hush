@@ -281,13 +281,13 @@ const PostItem = ({item}) => {
 export default memo(PostItem); // Memoize to prevent unnecessary re-renders
 
 const styles = StyleSheet.create({
-  postCard: {marginBottom: 10, borderRadius: 20, padding: 10},
+  postCard: {marginBottom: 10, padding: 10},
   header: {flexDirection: 'row', alignItems: 'center', marginBottom: 10},
   avatarContainer: {width: 30, height: 30, borderRadius: 15, marginRight: 10},
   username: {fontWeight: '700', fontSize: 14, color: '#000'},
   time: {fontWeight: '500', color: '#66645E', fontSize: 10, lineHeight: 14},
   menuButton: {marginLeft: 'auto'},
-  imageContainer: {position: 'relative'},
+  imageContainer: {position: 'relative',borderRadius:16},
   postImage: {width: '372px', height: 229, borderRadius: 10},
   postText: {
     position: 'absolute',

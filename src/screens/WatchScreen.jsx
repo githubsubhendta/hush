@@ -1,12 +1,27 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+// src/screens/WatchScreen.js
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 const WatchScreen = () => {
   return (
-    <View>
-      <Text>WatchScreen</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>Watch Screen</Text>
     </View>
-  )
-}
+  );
+};
 
-export default WatchScreen
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+});
+
+export default WatchScreen;
