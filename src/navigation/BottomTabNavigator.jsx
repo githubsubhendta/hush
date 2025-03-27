@@ -1,41 +1,3 @@
-// import React from "react";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { SvgXml } from "react-native-svg";
-// import { ChatIcon, GroupIcon, HomeIcon, WatchIcon } from "../utils/constant/TabSVGimage.js";
-// import HomeScreen from "../screens/HomeScreen.jsx";
-
-// const Tab = createBottomTabNavigator();
-
-// const BottomTabNavigator = () => {
-//   return (
-//     <NavigationContainer>
-//       <Tab.Navigator
-//         screenOptions={({ route }) => ({
-//           tabBarIcon: ({ color }) => {
-//             let iconName = "";
-//             if (route.name === "Home") {
-//               iconName = HomeIcon;
-//             } else if (route.name === "Watch") {
-//               iconName = WatchIcon;
-//             } else if (route.name === "Groups") {
-//               iconName = GroupIcon;
-//             } else if (route.name === "Chat") {
-//               iconName = ChatIcon;
-//             }
-//             return <SvgXml xml={iconName} width="100%" height="100%" color={color} />;
-//           },
-//         })}
-//       >
-//         <Tab.Screen name="Home" component={HomeScreen} options={{ headerTitle: "🏠 My Home" }}  />
-//         <Tab.Screen name="Watch" component={HomeScreen} />
-//         <Tab.Screen name="Groups" component={HomeScreen} />
-//         <Tab.Screen name="Chat" component={HomeScreen} />
-//       </Tab.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
 // import React, { useState } from 'react';
 // import {
 //   Dimensions,
@@ -55,100 +17,123 @@
 // } from '../utils/constant/TabSVGimage.js';
 // import HomeScreen from '../screens/HomeScreen.jsx';
 // import PlusScreen from '../screens/PlusScreen.jsx';
-// import CustomHeader from '../components/CustomHeader.jsx';
 // import ChatScreen from '../screens/ChatScreen.jsx';
 // import GroupScreen from '../screens/GroupScreen.jsx';
 // import WatchScreen from '../screens/WatchScreen.jsx';
+// import Loader from '../components/Loader.jsx';
+// import Header from '../components/Header.jsx';
 
-// // Initialize Bottom Tabs
 // const Tab = createBottomTabNavigator();
 // const { width } = Dimensions.get('window');
-// const iconSize = width * 0.08;
-// const plusIconSize = width * 0.12;
+// const iconSize = width * 0.06;
+// const plusIconSize = width * 0.1;
 
-// // Custom Plus Button Component
 // const CustomPlusButton = ({ onPress }) => (
 //   <TouchableOpacity style={styles.plusButton} onPress={onPress}>
 //     <SvgXml xml={PlusIcon} width={plusIconSize} height={plusIconSize} />
 //   </TouchableOpacity>
 // );
 
-// // Main BottomTabNavigator Component
 // const BottomTabNavigator = () => {
 //   const [modalVisible, setModalVisible] = useState(false);
+//   const [loading, setLoading] = useState(false);
 
 //   return (
 //     <View style={styles.container}>
-//       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+//       <Loader visible={loading} />
+
 //       <Tab.Navigator
 //         screenOptions={({ route }) => ({
 //           tabBarIcon: ({ color }) => {
 //             let iconName = '';
 //             if (route.name === 'Home') iconName = HomeIcon;
 //             else if (route.name === 'Watch') iconName = WatchIcon;
+//             else if (route.name === 'Plus') return null;
 //             else if (route.name === 'Groups') iconName = GroupIcon;
 //             else if (route.name === 'Chat') iconName = ChatIcon;
-//             return <SvgXml xml={iconName} width={iconSize} height={iconSize} color={color} />;
+//             return (
+//               <SvgXml
+//                 xml={iconName}
+//                 width={iconSize}
+//                 height={iconSize}
+//                 fill={color}
+//               />
+//             );
 //           },
-//           header: ({ options }) => <CustomHeader title={options.headerTitle} />,
+//           header: () => (
+//             <View style={{ backgroundColor: 'transparent' }}>
+//               <Header onTabPress={tab => console.log('Selected:', tab)} />
+//             </View>
+//           ),
 //           tabBarStyle: {
-//             height: 75,
+//             height: 60,
 //             alignItems: 'center',
 //             justifyContent: 'center',
-//             paddingTop: 15,
+//             paddingBottom: 5,
+//             backgroundColor: '#fff',
+//             borderTopWidth: 0,
+//             elevation: 5,
+//             shadowColor: '#000',
+//             shadowOffset: { width: 0, height: -2 },
+//             shadowOpacity: 0.1,
+//             shadowRadius: 5,
 //           },
-//           tabBarLabelStyle: {
-//             fontSize: 12,
-//           },
-//           tabBarPressOpacity: 1,
-//           tabBarPressColor: 'transparent',
-//           tabBarButton: props => <TouchableOpacity {...props} activeOpacity={1} />,
+//           tabBarLabel: () => null,
+//           tabBarActiveTintColor: '#000',
+//           tabBarInactiveTintColor: '#666',
 //         })}
+//         screenListeners={{
+//           state: () => {
+//             setLoading(true);
+//             setTimeout(() => setLoading(false), 500);
+//           },
+//         }}
 //       >
-//         <Tab.Screen name="Home" component={HomeScreen} options={{ headerTitle: '🏠 My Home' }} />
-//         <Tab.Screen name="Watch" component={WatchScreen} options={{ headerTitle: '📺 Watch Videos' }} />
+//         <Tab.Screen name="Home" component={HomeScreen} />
+//         <Tab.Screen name="Watch" component={WatchScreen} />
 //         <Tab.Screen
 //           name="Plus"
-//           component={() => <View />} // ✅ Fix: Prevent navigation issue
+//           component={View}
 //           options={{
-//             tabBarButton: () => <CustomPlusButton onPress={() => setModalVisible(true)} />,
+//             tabBarButton: () => (
+//               <CustomPlusButton onPress={() => setModalVisible(true)} />
+//             ),
 //           }}
 //         />
-//         <Tab.Screen name="Groups" component={GroupScreen} options={{ headerTitle: '👥 My Groups' }} />
-//         <Tab.Screen name="Chat" component={ChatScreen} options={{ headerTitle: '💬 Messages' }} />
+//         <Tab.Screen name="Groups" component={GroupScreen} />
+//         <Tab.Screen name="Chat" component={ChatScreen} />
 //       </Tab.Navigator>
-//       {/* Render PlusScreen Modal */}
-//       {modalVisible && <PlusScreen visible={modalVisible} onClose={() => setModalVisible(false)} />}
+
+//       {modalVisible && (
+//         <PlusScreen
+//           visible={modalVisible}
+//           onClose={() => setModalVisible(false)}
+//         />
+//       )}
 //     </View>
 //   );
 // };
 
-// // Styles
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
-//     backgroundColor: '#fff',
+//     backgroundColor: 'transparent', // Ensure the container is transparent
 //   },
 //   plusButton: {
 //     width: 50,
 //     height: 50,
 //     alignItems: 'center',
-//     bottom: -5,
-//     alignSelf: 'center',
+//     justifyContent: 'center',
+//     bottom: 10,
+//     backgroundColor: '#392EBD',
+//     borderRadius: 25,
 //   },
 // });
 
 // export default BottomTabNavigator;
 
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  StatusBar,
-  View,
-  ImageBackground,
-} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SvgXml} from 'react-native-svg';
 import {
@@ -160,39 +145,29 @@ import {
 } from '../utils/constant/TabSVGimage.js';
 import HomeScreen from '../screens/HomeScreen.jsx';
 import PlusScreen from '../screens/PlusScreen.jsx';
-import CustomHeader from '../components/CustomHeader.jsx';
 import ChatScreen from '../screens/ChatScreen.jsx';
 import GroupScreen from '../screens/GroupScreen.jsx';
 import WatchScreen from '../screens/WatchScreen.jsx';
 import Loader from '../components/Loader.jsx';
 import Header from '../components/Header.jsx';
 
-// Initialize Bottom Tabs
 const Tab = createBottomTabNavigator();
 const {width} = Dimensions.get('window');
-const iconSize = width * 0.08;
-const plusIconSize = width * 0.12;
+const iconSize = width * 0.06;
+const plusIconSize = width * 0.1;
 
-// Custom Plus Button Component
 const CustomPlusButton = ({onPress}) => (
   <TouchableOpacity style={styles.plusButton} onPress={onPress}>
     <SvgXml xml={PlusIcon} width={plusIconSize} height={plusIconSize} />
   </TouchableOpacity>
 );
 
-// Main BottomTabNavigator Component
 const BottomTabNavigator = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
   return (
-    <ImageBackground source={require('../images/headerBg.png')}
-     style={styles.backgroundImage}
-    resizeMode="cover">
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-
-      {/* ✅ Global Loader */}
       <Loader visible={loading} />
 
       <Tab.Navigator
@@ -201,6 +176,7 @@ const BottomTabNavigator = () => {
             let iconName = '';
             if (route.name === 'Home') iconName = HomeIcon;
             else if (route.name === 'Watch') iconName = WatchIcon;
+            else if (route.name === 'Plus') return null;
             else if (route.name === 'Groups') iconName = GroupIcon;
             else if (route.name === 'Chat') iconName = ChatIcon;
             return (
@@ -208,70 +184,53 @@ const BottomTabNavigator = () => {
                 xml={iconName}
                 width={iconSize}
                 height={iconSize}
-                color={color}
+                fill={color}
               />
             );
           },
-          header: ({options}) => <CustomHeader title={options.headerTitle} />,
+          // Transparent Header
+          header: ({route}) =>
+            route.name === 'Home' ? (
+              <Header onTabPress={tab => console.log('Tab pressed:', tab)} />
+            ) : null,
           tabBarStyle: {
-            height: 75,
+            height: 60,
             alignItems: 'center',
             justifyContent: 'center',
-            paddingTop: 15,
+            paddingBottom: 5,
+            backgroundColor: '#fff', // Keep the tab bar visible
+            borderTopWidth: 0,
+            elevation: 5,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: -2},
+            shadowOpacity: 0.1,
+            shadowRadius: 5,
           },
-          tabBarLabelStyle: {
-            fontSize: 12, 
-          },
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
-          tabBarPressOpacity: 1,
-          tabBarPressColor: 'transparent',
-          tabBarButton: props => (
-            <TouchableOpacity {...props} activeOpacity={1} />
-          ),
+          tabBarLabel: () => null,
+          tabBarActiveTintColor: '#000',
+          tabBarInactiveTintColor: '#666',
         })}
         screenListeners={{
-          state: e => {
+          state: () => {
             setLoading(true);
-            setTimeout(() => setLoading(false), 500);
+            setTimeout(() => setLoading(false), 300);
           },
         }}>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            header: () => (
-              <Header onTabPress={tab => console.log('Selected:', tab)} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Watch"
-          component={WatchScreen}
-          options={{headerTitle: '📺 Watch Videos'}}
-        />
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Watch" component={WatchScreen} />
         <Tab.Screen
           name="Plus"
-          component={() => <View />} // ✅ Fix: Prevent navigation issue
+          component={View}
           options={{
             tabBarButton: () => (
               <CustomPlusButton onPress={() => setModalVisible(true)} />
             ),
           }}
         />
-        <Tab.Screen
-          name="Groups"
-          component={GroupScreen}
-          options={{headerTitle: '👥 My Groups'}}
-        />
-        <Tab.Screen
-          name="Chat"
-          component={ChatScreen}
-          options={{headerTitle: '💬 Messages'}}
-        />
+        <Tab.Screen name="Groups" component={GroupScreen} />
+        <Tab.Screen name="Chat" component={ChatScreen} />
       </Tab.Navigator>
 
-      {/* Render PlusScreen Modal */}
       {modalVisible && (
         <PlusScreen
           visible={modalVisible}
@@ -279,27 +238,22 @@ const BottomTabNavigator = () => {
         />
       )}
     </View>
-    </ImageBackground>
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
-  },
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
+    backgroundColor: 'transparent',
   },
   plusButton: {
     width: 50,
     height: 50,
     alignItems: 'center',
-    bottom: -5,
-    alignSelf: 'center',
+    justifyContent: 'center',
+    bottom: 10,
+    backgroundColor: '#392EBD',
+    borderRadius: 25,
   },
 });
 
