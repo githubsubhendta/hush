@@ -1,19 +1,19 @@
-import React, { useCallback } from 'react';
-import { View, FlatList, StyleSheet, ImageBackground } from 'react-native';
-import { posts } from '../utils/PostData';
+import React, {useCallback} from 'react';
+import {View, FlatList, StyleSheet, ImageBackground} from 'react-native';
+import {posts} from '../utils/PostData';
 import PostItem from '../components/PostItem';
 
 const HomeScreen = () => {
-  const renderItem = useCallback(({ item }) => <PostItem item={item} />, []);
+  const renderItem = useCallback(({item}) => <PostItem item={item} />, []);
 
   return (
     <ImageBackground
-          source={require('../images/headerBg.png')}
-          style={{flex: 1}}
-          resizeMode="cover"
-          imageStyle={{opacity: 1}}>
-    <View style={styles.container}>
-      <FlatList
+      source={require('../images/headerBg.png')}
+      style={{flex: 1}}
+      resizeMode="cover"
+      imageStyle={{opacity: 1}}>
+      <View style={styles.container}>
+        {/* <FlatList
         data={posts}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
@@ -28,8 +28,23 @@ const HomeScreen = () => {
           offset: 350 * index,
           index,
         })}
-      />
-    </View>
+      /> */}
+
+        <FlatList
+          data={posts}
+          numColumns={2}
+          renderItem={({item}) => (
+            <PostItem
+              image={item.image}
+              text={item.text}
+              likes={item.likes}
+              time={item.time}
+            />
+          )}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.list}
+        />
+      </View>
     </ImageBackground>
   );
 };
@@ -37,14 +52,14 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
+    backgroundColor: '#fff',
   },
-  listContent: {
-    // padding: 15,
-    // paddingTop: 10, // Space for the header
-    paddingBottom: 30, // Space for the bottom tab bar
+  list: {
+    paddingBottom: 20,
   },
 });
 

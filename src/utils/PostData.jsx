@@ -55,4 +55,13 @@ export const posts = [
     likes: 50,
     comments: [],
   },
+  {
+    id: "7",
+    user: "user_1234",
+    time: "1h ago",
+    image: "https://source.unsplash.com/random/301x201",
+    text: "This is you love, anyone online here to chat?",
+    likes: 50,
+    comments: [],
+  },
 ];

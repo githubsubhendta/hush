@@ -133,7 +133,7 @@
 // export default BottomTabNavigator;
 
 import React, {useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, StatusBar, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SvgXml} from 'react-native-svg';
 import {
@@ -168,6 +168,7 @@ const BottomTabNavigator = () => {
 
   return (
     <View style={styles.container}>
+     
       <Loader visible={loading} />
 
       <Tab.Navigator
