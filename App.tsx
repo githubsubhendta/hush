@@ -4,6 +4,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from './src/screens/SplashScreen';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import {ImageBackground, StatusBar, View, StyleSheet} from 'react-native';
+import HotTabScreen from './src/components/TabScreens/HotTabSceen';
+import GlobalTabScreen from './src/components/TabScreens/GlobalTabSCreen';
 
 const Stack = createStackNavigator();
 
@@ -54,6 +56,15 @@ const App = () => {
             cardStyle: {backgroundColor: 'transparent'},
           }}>
           <Stack.Screen name="Main" component={BottomTabNavigator} />
+          
+          <Stack.Screen
+            name="HotTabScreen"
+            component={HotTabScreen}
+            options={{headerShown: false}}/>
+            <Stack.Screen
+            name="GlobalTabScreen"
+            component={GlobalTabScreen}
+            options={{headerShown: false}}/>
         </Stack.Navigator>
       </View>
     </NavigationContainer>

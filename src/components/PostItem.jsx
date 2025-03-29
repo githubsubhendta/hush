@@ -206,7 +206,7 @@ import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import post1 from '../images/post1.png';
 import {SvgXml} from 'react-native-svg';
-import {chat_icon} from '../utils/constant/TabSVGimage';
+import {chat_icon, heart_svg} from '../utils/constant/TabSVGimage';
 
 export default function PostItems({image, text, likes, time, tag}) {
   return (
@@ -223,8 +223,9 @@ export default function PostItems({image, text, likes, time, tag}) {
       </View>
 
       <View style={styles.footer}>
-        <Text style={[styles.iconText, styles.heart]}>❤️ {likes}</Text>
         <View style={styles.comment}>
+          <SvgXml xml={heart_svg} width={15.4} height={14} />
+          <Text style={styles.commentText}>{likes}</Text>
           <SvgXml xml={chat_icon} width={14.84} height={14} />
           <Text style={styles.commentText}>70</Text>
         </View>
@@ -241,7 +242,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginVertical: 10,
     marginHorizontal: 10,
-    
   },
   imageContainer: {
     position: 'relative',
@@ -262,14 +262,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   text: {
-    position: 'absolute', 
+    position: 'absolute',
     paddingHorizontal: 10,
     fontSize: 18,
     fontWeight: 700,
     color: '#fff',
     textAlign: 'center',
     zIndex: 1,
-    width: '80%', 
+    width: '80%',
   },
   footer: {
     flexDirection: 'row',
@@ -282,13 +282,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
   },
-  comment:{
-   justifyContent: 'space-between',
+  comment: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   commentText: {
     paddingRight: 10,
+    paddingLeft: 3,
     fontSize: 12,
   },
   heart: {

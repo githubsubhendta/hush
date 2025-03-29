@@ -128,24 +128,6 @@ const Header = ({onTabPress}) => {
             </TouchableOpacity>
           </View>
 
-          {/* <Modal
-            transparent={true}
-            animationType="none"
-            visible={settingsVisible}>
-            <Pressable style={styles.modalOverlay} onPress={closeSettings}>
-              <Animated.View
-                style={[
-                  styles.modalContainer,
-                  {
-                    width: isTablet ? '40%' : '70%',
-                    transform: [{translateX: slideAnim}],
-                  },
-                ]}>
-               
-                <Text style={styles.modalTitle}>Settings</Text>
-              </Animated.View>
-            </Pressable>
-          </Modal> */}
 
           <Modal
             transparent={true}
@@ -242,7 +224,7 @@ const Header = ({onTabPress}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 90,
+    height: 110,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -252,7 +234,7 @@ const styles = StyleSheet.create({
   },
   centerContainer: {
     flexDirection: 'row',
-    top: 12,
+    top: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -280,7 +262,7 @@ const styles = StyleSheet.create({
   iconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    top: 12,
+    top: 20,
     marginRight: 5,
   },
   iconWrapper: {
@@ -318,7 +300,7 @@ const styles = StyleSheet.create({
     padding: 15,
     position: 'absolute',
     right: 10,
-    top: 80,
+    top: 100,
     alignSelf: 'flex-end',
     justifyContent: 'center',
   },

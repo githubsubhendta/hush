@@ -1,26 +1,42 @@
-// src/screens/WatchScreen.js
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, ImageBackground, StyleSheet } from 'react-native';
+import Header from '../components/Header';
+import HotTabScreen from '../components/TabScreens/HotTabSceen';
+import GlobalTabScreen from '../components/TabScreens/GlobalTabSCreen';
+import LocalTabScreen from '../components/TabScreens/LocalTabScreen';
+import WatchHeader from '../components/WatchHeader';
+// import GlobalTabScreen from '../components/TabScreens/GlobalTabScreen';
+// import LocalTabScreen from '../components/TabScreens/LocalTabScreen';
 
 const WatchScreen = () => {
+  const [activeTab, setActiveTab] = useState('Hot'); // Default is 'Hot'
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Watch Screen</Text>
-    </View>
+    <ImageBackground
+      source={require('../images/headerBg.png')}
+      style={{ flex: 1 }}
+      resizeMode="cover"
+      imageStyle={{ opacity: 1 }}
+    >
+      <WatchHeader onTabPress={setActiveTab}/>           
+      {/* < onTabPress={setActiveTab} /> */}
+
+
+      <View style={styles.container}>
+        {activeTab === 'Hot' && <HotTabScreen />}
+        {activeTab === 'Global' && <GlobalTabScreen/>}
+        {activeTab === 'Local' && <LocalTabScreen/>}
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    backgroundColor: 'white',
   },
 });
 
