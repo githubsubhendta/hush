@@ -67,16 +67,63 @@
 
 
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+// import { View, ImageBackground, StyleSheet } from 'react-native';
+// import Header from '../components/Header';
+// import HotTabScreen from '../components/TabScreens/HotTabSceen';
+// import GlobalTabScreen from '../components/TabScreens/GlobalTabSCreen';
+// import LocalTabScreen from '../components/TabScreens/LocalTabScreen';
+// import { useTab } from '../context/TabContext';
+
+
+// const HomeScreen = () => {
+//   const {activeTab,setActiveTab} = useTab()
+
+//   return (
+//     <ImageBackground
+//       source={require('../images/headerBg.png')}
+//       style={{ flex: 1 }}
+//       resizeMode="cover"
+//       imageStyle={{ opacity: 1 }}
+//     >
+//       <Header onTabPress={setActiveTab} />
+
+//       <View style={styles.container}>
+//         {activeTab === 'Hot' && <HotTabScreen />}
+//         {activeTab === 'Global' && <GlobalTabScreen/>}
+//         {activeTab === 'Local' && <LocalTabScreen/>}
+//       </View>
+//     </ImageBackground>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     borderTopLeftRadius: 16,
+//     borderTopRightRadius: 16,
+//     backgroundColor: 'white',
+//   },
+// });
+
+// export default HomeScreen;
+
+
+import React, { useMemo } from 'react';
 import { View, ImageBackground, StyleSheet } from 'react-native';
 import Header from '../components/Header';
 import HotTabScreen from '../components/TabScreens/HotTabSceen';
 import GlobalTabScreen from '../components/TabScreens/GlobalTabSCreen';
 import LocalTabScreen from '../components/TabScreens/LocalTabScreen';
-
+import { useTab } from '../context/TabContext';
 
 const HomeScreen = () => {
-  const [activeTab, setActiveTab] = useState('Hot'); // Default is 'Hot'
+  const { activeTab, setActiveTab } = useTab();
+
+  // Use useMemo to prevent unnecessary re-renders
+  const hotScreen = useMemo(() => <HotTabScreen />, []);
+  const globalScreen = useMemo(() => <GlobalTabScreen />, []);
+  const localScreen = useMemo(() => <LocalTabScreen />, []);
 
   return (
     <ImageBackground
@@ -88,9 +135,9 @@ const HomeScreen = () => {
       <Header onTabPress={setActiveTab} />
 
       <View style={styles.container}>
-        {activeTab === 'Hot' && <HotTabScreen />}
-        {activeTab === 'Global' && <GlobalTabScreen/>}
-        {activeTab === 'Local' && <LocalTabScreen/>}
+        <View style={[styles.tabContent, activeTab !== 'Hot' && styles.hidden]}>{hotScreen}</View>
+        <View style={[styles.tabContent, activeTab !== 'Global' && styles.hidden]}>{globalScreen}</View>
+        <View style={[styles.tabContent, activeTab !== 'Local' && styles.hidden]}>{localScreen}</View>
       </View>
     </ImageBackground>
   );
@@ -102,6 +149,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     backgroundColor: 'white',
+  },
+  tabContent: {
+    ...StyleSheet.absoluteFillObject, 
+  },
+  hidden: {
+    display: 'none',
   },
 });
 

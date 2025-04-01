@@ -6,6 +6,9 @@ import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import {ImageBackground, StatusBar, View, StyleSheet} from 'react-native';
 import HotTabScreen from './src/components/TabScreens/HotTabSceen';
 import GlobalTabScreen from './src/components/TabScreens/GlobalTabSCreen';
+import NotificationScreen from './src/screens/NotificationScreen';
+import { navigationRef } from './src/utils/NavigationUtil';
+import { TabProvider } from './src/context/TabContext';
 
 const Stack = createStackNavigator();
 
@@ -32,7 +35,8 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
+    <TabProvider>
+    <NavigationContainer ref={navigationRef}>
       {/* Status Bar Background */}
       {/* <View style={styles.statusBarBackground}>
         <ImageBackground
@@ -56,18 +60,22 @@ const App = () => {
             cardStyle: {backgroundColor: 'transparent'},
           }}>
           <Stack.Screen name="Main" component={BottomTabNavigator} />
-          
-          <Stack.Screen
+
+          {/* <Stack.Screen
             name="HotTabScreen"
             component={HotTabScreen}
-            options={{headerShown: false}}/>
-            <Stack.Screen
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
             name="GlobalTabScreen"
             component={GlobalTabScreen}
-            options={{headerShown: false}}/>
+            options={{headerShown: false}}
+          /> */}
+          <Stack.Screen name='NotificationScreen' component={NotificationScreen} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>
+    </TabProvider>
   );
 };
 
@@ -87,7 +95,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    // backgroundColor: '#ffffff', 
+    // backgroundColor: '#ffffff',
     // paddingTop: StatusBar.currentHeight,
   },
 });

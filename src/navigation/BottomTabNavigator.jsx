@@ -155,8 +155,7 @@ import ChatScreen from '../screens/ChatScreen.jsx';
 import GroupScreen from '../screens/GroupScreen.jsx';
 import WatchScreen from '../screens/WatchScreen.jsx';
 import Loader from '../components/Loader.jsx';
-import Header from '../components/Header.jsx';
-import WatchHeader from '../components/WatchHeader.jsx';
+
 
 const Tab = createBottomTabNavigator();
 const {width} = Dimensions.get('window');
@@ -179,7 +178,7 @@ const BottomTabNavigator = () => {
 
       <Tab.Navigator
   screenOptions={({ route }) => ({
-    headerShown: false, // Hide headers for all tabs
+    headerShown: false, 
     tabBarIcon: ({ color }) => {
       let iconName = '';
       if (route.name === 'Home') iconName = HomeIcon;

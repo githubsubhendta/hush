@@ -14,6 +14,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
+
 import {SvgXml} from 'react-native-svg';
 import {
   darkmode_off_svg,
@@ -33,6 +34,7 @@ import {
 } from '../utils/constant/TabSVGimage';
 import { Easing } from 'react-native';
 import GetPremiumPopup from './GetPremiumPopup';
+import { navigate } from '../utils/NavigationUtil';
 
 const {width, height} = Dimensions.get('window');
 const isTablet = width > 600;
@@ -50,6 +52,10 @@ const Header = ({onTabPress}) => {
     setActiveTab(tab);
     onTabPress(tab);
   };
+
+  const handleNotificationScreen = () => {
+    navigate("NotificationScreen")
+  }
 
   const openSettings = () => {
     setSettingsVisible(true); 
@@ -119,7 +125,8 @@ const Header = ({onTabPress}) => {
           <View style={styles.iconsContainer}>
             <TouchableOpacity
               style={styles.iconWrapper}
-              onPress={() => onTabPress('Notifications')}>
+              onPress={handleNotificationScreen}
+              >
               <SvgXml xml={notification_svg} width={18.55} height={22} />
               <View style={styles.notificationDot} />
             </TouchableOpacity>

@@ -202,17 +202,28 @@
 // export default memo(PostItem);
 
 // components/PostCard.js
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import post1 from '../images/post1.png';
 import {SvgXml} from 'react-native-svg';
 import {chat_icon, heart_svg} from '../utils/constant/TabSVGimage';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-export default function PostItems({image, text, likes, time, tag}) {
+dayjs.extend(relativeTime);
+
+export default function PostItems({image, text, likes, comment, time, tag}) {
+  const [error, setError] = useState(false);
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
-        <Image source={post1} style={styles.image} />
+        <Image
+          source={
+            error || !image ? require('../images/post1.png') : {uri: image}
+          }
+          style={styles.image}
+          onError={() => setError(true)}
+        />
+        {/* <Image source={post1} style={styles.image} /> */}
         {tag && (
           <View style={styles.tag}>
             <Text style={styles.tagText}>{tag} Hello</Text>
@@ -227,9 +238,9 @@ export default function PostItems({image, text, likes, time, tag}) {
           <SvgXml xml={heart_svg} width={15.4} height={14} />
           <Text style={styles.commentText}>{likes}</Text>
           <SvgXml xml={chat_icon} width={14.84} height={14} />
-          <Text style={styles.commentText}>70</Text>
+          <Text style={styles.commentText}>{comment}</Text>
         </View>
-        <Text style={styles.timeText}>{time}</Text>
+        <Text style={styles.timeText}>{dayjs(time).fromNow()}</Text>
       </View>
     </View>
   );

@@ -76,4 +76,4 @@ const LocalTabScreen = () => {
   )
 }
 
-export default LocalTabScreen
+export default LocalTabScreen;
