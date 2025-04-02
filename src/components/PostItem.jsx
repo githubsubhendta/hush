@@ -211,6 +211,26 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
 
+const formatTime = (time) => {
+  const now = dayjs();
+  const past = dayjs(time);
+  
+  const diffSeconds = now.diff(past, 'second');
+  const diffMinutes = now.diff(past, 'minute');
+  const diffHours = now.diff(past, 'hour');
+  const diffDays = now.diff(past, 'day');
+  const diffMonths = now.diff(past, 'month');
+  const diffYears = now.diff(past, 'year');
+
+  if (diffSeconds < 60) return `${diffSeconds}s ago`;
+  if (diffMinutes < 60) return `${diffMinutes}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 30) return `${diffDays}d ago`;
+  if (diffMonths < 12) return `${diffMonths}m ago`;
+  return `${diffYears}yr ago`;
+};
+
+
 export default function PostItems({image, text, likes, comment, time, tag}) {
   const [error, setError] = useState(false);
   return (
@@ -240,7 +260,7 @@ export default function PostItems({image, text, likes, comment, time, tag}) {
           <SvgXml xml={chat_icon} width={14.84} height={14} />
           <Text style={styles.commentText}>{comment}</Text>
         </View>
-        <Text style={styles.timeText}>{dayjs(time).fromNow()}</Text>
+        <Text style={styles.timeText}>{formatTime(time)}</Text>
       </View>
     </View>
   );

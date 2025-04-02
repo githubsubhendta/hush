@@ -1,394 +1,202 @@
-// import React, {useState} from 'react';
-// import {
-//   View,
-//   Text,
-//   FlatList,
-//   TouchableOpacity,
-//   StyleSheet,
-//   ImageBackground,
-// } from 'react-native';
-// import {SvgXml} from 'react-native-svg';
-// import {useNavigation} from '@react-navigation/native';
-// import {back_arrow_svg} from '../utils/constant/TabSVGimage';
-
-// const NotificationsScreen = () => {
-//   const navigation = useNavigation();
-//   const [activeTab, setActiveTab] = useState('Likes');
-
-//   const notifications = [
-//     {
-//       id: '1',
-//       user: 'los_Nagel',
-//       action: 'replied to your post',
-//       time: '3m ago',
-//     },
-//     {
-//       id: '2',
-//       user: 'swan_bird',
-//       action: 'replied to your story',
-//       time: '5m ago',
-//     },
-//     {id: '3', user: 'user_1234', action: 'liked your video', time: '7h ago'},
-//     {
-//       id: '4',
-//       user: 'cyan_blackbird',
-//       action: 'voted on your poll',
-//       time: '5d ago',
-//     },
-//     {id: '5', user: 'breen_mint', action: 'liked your post', time: '7d ago'},
-//     {
-//       id: '6',
-//       user: 'to_sSomeone',
-//       action: 'voted on your poll',
-//       time: '9d ago',
-//     },
-//     {
-//       id: '7',
-//       user: 'green_poster',
-//       action: `posted to "Me in pic"`,
-//       time: '10d ago',
-//     },
-//     {
-//       id: '8',
-//       user: 'official_black',
-//       action: 'liked your poll',
-//       time: '1mo ago',
-//     },
-//     {
-//       id: '9',
-//       user: 'break_dance',
-//       action: 'replied to your poll',
-//       time: '8d ago',
-//     },
-//   ];
-
-//   const renderItem = ({item}) => (
-//     <View style={styles.notificationItem}>
-//       <View style={styles.notificationText}>
-//         <Text style={styles.userName}>{item.user} </Text>
-//         <Text style={styles.actionText}>{item.action}</Text>
-//         <Text style={styles.timeText}>{item.time}</Text>
-//       </View>
-//     </View>
-//   );
-
-//   return (
-//     <View style={styles.container}>
-//       {/* Header */}
-//       <ImageBackground
-//         source={require('../images/headerBg.png')}
-//         resizeMode="cover"
-//         imageStyle={{opacity: 1}}>
-//         <View style={styles.header}>
-//           <TouchableOpacity onPress={() => navigation.goBack()}>
-//             <SvgXml xml={back_arrow_svg} width={25} height={25} />
-//           </TouchableOpacity>
-//           <Text style={styles.headerTitle}>Notifications</Text>
-//         </View>
-//       </ImageBackground>
-
-//       {/* FlatList with Scrollable Tabs */}
-//       <View style={styles.itemsContainer}>
-//         <FlatList
-//           data={notifications}
-//           keyExtractor={item => item.id}
-//           renderItem={renderItem}
-//           contentContainerStyle={styles.list}
-//           ListHeaderComponent={
-//             <View style={styles.tabsContainer}>
-//               {['Posts', 'Likes', 'Replies'].map(tab => (
-//                 <TouchableOpacity
-//                   key={tab}
-//                   style={[
-//                     styles.tab,
-//                     activeTab === tab ? styles.activeTab : null,
-//                   ]}
-//                   onPress={() => setActiveTab(tab)}>
-//                   <Text
-//                     style={[
-//                       styles.tabText,
-//                       activeTab === tab ? styles.activeTabText : null,
-//                     ]}>
-//                     {tab}
-//                   </Text>
-//                 </TouchableOpacity>
-//               ))}
-//             </View>
-//           }
-//         />
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//   },
-//   header: {
-//     height: 110,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     padding: 15,
-//   },
-//   headerTitle: {
-//     color: 'white',
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     marginLeft: 10,
-//   },
-//   tabsContainer: {
-//      width:"100%",
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     paddingVertical: 12,
-//     backgroundColor: '#EEE8D5',
-//     justifyContent: 'space-around',
-//   },
-//   itemsContainer: {
-//     flex: 1,
-
-//   },
-//   tab: {
-//     paddingVertical: 6,
-//     paddingHorizontal: 12,
-//     borderRadius: 15,
-
-//   },
-//   activeTab: {
-//     backgroundColor: '#5C3D8E',
-//   },
-//   tabText: {
-//     fontSize: 14,
-//     color: '#5C3D8E',
-//   },
-//   activeTabText: {
-//     color: 'white',
-//   },
-//   list: {
-//     paddingHorizontal: 15,
-//   },
-//   notificationItem: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     // padding: 12,
-//     backgroundColor: 'white',
-//     borderRadius: 10,
-//     marginBottom: 10,
-//     shadowColor: '#000',
-//     shadowOpacity: 0.1,
-//     shadowRadius: 5,
-//     elevation: 2,
-//   },
-//   notificationText: {
-//     flex: 1,
-//   },
-//   userName: {
-//     fontWeight: 'bold',
-//     fontSize: 14,
-//   },
-//   actionText: {
-//     color: '#555',
-//     fontSize: 14,
-//   },
-//   timeText: {
-//     fontSize: 12,
-//     color: '#777',
-//     marginTop: 3,
-//   },
-// });
-
-// export default NotificationsScreen;
-
 import React from 'react';
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   ImageBackground,
+  SafeAreaView,
+  Image,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {back_arrow_svg} from '../utils/constant/TabSVGimage';
+import {
+  back_arrow_svg,
+  heart_svg,
+  play_svg,
+  pollIcon_svg,
+  post_sign_svg,
+  postIcon_svg,
+  reply_svg,
+  storyIcon_svg,
+  vote_svg,
+} from '../utils/constant/TabSVGimage';
 import {useNavigation} from '@react-navigation/native';
 
-
-
-
 const notifications = [
+  {id: '1', user: 'los_Nagel', action: 'replied to your post', time: '3m ago'},
+  {id: '2', user: 'swan_bird', action: 'replied to your story', time: '5m ago'},
+  {id: '3', user: 'user_1234', action: 'liked your video', time: '7h ago'},
+  {id: '4', user: 'user_1234', action: 'liked your story', time: '7h ago'},
+  {id: '5', user: 'user_1234', action: 'liked your video', time: '7h ago'},
+  {id: '6', user: 'user_1234', action: 'liked your video', time: '7h ago'},
+  {id: '7', user: 'user_1234', action: 'liked your video', time: '7h ago'},
+  {id: '8', user: 'user_1234', action: 'liked your video', time: '7h ago'},
+  {id: '9', user: 'user_1234', action: 'liked your video', time: '7h ago'},
   {
-    id: '1',
-    icon: 'chatbubble-outline',
-    user: 'los_Nagel',
-    action: 'replied to your post',
-    time: '3m ago',
-  },
-  {
-    id: '2',
-    icon: 'chatbubble-outline',
-    user: 'swan_bird',
-    action: 'replied to your story',
-    time: '5m ago',
-  },
-  {
-    id: '3',
-    icon: 'heart-outline',
-    user: 'user_1234',
-    action: 'liked your video',
-    time: '7h ago',
-  },
-  {
-    id: '4',
-    icon: 'hand-right-outline',
+    id: '10',
     user: 'cyan_blackbird',
     action: 'voted on your poll',
     time: '5d ago',
   },
-  {
-    id: '5',
-    icon: 'heart-outline',
-    user: 'breen_mint',
-    action: 'liked your post',
-    time: '7d ago',
-  },
-  {
-    id: '6',
-    icon: 'chatbubble-outline',
-    user: 'swan_bird',
-    action: 'replied to your poll',
-    time: '8d ago',
-  },
-  {
-    id: '7',
-    icon: 'heart-outline',
-    user: 'brin_mintin',
-    action: 'liked your video',
-    time: '7h ago',
-  },
-  {
-    id: '8',
-    icon: 'hand-right-outline',
-    user: 'to_Someone',
-    action: 'voted on your poll',
-    time: '9d ago',
-  },
-  {
-    id: '9',
-    icon: 'people-outline',
-    user: 'green_poster',
-    action: 'posted to "Me in pic"',
-    time: '10d ago',
-  },
-  {
-    id: '10',
-    icon: 'heart-outline',
-    user: 'official_black',
-    action: 'liked your poll',
-    time: '11d ago',
-  },
-  {
-    id: '11',
-    icon: 'chatbubble-outline',
-    user: 'break_dance',
-    action: 'replied to your poll',
-    time: '8d ago',
-  },
 ];
 
-// Notification Item Component
-const NotificationItem = ({item}) => (
+const getIcon = action => {
+  if (!action || typeof action !== 'string') return null;
 
+  if (action.includes('replied')) {
+    return <SvgXml xml={reply_svg} width={20} height={20} />;
+  } else if (action.includes('liked')) {
+    return <SvgXml xml={heart_svg} width={20} height={20} />;
+  } else if (action.includes('voted')) {
+    return <SvgXml xml={vote_svg} width={20} height={20} />;
+  }
+  return null;
+};
+
+const getRightIcon = action => {
+  if (!action || typeof action !== 'string') return null;
+
+  if (action.includes('post')) {
+    return <SvgXml xml={postIcon_svg} width={12} height={12} />;
+  } else if (action.includes('video')) {
+    return <SvgXml xml={play_svg} width={12} height={12} />;
+  } else if (action.includes('story')) {
+    return <SvgXml xml={storyIcon_svg} width={12} height={12} />;
+  } else if (action.includes('poll')) {
+    return <SvgXml xml={pollIcon_svg} width={12} height={12} />;
+  }
+
+  return null;
+};
+
+const NotificationItem = ({user = '', action = '', time = ''}) => (
   <View style={styles.notificationItem}>
-    {/* <Ionicons name={item.icon} size={24} color={item.icon === 'heart-outline' ? '#FF3B30' : '#1DA1F2'} /> */}
+    <View style={styles.iconContainer}>{getIcon(action)}</View>
     <View style={styles.notificationTextContainer}>
-      <Text style={styles.notificationText}>
-        <Text style={styles.username}>{item.user}</Text> {item.action}
-      </Text>
-      <Text style={styles.time}>{item.time}</Text>
+      <View style={styles.notificationText}>
+        <Text style={styles.username}>{user}</Text>
+        <Text> {action}</Text> 
+      </View>
+
+      <Text style={styles.time}>{time}</Text>
     </View>
-    <TouchableOpacity>
-      {/* <Ionicons name="ellipsis-horizontal" size={20} color="#888" /> */}
-    </TouchableOpacity>
+    <View style={styles.iconContainer2}>
+      <View style={styles.imageContainer}>
+        
+        <Image source={require('../images/post1.png')} style={styles.image} />
+      </View>
+      <View style={styles.iconWrapper}>{getRightIcon(action)}</View>
+    </View>
   </View>
 );
 
-// Main Notifications Screen Component
 const NotificationsScreen = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
         source={require('../images/headerBg.png')}
         resizeMode="cover"
-        imageStyle={{opacity: 1}}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <SvgXml xml={back_arrow_svg} width={30} height={30} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Notifications</Text>
+        style={styles.background}>
+        <ImageBackground
+          source={require('../images/headerBg.png')}
+          resizeMode="cover">
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <SvgXml xml={back_arrow_svg} width={30} height={30} />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Notifications</Text>
+          </View>
+        </ImageBackground>
+
+        <View style={styles.mainContainer}>
+          <FlatList
+            data={notifications}
+            renderItem={({item}) => (
+              <NotificationItem
+                user={item.user}
+                action={item.action}
+                time={item.time}
+              />
+            )}
+            keyExtractor={item => item.id}
+            ListHeaderComponent={
+              <View>
+                <View style={styles.statsContainer}>
+                  <View style={styles.statBox}>
+                    <SvgXml xml={post_sign_svg} width={12} height={12} />
+                    <View style={styles.statTextContainer}>
+                      <Text style={styles.statNumber}>24</Text>
+                      <Text style={styles.statLabel}>Posts</Text>
+                    </View>
+                  </View>
+                  <View style={styles.statBox}>
+                    <SvgXml xml={heart_svg} width={12} height={12} />
+                    <View style={styles.statTextContainer}>
+                      <Text style={styles.statNumber}>2721</Text>
+                      <Text style={styles.statLabel}>Likes</Text>
+                    </View>
+                  </View>
+                  <View style={styles.statBox}>
+                    <SvgXml xml={reply_svg} width={12} height={12} />
+                    <View style={styles.statTextContainer}>
+                      <Text style={styles.statNumber}>89</Text>
+                      <Text style={styles.statLabel}>Replies</Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    backgroundColor: '#fff',
+                    padding: 18,
+                  }}>
+                  <Text style={{fontSize: 16, fontWeight: 700}}>Activity</Text>
+                  <Text
+                    style={{fontSize: 14, fontWeight: 700, color: '#FC4D2F'}}>
+                    ✔✔ Mark all Read
+                  </Text>
+                </View>
+              </View>
+            }
+            contentContainerStyle={styles.listContent}
+          />
         </View>
       </ImageBackground>
-
-      {/* Stats Section */}
-
-      <ImageBackground
-        source={require('../images/headerBg.png')}
-        resizeMode="cover"
-        imageStyle={{opacity: 2}}>
-        <View style={styles.statsContainer}>
-          <View style={styles.statBox}>
-            <Text style={styles.statNumber}>24</Text>
-            <Text style={styles.statLabel}>Posts</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statNumber}>2721</Text>
-            <Text style={styles.statLabel}>Likes</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statNumber}>89</Text>
-            <Text style={styles.statLabel}>Replies</Text>
-          </View>
-        </View>
-      </ImageBackground>
-
-      {/* Activity Section */}
-      <View style={styles.activityHeader}>
-        <Text style={styles.activityTitle}>ACTIVITY</Text>
-        <TouchableOpacity>
-          <Text style={styles.markAllRead}>Mark all read</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Notifications List */}
-      <FlatList
-        data={notifications}
-        renderItem={({item}) => <NotificationItem item={item} />}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContent}
-      />
     </SafeAreaView>
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#EDEAE3',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    backgroundColor: '#fff',
+    overflow: 'hidden',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+  },
+  background: {
+    flex: 1,
   },
   header: {
     height: 110,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 25,
-    paddingTop:20
-    // paddingVertical: 50,
-
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
   headerTitle: {
     color: '#FFF',
@@ -399,56 +207,56 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#EEE8D5',
+    backgroundColor: 'transparent',
     paddingVertical: 15,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    // marginHorizontal: 10,
-    // borderRadius: 10,
   },
   statBox: {
     alignItems: 'center',
+    borderRightColor: '#FFFEF4',
+    borderRightWidth: 1,
+    paddingHorizontal: 30,
+  },
+
+  statTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 3,
   },
   statNumber: {
-    color: '#FFF',
-    fontSize: 18,
+    color: 'blue',
+    fontSize: 12,
     fontWeight: 'bold',
+    paddingRight: 5,
   },
   statLabel: {
-    color: '#888',
-    fontSize: 14,
-  },
-  activityHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-  },
-  activityTitle: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  markAllRead: {
-    color: '#1DA1F2',
-    fontSize: 14,
-  },
-  listContent: {
-    paddingHorizontal: 15,
+    color: '#000',
+    fontSize: 12,
+    fontWeight: 700,
   },
   notificationItem: {
+    backgroundColor: 'transparent',
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: '#FFFEF4',
+    paddingHorizontal: 15,
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 5,
   },
   notificationTextContainer: {
     flex: 1,
     marginLeft: 10,
+    paddingVertical: 5,
   },
   notificationText: {
-    color: '#FFF',
+    color: '#000',
     fontSize: 14,
   },
   username: {
@@ -456,8 +264,39 @@ const styles = StyleSheet.create({
   },
   time: {
     color: '#888',
-    fontSize: 12,
+    fontSize: 8,
     marginTop: 2,
+  },
+
+  iconContainer2: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageContainer: {
+    position: 'relative',
+    width: 30,
+    height: 30,
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 6,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+  },
+  iconWrapper: {
+    position: 'absolute',
+    top: '60%',
+    left: '70%',
+    transform: [{translateX: -12}, {translateY: -12}],
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

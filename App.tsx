@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import SplashScreen from './src/screens/SplashScreen';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import {ImageBackground, StatusBar, View, StyleSheet} from 'react-native';
 import HotTabScreen from './src/components/TabScreens/HotTabSceen';
 import GlobalTabScreen from './src/components/TabScreens/GlobalTabSCreen';
 import NotificationScreen from './src/screens/NotificationScreen';
-import { navigationRef } from './src/utils/NavigationUtil';
-import { TabProvider } from './src/context/TabContext';
+import {navigationRef} from './src/utils/NavigationUtil';
+import {TabProvider} from './src/context/TabContext';
+import SettingScreen from './src/screens/SettingScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,9 +37,9 @@ const App = () => {
 
   return (
     <TabProvider>
-    <NavigationContainer ref={navigationRef}>
-      {/* Status Bar Background */}
-      {/* <View style={styles.statusBarBackground}>
+      <NavigationContainer ref={navigationRef}>
+        {/* Status Bar Background */}
+        {/* <View style={styles.statusBarBackground}>
         <ImageBackground
           source={require('./src/images/headerBg.png')}
           style={styles.statusBarImage}
@@ -52,29 +53,31 @@ const App = () => {
         />
       </View> */}
 
-      {/* Main Content */}
-      <View style={styles.mainContainer}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            cardStyle: {backgroundColor: 'transparent'},
-          }}>
-          <Stack.Screen name="Main" component={BottomTabNavigator} />
+        {/* Main Content */}
+        <View style={styles.mainContainer}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              cardStyle: {backgroundColor: 'transparent'},
+            }}>
+            <Stack.Screen name="Main" component={BottomTabNavigator} />
+            <Stack.Screen name='NotificationScreen' component={NotificationScreen}  />
+            <Stack.Screen name='SettingScreen' component={SettingScreen} />
 
-          {/* <Stack.Screen
-            name="HotTabScreen"
-            component={HotTabScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="GlobalTabScreen"
-            component={GlobalTabScreen}
-            options={{headerShown: false}}
-          /> */}
-          <Stack.Screen name='NotificationScreen' component={NotificationScreen} />
-        </Stack.Navigator>
-      </View>
-    </NavigationContainer>
+            {/* <Stack.Screen
+              name="NotificationScreen"
+              component={NotificationScreen}
+              options={{
+                ...TransitionPresets.SlideFromRightIOS,
+                transitionSpec: {
+                  open: {animation: 'timing', config: {duration: 100}}, 
+                  close: {animation: 'timing', config: {duration: 200}}, 
+                },
+              }}
+            /> */}
+          </Stack.Navigator>
+        </View>
+      </NavigationContainer>
     </TabProvider>
   );
 };
