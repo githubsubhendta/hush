@@ -8,39 +8,22 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
+  Dimensions, Platform 
 } from 'react-native';
-// import CheckBox from '@react-native-community/checkbox';
-import { useNavigation } from '@react-navigation/native';
 
-import Svg, {SvgXml} from 'react-native-svg';
+import {goBack, navigate} from '../utils/NavigationUtil';
+
+const { width, height } = Dimensions.get('window');
+import  {SvgXml} from 'react-native-svg';
 import {
   arrow_svg,
   avatar_svg,
   back_arrow_svg,
 } from '../utils/constant/TabSVGimage';
+import ChatRatingModal from '../components/ChatRatingModal';
 
 const SettingScreen = () => {
-  const [checked, setChecked] = useState(
-    Array(notifications?.length).fill(false),
-  );
-
-
-  const navigation = useNavigation();
-
-  const toggleCheckbox = index => {
-    const newChecked = [...checked];
-    newChecked[index] = !newChecked[index];
-    setChecked(newChecked);
-  };
-
-  const profileOptions = [
-    'Profile Details',
-    'My Quids',
-    'My Subscriptions',
-    'Chat Votes',
-    'App Language',
-  ];
-
+  const [modalVisible, setModalVisible] = useState(false);
   const notifications = [
     'Poll',
     'Replies',
@@ -50,6 +33,20 @@ const SettingScreen = () => {
     'Local',
     'Groups',
     'School',
+  ];
+
+  
+
+  const handleEditProfile = () => {
+    navigate('EditUserProfile');
+  };
+
+  const profileOptions = [
+    {name: 'Profile Details', screen: 'ProfileDetails'},
+    {name: 'My Quids', screen: 'MyQuidsScreen'},
+    {name: 'My Subscriptions', screen: 'MySubscriptionsScreen'},
+    {name: 'Chat Votes', screen: 'ChatVotesScreen'},
+    {name: 'App Language', screen: 'AppLanguageScreen'},
   ];
 
   const spreadWorld = [
@@ -70,7 +67,7 @@ const SettingScreen = () => {
           source={require('../images/headerBg.png')}
           resizeMode="cover">
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={goBack}>
               <SvgXml xml={back_arrow_svg} width={30} height={30} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Setting</Text>
@@ -80,8 +77,7 @@ const SettingScreen = () => {
         <View style={styles.mainContainer}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            style={styles.container}>
+            showsHorizontalScrollIndicator={false}>
             <View style={styles.profileSection}>
               {/* <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.avatar} /> */}
               <View style={styles.avatar}>
@@ -89,7 +85,9 @@ const SettingScreen = () => {
               </View>
 
               <Text style={styles.username}>cyan_blackbird</Text>
-              <TouchableOpacity style={styles.editButton}>
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={handleEditProfile}>
                 <Text style={styles.editButtonText}>Edit Name</Text>
               </TouchableOpacity>
             </View>
@@ -97,8 +95,17 @@ const SettingScreen = () => {
             <Text style={styles.sectionTitle}>MY PROFILE</Text>
             <View style={styles.card}>
               {profileOptions.map((option, index) => (
-                <TouchableOpacity key={index} style={styles.optionItem}>
-                  <Text style={styles.optionText}>{option}</Text>
+                <TouchableOpacity
+                  key={index}
+                  style={styles.optionItem}
+                  onPress={() => {
+                    if (option.name === 'Chat Votes') {
+                      setModalVisible(true); 
+                    } else {
+                      navigate(option.screen);
+                    }
+                  }}>
+                  <Text style={styles.optionText}>{option.name}</Text>
                   <SvgXml xml={arrow_svg} width={7.37} height={12} />
                 </TouchableOpacity>
               ))}
@@ -109,7 +116,11 @@ const SettingScreen = () => {
               {notifications.map((notif, index) => (
                 <View key={index} style={styles.notificationItem}>
                   <Text style={styles.optionText}>{notif}</Text>
-                  {/* <CheckBox value={checked[index]} onValueChange={() => toggleCheckbox(index)} /> */}
+                  {/* <CheckBox
+                    // key={index}
+                    // value={checked[index]} 
+                    // onValueChange={() => handleCheck(index)} 
+                  /> */}
                 </View>
               ))}
             </View>
@@ -119,7 +130,6 @@ const SettingScreen = () => {
               {spreadWorld.map((spread, index) => (
                 <View key={index} style={styles.notificationItem}>
                   <Text style={styles.optionText}>{spread}</Text>
-                  {/* <CheckBox value={checked[index]} onValueChange={() => toggleCheckbox(index)} /> */}
                 </View>
               ))}
             </View>
@@ -129,16 +139,24 @@ const SettingScreen = () => {
               {support.map((supp, index) => (
                 <View key={index} style={styles.notificationItem}>
                   <Text style={styles.optionText}>{supp}</Text>
-                  {/* <CheckBox value={checked[index]} onValueChange={() => toggleCheckbox(index)} /> */}
                 </View>
               ))}
             </View>
 
             <View style={styles.logo}>
-                {/* <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.avatar} /> */}
-               <Image source={require("../images/Hush.png")} style={{width:100,height:100,resizeMode: 'contain',}} />
+              <Image
+                source={require('../images/Hush.png')}
+                style={{width: 100, height: 100, resizeMode: 'contain'}}
+              />
             </View>
           </ScrollView>
+          <ChatRatingModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            upVotes={1}
+            downVotes={0}
+            totalChats={5}
+          />
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -150,7 +168,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff',
@@ -159,91 +176,91 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 4,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    padding: 20,
+    padding: width * 0.05, 
   },
   background: {
     flex: 1,
   },
   header: {
-    height: 110,
+    height: height * 0.14,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingHorizontal: width * 0.05,
+    paddingTop: Platform.OS === 'android' ? 20 : 40,
   },
   headerTitle: {
     color: '#FFF',
-    fontSize: 20,
+    fontSize: width * 0.05, 
     fontWeight: 'bold',
-    marginLeft: 20,
+    marginLeft: width * 0.05,
   },
   profileSection: {
     alignItems: 'center',
   },
   avatar: {
-    width: 100,
-    height: 100,
+    width: width * 0.25, 
+    height: width * 0.25,
     alignItems: 'center',
-    borderRadius: 80,
+    borderRadius: width * 0.25,
     borderWidth: 0.3,
   },
   username: {
-    fontSize: 20,
+    fontSize: width * 0.045,
     fontWeight: 'bold',
     marginTop: 8,
   },
   editButton: {
     backgroundColor: '#5A31F4',
-    paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.1,
     borderRadius: 10,
     marginTop: 8,
   },
   editButtonText: {
     color: '#fff',
-    fontWeight: 700,
-    fontSize: 14,
+    fontWeight: '700',
+    fontSize: width * 0.04, 
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: 700,
-    marginTop: 40,
-    marginBottom: 8,
+    fontSize: width * 0.04,
+    fontWeight: '700',
+    marginTop: height * 0.05,
+    marginBottom: height * 0.015,
   },
   card: {
     borderRadius: 10,
-    padding: 10,
+    padding: width * 0.03, 
+    width: '100%', 
   },
   optionItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: height * 0.02,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
   optionText: {
-    fontSize: 12,
+    fontSize: width * 0.035, 
   },
   notificationItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: height * 0.02,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
   logo: {
-    width: 150, 
-    height: 150, 
+    width: width * 0.3,
+    height: width * 0.3,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-}
-
+  },
 });
 
 export default SettingScreen;
