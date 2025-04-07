@@ -14,7 +14,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
-
 import {SvgXml} from 'react-native-svg';
 import {
   darkmode_off_svg,
@@ -32,9 +31,9 @@ import {
   user_setting,
   watch_earn_svg,
 } from '../utils/constant/TabSVGimage';
-import { Easing } from 'react-native';
+import {Easing} from 'react-native';
 import GetPremiumPopup from './GetPremiumPopup';
-import { navigate } from '../utils/NavigationUtil';
+import {navigate} from '../utils/NavigationUtil';
 
 const {width, height} = Dimensions.get('window');
 const isTablet = width > 600;
@@ -54,24 +53,24 @@ const Header = ({onTabPress}) => {
   };
 
   const handleNotificationScreen = () => {
-    navigate("NotificationScreen")
-  }
+    navigate('NotificationScreen');
+  };
 
-  const handleSetting =()=>{
-    navigate("SettingScreen");
+  const handleSetting = () => {
+    navigate('SettingScreen');
     setSettingsVisible(false);
-  }
+  };
 
   const openSettings = () => {
-    setSettingsVisible(true); 
-    slideAnim.setValue(width); 
+    setSettingsVisible(true);
+    slideAnim.setValue(width);
     Animated.timing(slideAnim, {
       toValue: 0,
       duration: 700,
       useNativeDriver: true,
     }).start();
   };
-  
+
   const closeSettings = () => {
     Animated.timing(slideAnim, {
       toValue: width,
@@ -130,8 +129,7 @@ const Header = ({onTabPress}) => {
           <View style={styles.iconsContainer}>
             <TouchableOpacity
               style={styles.iconWrapper}
-              onPress={handleNotificationScreen}
-              >
+              onPress={handleNotificationScreen}>
               <SvgXml xml={notification_svg} width={18.55} height={22} />
               <View style={styles.notificationDot} />
             </TouchableOpacity>
@@ -139,7 +137,6 @@ const Header = ({onTabPress}) => {
               <SvgXml xml={user_setting} width={18.55} height={22} />
             </TouchableOpacity>
           </View>
-
 
           <Modal
             transparent={true}
@@ -155,7 +152,9 @@ const Header = ({onTabPress}) => {
                       transform: [{translateX: slideAnim}],
                     },
                   ]}>
-                  <TouchableOpacity style={styles.titleContainer} onPress={handleSetting} >
+                  <TouchableOpacity
+                    style={styles.titleContainer}
+                    onPress={handleSetting}>
                     <SvgXml xml={setting_svg} width={14} height={14} />
                     <Text style={styles.modalTitle}>Settings</Text>
                   </TouchableOpacity>
@@ -202,7 +201,9 @@ const Header = ({onTabPress}) => {
                   {/* Buttons */}
                   <View style={styles.buttonContainer}>
                     {/* Get Premium Button */}
-                    <TouchableOpacity onPress={() => setModalVisible(true)}  style={styles.buttonWrapper}>
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(true)}
+                      style={styles.buttonWrapper}>
                       <View style={styles.iconWrapper1}>
                         <SvgXml xml={get_premium_svg} width={40} height={40} />
                       </View>
@@ -228,7 +229,9 @@ const Header = ({onTabPress}) => {
         </View>
 
         <GetPremiumPopup
-          visible={modalVisible} onClose={() => setModalVisible(false)} />
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
       </SafeAreaView>
     </ImageBackground>
   );
@@ -383,4 +386,3 @@ const styles = StyleSheet.create({
 });
 
 export default Header;
-

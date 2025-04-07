@@ -124,15 +124,15 @@ const API_URL = 'https://hush-trending-service.onrender.com/api/trending/posts';
 
 const HotTabScreen = ({navigation}) => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // Initially true to avoid showing loader
+  const [loading, setLoading] = useState(true); 
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [isFetchingMore, setIsFetchingMore] = useState(false); // Separate loader for pagination
+  const [isFetchingMore, setIsFetchingMore] = useState(false); 
 
   const fetchPosts = async (pageNumber, isInitial = false) => {
     if (!hasMore || isFetchingMore) return;
 
-    if (!isInitial) setIsFetchingMore(true); // Show loader only for pagination
+    if (!isInitial) setIsFetchingMore(true); 
 
     try {
       const response = await axios.get(API_URL, {
@@ -150,19 +150,18 @@ const HotTabScreen = ({navigation}) => {
     } catch (error) {
       console.error('Error fetching posts:', error.message);
     } finally {
-      if (isInitial) setLoading(false); // Hide initial loader after first fetch
+      if (isInitial) setLoading(false);
       setIsFetchingMore(false);
     }
   };
 
   useEffect(() => {
-    fetchPosts(1, true); // Fetch data once when the component mounts
+    fetchPosts(1, true); 
   }, []);
 
   useEffect(() => {
     const unsubscribe = navigation?.addListener('focus', () => {
-      // Uncomment below if you want a refresh on focus
-      // fetchPosts(1, true);
+      // Refresh logic on screen focus (if needed)
     });
 
     return () => unsubscribe && unsubscribe();
@@ -182,7 +181,14 @@ const HotTabScreen = ({navigation}) => {
     [],
   );
 
-  if (loading) return null; // Prevents showing ActivityIndicator on initial load
+  // Show full-screen activity indicator while loading
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#392EBD" />
+      </View>
+    );
+  }
 
   return (
     <ImageBackground
@@ -203,10 +209,6 @@ const HotTabScreen = ({navigation}) => {
               <ActivityIndicator size="small" color="#E63946" />
             ) : null
           }
-          // windowSize={10}
-          // initialNumToRender={50}
-          // maxToRenderPerBatch={50}
-          // updateCellsBatchingPeriod={100}
         />
       </View>
     </ImageBackground>
@@ -227,6 +229,12 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingBottom: 20,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
 });
 
