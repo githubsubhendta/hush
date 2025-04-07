@@ -239,11 +239,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#392EBD',
   },
   tabText: {
+    fontSize: 14,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: 500,
     color: '#000',
   },
   activeTabText: {
+    fontSize: 14,
+    fontWeight: 700,
     color: '#fff',
   },
   groupItem: {
