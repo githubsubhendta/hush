@@ -34,8 +34,9 @@ import {
   video_tab_svg,
   watch_earn_svg,
 } from '../utils/constant/TabSVGimage';
-import { Easing } from 'react-native';
+import {Easing} from 'react-native';
 import GetPremiumPopup from './GetPremiumPopup';
+import {navigate} from '../utils/NavigationUtil';
 
 const {width, height} = Dimensions.get('window');
 const isTablet = width > 600;
@@ -55,15 +56,15 @@ const WatchHeader = ({onTabPress}) => {
   };
 
   const openSettings = () => {
-    setSettingsVisible(true); 
-    slideAnim.setValue(width); 
+    setSettingsVisible(true);
+    slideAnim.setValue(width);
     Animated.timing(slideAnim, {
       toValue: 0,
-      duration: 700,
+      duration: 400,
       useNativeDriver: true,
     }).start();
   };
-  
+
   const closeSettings = () => {
     Animated.timing(slideAnim, {
       toValue: width,
@@ -72,6 +73,11 @@ const WatchHeader = ({onTabPress}) => {
       useNativeDriver: true,
     }).start(() => setSettingsVisible(false));
   };
+
+  const handleSetting =()=>{
+      navigate("SettingScreen");
+      setSettingsVisible(false);
+    }
 
   return (
     <ImageBackground
@@ -88,8 +94,7 @@ const WatchHeader = ({onTabPress}) => {
           {/* <StatusBar hidden={false} style={{backgroundColor:'transparent'}} /> */}
           <View style={styles.centerContainer}>
             {/* {['Hot', 'Global', 'Local'].map(tab => ( */}
-            {['Video','Story','Poll'].map(tab=>(
-
+            {['Video', 'Story', 'Poll'].map(tab => (
               <TouchableOpacity
                 key={tab}
                 style={[
@@ -124,7 +129,7 @@ const WatchHeader = ({onTabPress}) => {
           <View style={styles.iconsContainer}>
             <TouchableOpacity
               style={styles.iconWrapper}
-              onPress={() => onTabPress('Notifications')}>
+              onPress={() => navigate('NotificationScreen')}>
               <SvgXml xml={notification_svg} width={18.55} height={22} />
               <View style={styles.notificationDot} />
             </TouchableOpacity>
@@ -132,7 +137,6 @@ const WatchHeader = ({onTabPress}) => {
               <SvgXml xml={user_setting} width={18.55} height={22} />
             </TouchableOpacity>
           </View>
-
 
           <Modal
             transparent={true}
@@ -148,12 +152,13 @@ const WatchHeader = ({onTabPress}) => {
                       transform: [{translateX: slideAnim}],
                     },
                   ]}>
-                  <View style={styles.titleContainer}>
+                  <TouchableOpacity
+                    style={styles.titleContainer}
+                    onPress={handleSetting}>
                     <SvgXml xml={setting_svg} width={14} height={14} />
                     <Text style={styles.modalTitle}>Settings</Text>
-                  </View>
+                  </TouchableOpacity>
 
-                  {/* Dark Mode Toggle */}
                   <View style={styles.settingItem}>
                     <Text style={styles.settingLabel}>Dark Mode</Text>
                     <TouchableOpacity
@@ -176,8 +181,6 @@ const WatchHeader = ({onTabPress}) => {
                       />
                     </TouchableOpacity>
                   </View>
-
-                  {/* Modern Mode Toggle */}
                   <View style={styles.settingItem}>
                     <Text style={styles.settingLabel}>Modern Mode</Text>
                     <TouchableOpacity
@@ -195,7 +198,9 @@ const WatchHeader = ({onTabPress}) => {
                   {/* Buttons */}
                   <View style={styles.buttonContainer}>
                     {/* Get Premium Button */}
-                    <TouchableOpacity onPress={() => setModalVisible(true)}  style={styles.buttonWrapper}>
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(true)}
+                      style={styles.buttonWrapper}>
                       <View style={styles.iconWrapper1}>
                         <SvgXml xml={get_premium_svg} width={40} height={40} />
                       </View>
@@ -221,7 +226,9 @@ const WatchHeader = ({onTabPress}) => {
         </View>
 
         <GetPremiumPopup
-          visible={modalVisible} onClose={() => setModalVisible(false)} />
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
       </SafeAreaView>
     </ImageBackground>
   );

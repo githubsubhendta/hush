@@ -37,26 +37,26 @@ const styles = StyleSheet.create({
    
   },
   modalContainer: {
-    width: width * 0.85, 
+    width: width * 0.75, 
     maxWidth: 400, 
     backgroundColor: '#F8F3EB',
     borderRadius: 12,
-    paddingVertical: height * 0.03, 
-    paddingHorizontal: width * 0.06,
+    paddingVertical:30, 
+    paddingHorizontal: width * 0.10,
     alignItems: 'center',
-    padding:20
   },
   title: {
-    fontSize: width * 0.05, 
-    fontWeight: 'bold',
+    fontSize: width * 0.06, 
+    fontWeight: 700,
     marginBottom: height * 0.01,
     color: '#000',
   },
   message: {
     fontSize: width * 0.04,
-    color: '#666',
+    color: '#66645E',
     textAlign: 'center',
     marginBottom: height * 0.03,
+    lineHeight:20
   },
   button: {
     backgroundColor: '#4B30C3',
