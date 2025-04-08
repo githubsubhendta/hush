@@ -13,6 +13,7 @@ import SettingScreen from './src/screens/SettingScreen';
 import EditUserProfile from './src/components/Profile/EditUserProfile';
 import ProfileDetails from './src/components/Profile/ProfileDetails';
 import MyQuidsScreen from './src/screens/settingScreens/MyQuidsScreen';
+import CreateGroup from './src/screens/CreateGroup'
 import ErrorBoundary from './src/components/ErrorBoundary';
 
 const Stack = createStackNavigator();
@@ -81,6 +82,7 @@ const App = () => {
             <Stack.Screen name="EditUserProfile" component={EditUserProfile} />
             <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
             <Stack.Screen name="MyQuidsScreen" component={MyQuidsScreen} />
+            <Stack.Screen name="CreateGroup" component={CreateGroup} />
 
           </Stack.Navigator>
         </View>

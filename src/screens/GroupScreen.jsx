@@ -24,6 +24,7 @@ import img2 from '../images/post1.png';
 import img3 from '../images/post1.png';
 import img4 from '../images/post1.png';
 import img5 from '../images/post1.png';
+import {navigate} from '../utils/NavigationUtil';
 
 const mockGroups = [
   {id: '1', name: 'Group_xyz', members: '36.7k', joined: false, image: img1},
@@ -85,10 +86,12 @@ const GroupScreen = () => {
           resizeMode="cover">
           <View style={styles.header}>
             <View style={styles.backArrow}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigate('CreateGroup')}
+                style={{flexDirection: 'row', alignItems: 'center'}}>
                 <SvgXml xml={plus_svg} width={14} height={14} />
+                <Text style={styles.headerTitle}>Create Group</Text>
               </TouchableOpacity>
-              <Text style={styles.headerTitle}>Create Group</Text>
             </View>
 
             <TouchableOpacity
