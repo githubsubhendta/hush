@@ -13,6 +13,7 @@ import SettingScreen from './src/screens/SettingScreen';
 import EditUserProfile from './src/components/Profile/EditUserProfile';
 import ProfileDetails from './src/components/Profile/ProfileDetails';
 import MyQuidsScreen from './src/screens/settingScreens/MyQuidsScreen';
+import ErrorBoundary from './src/components/ErrorBoundary';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ const App = () => {
   }
 
   return (
+    <ErrorBoundary>
     <TabProvider>
       <NavigationContainer ref={navigationRef}>
         {/* Status Bar Background */}
@@ -84,6 +86,7 @@ const App = () => {
         </View>
       </NavigationContainer>
     </TabProvider>
+    </ErrorBoundary>
   );
 };
 

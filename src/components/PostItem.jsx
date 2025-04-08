@@ -211,10 +211,10 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
 
-const formatTime = (time) => {
+const formatTime = time => {
   const now = dayjs();
   const past = dayjs(time);
-  
+
   const diffSeconds = now.diff(past, 'second');
   const diffMinutes = now.diff(past, 'minute');
   const diffHours = now.diff(past, 'hour');
@@ -230,6 +230,15 @@ const formatTime = (time) => {
   return `${diffYears}yr ago`;
 };
 
+const formatLikes = count => {
+  if (count >= 1000000) {
+    return (count / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+  }
+  if (count >= 1000) {
+    return (count / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+  }
+  return count.toString();
+};
 
 export default function PostItems({image, text, likes, comment, time, tag}) {
   const [error, setError] = useState(false);
@@ -256,10 +265,11 @@ export default function PostItems({image, text, likes, comment, time, tag}) {
       <View style={styles.footer}>
         <View style={styles.comment}>
           <SvgXml xml={heart_svg} width={15.4} height={14} />
-          <Text style={styles.commentText}>{likes}</Text>
+          <Text style={styles.commentText}>{formatLikes(likes)}</Text>
           <SvgXml xml={chat_icon} width={14.84} height={14} />
           <Text style={styles.commentText}>{comment}</Text>
         </View>
+
         <Text style={styles.timeText}>{formatTime(time)}</Text>
       </View>
     </View>
