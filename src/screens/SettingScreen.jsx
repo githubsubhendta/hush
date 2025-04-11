@@ -8,22 +8,27 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
-  Dimensions, Platform 
+  Dimensions,
+  Platform,
 } from 'react-native';
 
 import {goBack, navigate} from '../utils/NavigationUtil';
 
-const { width, height } = Dimensions.get('window');
-import  {SvgXml} from 'react-native-svg';
+const {width, height} = Dimensions.get('window');
+import {SvgXml} from 'react-native-svg';
 import {
   arrow_svg,
   avatar_svg,
   back_arrow_svg,
+  Selected_SVG,
+  SVG_not_slected,
 } from '../utils/constant/TabSVGimage';
 import ChatRatingModal from '../components/ChatRatingModal';
 
 const SettingScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedNotifications, setSelectedNotifications] = useState({});
+
   const notifications = [
     'Poll',
     'Replies',
@@ -35,8 +40,6 @@ const SettingScreen = () => {
     'School',
   ];
 
-  
-
   const handleEditProfile = () => {
     navigate('EditUserProfile');
   };
@@ -46,7 +49,7 @@ const SettingScreen = () => {
     {name: 'My Quids', screen: 'MyQuidsScreen'},
     {name: 'My Subscriptions', screen: 'MySubscriptionsScreen'},
     {name: 'Chat Votes', screen: 'ChatVotesScreen'},
-    {name: 'App Language', screen: 'AppLanguageScreen'},
+    {name: 'App Language', screen: 'SelectLanguage'},
   ];
 
   const spreadWorld = [
@@ -56,6 +59,13 @@ const SettingScreen = () => {
     'Rate our app',
   ];
   const support = ['Email Support', 'FAQ', 'Terms of Use', 'Privacy Policy'];
+
+  const toggleNotification = notif => {
+    setSelectedNotifications(prev => ({
+      ...prev,
+      [notif]: !prev[notif],
+    }));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -100,7 +110,7 @@ const SettingScreen = () => {
                   style={styles.optionItem}
                   onPress={() => {
                     if (option.name === 'Chat Votes') {
-                      setModalVisible(true); 
+                      setModalVisible(true);
                     } else {
                       navigate(option.screen);
                     }
@@ -114,14 +124,21 @@ const SettingScreen = () => {
             <Text style={styles.sectionTitle}>PUSH NOTIFICATIONS</Text>
             <View style={styles.card}>
               {notifications.map((notif, index) => (
-                <View key={index} style={styles.notificationItem}>
+                <TouchableOpacity
+                  key={index}
+                  style={styles.notificationItem}
+                  onPress={() => toggleNotification(notif)}>
                   <Text style={styles.optionText}>{notif}</Text>
-                  {/* <CheckBox
-                    // key={index}
-                    // value={checked[index]} 
-                    // onValueChange={() => handleCheck(index)} 
-                  /> */}
-                </View>
+                  <SvgXml
+                    xml={
+                      selectedNotifications[notif]
+                        ? Selected_SVG
+                        : SVG_not_slected
+                    }
+                    width={16}
+                    height={16}
+                  />
+                </TouchableOpacity>
               ))}
             </View>
 
@@ -176,10 +193,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 4,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    padding: width * 0.05, 
+    paddingHorizontal: width * 0.05,
   },
   background: {
     flex: 1,
@@ -193,7 +210,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     color: '#FFF',
-    fontSize: width * 0.05, 
+    fontSize: width * 0.05,
     fontWeight: 'bold',
     marginLeft: width * 0.05,
   },
@@ -201,7 +218,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    width: width * 0.25, 
+    width: width * 0.25,
     height: width * 0.25,
     alignItems: 'center',
     borderRadius: width * 0.25,
@@ -222,7 +239,7 @@ const styles = StyleSheet.create({
   editButtonText: {
     color: '#fff',
     fontWeight: '700',
-    fontSize: width * 0.04, 
+    fontSize: width * 0.04,
   },
   sectionTitle: {
     fontSize: width * 0.04,
@@ -232,8 +249,8 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 10,
-    padding: width * 0.03, 
-    width: '100%', 
+    padding: width * 0.03,
+    width: '100%',
   },
   optionItem: {
     flexDirection: 'row',
@@ -244,7 +261,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   optionText: {
-    fontSize: width * 0.035, 
+    fontSize: width * 0.035,
   },
   notificationItem: {
     flexDirection: 'row',

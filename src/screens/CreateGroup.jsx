@@ -12,7 +12,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { back_arrow_svg } from '../utils/constant/TabSVGimage';
+import { back_arrow_svg, SVG_not_slected, SVG_selected } from '../utils/constant/TabSVGimage';
 import { goBack } from '../utils/NavigationUtil';
 
 const { width, height } = Dimensions.get('window');
@@ -40,12 +40,13 @@ const CreateGroup = () => {
       >
         <View style={styles.header}>
           <TouchableOpacity onPress={goBack} style={styles.backButton}>
-            <SvgXml xml={back_arrow_svg} width={24} height={24} />
+            <SvgXml xml={back_arrow_svg} width={30} height={30} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Create Group</Text>
         </View>
         </ImageBackground>
 
+        <View style={{flex:1}}>
         <View style={styles.contentWrapper}>
           <ScrollView
             contentContainerStyle={styles.scrollContent}
@@ -74,6 +75,7 @@ const CreateGroup = () => {
               multiline
             />
           </ScrollView>
+          </View>
 
           <View style={styles.footerContainer}>
             <TouchableOpacity
@@ -82,12 +84,7 @@ const CreateGroup = () => {
               activeOpacity={0.8}
             >
               <Text style={styles.nsfwText}>NSFW</Text>
-              <View
-                style={[
-                  styles.nsfwIndicator,
-                  { backgroundColor: selected ? '#F44336' : 'transparent' },
-                ]}
-              />
+               <SvgXml xml={selected ? SVG_selected : SVG_not_slected} width={18} height={18} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.chooseImageBtn}>
@@ -120,15 +117,15 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: 700,
     marginLeft: 8,
   },
   contentWrapper: {
     flex: 1,
     backgroundColor: '#fff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    // paddingHorizontal: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingHorizontal: 16,
     paddingVertical: 20,
     justifyContent: 'space-between',
   },
@@ -163,38 +160,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#FFFCF5',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    // borderTopWidth: 1,
-    // borderTopColor: '#F0F0F0',
+    paddingVertical: 16,
+    paddingHorizontal: 30,
+    
   },
   nsfwContainer: {
     flexDirection: 'row',
+    justifyContent:'center',
     alignItems: 'center',
   },
   nsfwText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#FF3E3E',
-    fontWeight: '600',
+    fontWeight: 700,
+    paddingRight:8
   },
-  nsfwIndicator: {
-    width: 18,
-    height: 18,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#E4E4E4',
-    marginLeft: 8,
-  },
+  
   chooseImageBtn: {
     backgroundColor: '#4B30DD',
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
   },
   chooseImageText: {
     color: '#fff',
-    fontSize: 15,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: 500,
   },
 });
 

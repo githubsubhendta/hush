@@ -532,3 +532,26 @@ export const search_svg = `<svg xmlns="http://www.w3.org/2000/svg" width="12" he
 export const close_svg =`<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M11.0503 0.949747C11.2781 1.17755 11.2781 1.5469 11.0503 1.7747L6.92554 5.89949L11.0503 10.0243C11.2781 10.2521 11.2781 10.6214 11.0503 10.8492C10.8225 11.077 10.4532 11.077 10.2254 10.8492L6.10059 6.72445L1.9758 10.8492C1.74799 11.077 1.37865 11.077 1.15084 10.8492C0.923033 10.6214 0.923034 10.2521 1.15084 10.0243L5.27563 5.89949L1.15084 1.7747C0.923034 1.5469 0.923034 1.17755 1.15084 0.949747C1.37865 0.721941 1.74799 0.721941 1.9758 0.949746L6.10059 5.07454L10.2254 0.949746C10.4532 0.721941 10.8225 0.721941 11.0503 0.949747Z" fill="black"/>
 </svg>`
+
+export const SVG_not_slected = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+<rect x="-0.399011" y="0.399011" width="17.202" height="17.202" rx="8.60099" transform="matrix(-1 0 0 1 17.202 0.5)" fill="white"/>
+<rect x="-0.399011" y="0.399011" width="17.202" height="17.202" rx="8.60099" transform="matrix(-1 0 0 1 17.202 0.5)" stroke="#EEE8D5" stroke-width="0.798022"/>
+</svg>`;
+
+export const SVG_selected = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+<rect width="18" height="18" rx="9" transform="matrix(-1 0 0 1 18 0.5)" fill="#FC4D2F"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.42934 9.67433C5.53493 9.54841 5.6783 9.49477 5.74957 9.55452L8.58847 11.9349C8.65974 11.9947 8.63192 12.1452 8.52633 12.2711C8.42074 12.3971 8.27737 12.4507 8.2061 12.3909L5.3672 10.0105C5.29593 9.95079 5.32376 9.80026 5.42934 9.67433Z" fill="#FFFEF4" stroke="#FFFEF4" stroke-miterlimit="10" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.13843 12.3176C8.00878 12.2166 7.98556 12.0297 8.08655 11.9L12.1095 6.73577C12.2105 6.60612 12.3974 6.5829 12.5271 6.68389C12.6567 6.78488 12.6799 6.97184 12.579 7.10149L8.55603 12.2657C8.45503 12.3954 8.26807 12.4186 8.13843 12.3176Z" fill="#FFFEF4" stroke="#FFFEF4" stroke-miterlimit="10" stroke-linecap="round"/>
+</svg>`;
+
+export const Selected_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+<rect width="16" height="16" rx="8" transform="matrix(-1 0 0 1 16 0)" fill="#392EBD"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.42934 8.17433C4.53493 8.04841 4.6783 7.99477 4.74957 8.05452L7.58847 10.4349C7.65974 10.4947 7.63192 10.6452 7.52633 10.7711C7.42074 10.8971 7.27737 10.9507 7.2061 10.8909L4.3672 8.51054C4.29593 8.45079 4.32376 8.30026 4.42934 8.17433Z" fill="#FFFEF4" stroke="#FFFEF4" stroke-miterlimit="10" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.13843 10.8176C7.00878 10.7166 6.98556 10.5297 7.08655 10.4L11.1095 5.23577C11.2105 5.10612 11.3974 5.0829 11.5271 5.18389C11.6567 5.28488 11.6799 5.47184 11.579 5.60149L7.55603 10.7657C7.45503 10.8954 7.26807 10.9186 7.13843 10.8176Z" fill="#FFFEF4" stroke="#FFFEF4" stroke-miterlimit="10" stroke-linecap="round"/>
+</svg>`;
+
+export const Language_Selectd_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+<rect width="16" height="16" rx="5.83292" transform="matrix(-1 0 0 1 16 0)" fill="#392EBD"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.33383 8.22937C3.47182 8.0648 3.65918 7.9947 3.75232 8.0728L7.46233 11.1836C7.55546 11.2617 7.5191 11.4584 7.38111 11.623C7.24313 11.7876 7.05576 11.8577 6.96263 11.7796L3.25262 8.66874C3.15949 8.59065 3.19585 8.39394 3.33383 8.22937Z" fill="#FFFEF4"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.87415 11.6823C6.70473 11.5503 6.67437 11.306 6.80635 11.1366L12.0637 4.3877C12.1957 4.21828 12.44 4.18792 12.6094 4.3199C12.7789 4.45188 12.8092 4.69622 12.6772 4.86564L7.41989 11.6145C7.28791 11.784 7.04357 11.8143 6.87415 11.6823Z" fill="#FFFEF4"/>
+</svg>`
