@@ -470,15 +470,15 @@ const Header = ({onTabPress}) => {
   };
 
   return (
-    <ImageBackground
-      source={require('../images/headerBg.png')}
-      resizeMode="cover"
-      imageStyle={{opacity: 1}}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="light-content"
-      />
+    // <ImageBackground
+    //   source={require('../images/headerBg.png')}
+    //   resizeMode="cover"
+    //   imageStyle={{opacity: 1}}>
+    //   <StatusBar
+    //     translucent
+    //     backgroundColor="transparent"
+    //     barStyle="light-content"
+    //   />
       <SafeAreaView>
         <View style={[styles.container, {backgroundColor: 'transparent'}]}>
           <View style={styles.centerContainer}>
@@ -616,7 +616,7 @@ const Header = ({onTabPress}) => {
           onClose={() => setModalVisible(false)}
         />
       </SafeAreaView>
-    </ImageBackground>
+    // </ImageBackground>
   );
 };
 

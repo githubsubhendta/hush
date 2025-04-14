@@ -15,9 +15,10 @@ import {
   story_svg,
   video_svg_tab,
 } from '../utils/constant/TabSVGimage';
+import { navigate } from '../utils/NavigationUtil';
 
 const options = [
-  {label: 'Post', onPress: () => alert('Post Clicked')},
+  {label: 'Post', onPress: () => navigate("PostScreen")},
   {label: 'Video', onPress: () => alert('Video Clicked')},
   {label: 'Story', onPress: () => alert('Story Clicked')},
   {label: 'Poll', onPress: () => alert('Poll Clicked')},

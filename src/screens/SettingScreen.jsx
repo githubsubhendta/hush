@@ -73,16 +73,12 @@ const SettingScreen = () => {
         source={require('../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        <ImageBackground
-          source={require('../images/headerBg.png')}
-          resizeMode="cover">
-          <View style={styles.header}>
-            <TouchableOpacity onPress={goBack}>
-              <SvgXml xml={back_arrow_svg} width={30} height={30} />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Setting</Text>
-          </View>
-        </ImageBackground>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={goBack}>
+            <SvgXml xml={back_arrow_svg} width={30} height={30} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Setting</Text>
+        </View>
 
         <View style={styles.mainContainer}>
           <ScrollView

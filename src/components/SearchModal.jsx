@@ -252,6 +252,7 @@ import {
   ImageBackground,
   StatusBar,
   FlatList,
+  Dimensions,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {
@@ -260,6 +261,8 @@ import {
   search_svg,
 } from '../utils/constant/TabSVGimage';
 import img1 from '../images/post1.png';
+
+const {width, height} = Dimensions.get('window');
 
 const SearchModal = ({onClose}) => {
   const [searchText, setSearchText] = useState('');
@@ -342,17 +345,15 @@ const SearchModal = ({onClose}) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="light-content"
-      />
-
       <ImageBackground
         source={require('../images/headerBg.png')}
         resizeMode="cover"
-        style={styles.headerBackground}
-        imageStyle={styles.headerImageStyle}>
+        style={styles.background}>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
         <View style={styles.header}>
           <View style={styles.backArrow}>
             <TouchableOpacity onPress={onClose}>
@@ -371,51 +372,46 @@ const SearchModal = ({onClose}) => {
             </View>
           </View>
         </View>
-      </ImageBackground>
 
-      <View style={styles.content}>
-        <Text style={styles.sectionTitle}>Recent Searches</Text>
-        <FlatList
-          data={recentSearches}
-          renderItem={renderRecentSearch}
-          keyExtractor={(item, index) => index.toString()}
-          scrollEnabled={false}
-        />
+        <View style={styles.content}>
+          <Text style={styles.sectionTitle}>Recent Searches</Text>
+          <FlatList
+            data={recentSearches}
+            renderItem={renderRecentSearch}
+            keyExtractor={(item, index) => index.toString()}
+            scrollEnabled={false}
+          />
 
-        <View style={styles.recentGroupsHeader}>
-          <Text style={styles.sectionTitle}>Recently Visited Groups</Text>
-          <TouchableOpacity>
-            <Text style={styles.clearRecent}>Clear recent</Text>
-          </TouchableOpacity>
+          <View style={styles.recentGroupsHeader}>
+            <Text style={styles.sectionTitle}>Recently Visited Groups</Text>
+            <TouchableOpacity>
+              <Text style={styles.clearRecent}>Clear recent</Text>
+            </TouchableOpacity>
+          </View>
+
+          <FlatList
+            data={filteredGroups}
+            renderItem={renderGroupItem}
+            keyExtractor={(item, index) => index.toString()}
+            scrollEnabled={false}
+          />
         </View>
-
-        <FlatList
-          data={filteredGroups}
-          renderItem={renderGroupItem}
-          keyExtractor={(item, index) => index.toString()}
-          scrollEnabled={false}
-        />
-      </View>
+      </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#12022F',
-    width: '100%',
-  },
-  headerBackground: {
-    paddingTop: StatusBar.currentHeight,
-  },
-  headerImageStyle: {
-    // opacity: 1,
-  },
+  container: {flex: 1, backgroundColor: '#fff'},
+
   header: {
-    height: 60,
-    paddingHorizontal: 16,
-    justifyContent: 'center',
+    height: 90,
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.05,
+    paddingTop: height * 0.05,
   },
   backArrow: {
     flexDirection: 'row',

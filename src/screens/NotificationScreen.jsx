@@ -76,14 +76,13 @@ const NotificationItem = ({user = '', action = '', time = ''}) => (
     <View style={styles.notificationTextContainer}>
       <View style={styles.notificationText}>
         <Text style={styles.username}>{user}</Text>
-        <Text> {action}</Text> 
+        <Text> {action}</Text>
       </View>
 
       <Text style={styles.time}>{time}</Text>
     </View>
     <View style={styles.iconContainer2}>
       <View style={styles.imageContainer}>
-        
         <Image source={require('../images/post1.png')} style={styles.image} />
       </View>
       <View style={styles.iconWrapper}>{getRightIcon(action)}</View>
@@ -100,16 +99,12 @@ const NotificationsScreen = () => {
         source={require('../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        <ImageBackground
-          source={require('../images/headerBg.png')}
-          resizeMode="cover">
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <SvgXml xml={back_arrow_svg} width={30} height={30} />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Notifications</Text>
-          </View>
-        </ImageBackground>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <SvgXml xml={back_arrow_svg} width={30} height={30} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Notifications</Text>
+        </View>
 
         <View style={styles.mainContainer}>
           <FlatList

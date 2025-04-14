@@ -30,16 +30,14 @@ const EditUserProfile = () => {
         source={require('../../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        <ImageBackground
-          source={require('../../images/headerBg.png')}
-          resizeMode="cover">
+        
           <View style={styles.header}>
             <TouchableOpacity onPress={goBack}>
               <SvgXml xml={back_arrow_svg} width={width * 0.08} height={width * 0.08} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Display Name</Text>
           </View>
-        </ImageBackground>
+        
         <View style={styles.mainContainer}>
           <View style={styles.avatarContainer}>
             <SvgXml xml={avatar_svg} width={width * 0.2} height={width * 0.2} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,23 @@ import {
   Dimensions,
 } from 'react-native';
 
+import {SvgXml} from 'react-native-svg';
+import {avatar_svg, back_arrow_svg} from '../../utils/constant/TabSVGimage';
+import {goBack} from '../../utils/NavigationUtil';
 
-import { SvgXml } from 'react-native-svg';
-import { avatar_svg, back_arrow_svg } from '../../utils/constant/TabSVGimage';
-import { goBack } from '../../utils/NavigationUtil';
-
-const { width,height} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const ProfileDetails = () => {
-
   const genders = ['Male', 'Female', 'Other'];
-  const ageGroups = ['15-17', '18-20', '21-25', '26-29', '30-35', '36-44', '45+'];
+  const ageGroups = [
+    '15-17',
+    '18-20',
+    '21-25',
+    '26-29',
+    '30-35',
+    '36-44',
+    '45+',
+  ];
 
   const [selectedGender, setSelectedGender] = useState('Male');
   const [selectedAge, setSelectedAge] = useState('45+');
@@ -30,14 +36,13 @@ const ProfileDetails = () => {
         source={require('../../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        <ImageBackground source={require('../../images/headerBg.png')} resizeMode="cover">
-          <View style={styles.header}>
-            <TouchableOpacity onPress={goBack}>
-              <SvgXml xml={back_arrow_svg} width={30} height={30} />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Profile Details</Text>
-          </View>
-        </ImageBackground>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={goBack}>
+            <SvgXml xml={back_arrow_svg} width={30} height={30} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Profile Details</Text>
+        </View>
+
         <View style={styles.mainContainer}>
           <View style={styles.avatarContainer}>
             <SvgXml xml={avatar_svg} width={80} height={80} />
@@ -53,9 +58,15 @@ const ProfileDetails = () => {
                 onPress={() => setSelectedGender(gender)}
                 style={[
                   styles.button,
-                  selectedGender === gender ? styles.selectedButton : styles.unselectedButton,
+                  selectedGender === gender
+                    ? styles.selectedButton
+                    : styles.unselectedButton,
                 ]}>
-                <Text style={[styles.buttonText, selectedGender === gender && styles.selectedButtonText]}>
+                <Text
+                  style={[
+                    styles.buttonText,
+                    selectedGender === gender && styles.selectedButtonText,
+                  ]}>
                   {gender}
                 </Text>
               </TouchableOpacity>
@@ -72,9 +83,15 @@ const ProfileDetails = () => {
                 onPress={() => setSelectedAge(age)}
                 style={[
                   styles.ageButton,
-                  selectedAge === age ? styles.selectedButton : styles.unselectedButton,
+                  selectedAge === age
+                    ? styles.selectedButton
+                    : styles.unselectedButton,
                 ]}>
-                <Text style={[styles.buttonText, selectedAge === age && styles.selectedButtonText]}>
+                <Text
+                  style={[
+                    styles.buttonText,
+                    selectedAge === age && styles.selectedButtonText,
+                  ]}>
                   {age}
                 </Text>
               </TouchableOpacity>
@@ -106,7 +123,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 4,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.1,
     shadowRadius: 6,
     padding: width * 0.05,

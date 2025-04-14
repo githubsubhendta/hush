@@ -148,6 +148,7 @@ import CreateGroup from './src/screens/CreateGroup';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import SelectLanguage from './src/screens/settingScreens/SelectLanguageScreen';
 import AppLovinMAX, { AdFormat, AdView } from 'react-native-applovin-max';
+import PostSCreen from './src/screens/PostScreen';
 
 const Stack = createStackNavigator();
 
@@ -164,7 +165,7 @@ const App = () => {
       })
       .catch((error) => {
         console.error('AppLovin SDK initialization failed:', error);
-        setIsSdkInitialized(true); // Proceed to avoid hanging, but log error
+        setIsSdkInitialized(true); 
       });
 
     setTimeout(() => {
@@ -213,6 +214,8 @@ const App = () => {
               <Stack.Screen name="MyQuidsScreen" component={MyQuidsScreen} />
               <Stack.Screen name="CreateGroup" component={CreateGroup} />
               <Stack.Screen name="SelectLanguage" component={SelectLanguage} />
+              <Stack.Screen name="PostScreen" component={PostSCreen} />
+
             </Stack.Navigator>
           </View>
         </NavigationContainer>

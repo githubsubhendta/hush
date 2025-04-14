@@ -74,21 +74,18 @@ const WatchHeader = ({onTabPress}) => {
     }).start(() => setSettingsVisible(false));
   };
 
-  const handleSetting =()=>{
-      navigate("SettingScreen");
-      setSettingsVisible(false);
-    }
+  const handleSetting = () => {
+    navigate('SettingScreen');
+    setSettingsVisible(false);
+  };
 
   return (
-    <ImageBackground
-      source={require('../images/headerBg.png')}
-      resizeMode="cover"
-      imageStyle={{opacity: 1}}>
-      <StatusBar
+    <View>
+      {/* <StatusBar
         translucent
         backgroundColor="transparent"
         barStyle="light-content"
-      />
+      /> */}
       <SafeAreaView>
         <View style={[styles.container, {backgroundColor: 'transparent'}]}>
           {/* <StatusBar hidden={false} style={{backgroundColor:'transparent'}} /> */}
@@ -230,7 +227,7 @@ const WatchHeader = ({onTabPress}) => {
           onClose={() => setModalVisible(false)}
         />
       </SafeAreaView>
-    </ImageBackground>
+    </View>
   );
 };
 

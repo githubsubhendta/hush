@@ -81,26 +81,26 @@ const GroupScreen = () => {
         source={require('../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        <ImageBackground
+        {/* <ImageBackground
           source={require('../images/headerBg.png')}
-          resizeMode="cover">
-          <View style={styles.header}>
-            <View style={styles.backArrow}>
-              <TouchableOpacity
-                onPress={() => navigate('CreateGroup')}
-                style={{flexDirection: 'row', alignItems: 'center'}}>
-                <SvgXml xml={plus_svg} width={14} height={14} />
-                <Text style={styles.headerTitle}>Create Group</Text>
-              </TouchableOpacity>
-            </View>
-
+          resizeMode="cover"> */}
+        <View style={styles.header}>
+          <View style={styles.backArrow}>
             <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => setSearchModalVisible(true)}>
-              <SvgXml xml={search_button_svg} width={20} height={20} />
+              onPress={() => navigate('CreateGroup')}
+              style={{flexDirection: 'row', alignItems: 'center'}}>
+              <SvgXml xml={plus_svg} width={14} height={14} />
+              <Text style={styles.headerTitle}>Create Group</Text>
             </TouchableOpacity>
           </View>
-        </ImageBackground>
+
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => setSearchModalVisible(true)}>
+            <SvgXml xml={search_button_svg} width={20} height={20} />
+          </TouchableOpacity>
+        </View>
+       
 
         <View style={styles.mainContainer}>
           <View style={styles.tabContainer}>
@@ -171,8 +171,9 @@ const GroupScreen = () => {
           </ScrollView>
           <Modal
             visible={isSearchModalVisible}
-            transparent={true}
-            animationType="fade"
+            // transparent={true}
+            animationType="slide"
+            hardwareAccelerated={true}
             onRequestClose={() => setSearchModalVisible(false)}>
             <View style={styles.modalOverlayStyle}>
               <SearchModal onClose={() => setSearchModalVisible(false)} />
@@ -192,12 +193,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     overflow: 'hidden',
-    elevation: 4,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 4 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 6,
-    // padding: width * 0.05,
   },
   background: {flex: 1},
   header: {
@@ -274,8 +269,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   groupImage: {
-    width: width * 0.15,      
-    height: height * 0.05,    
+    width: width * 0.15,
+    height: height * 0.05,
     borderRadius: 10,
     marginRight: 10,
   },

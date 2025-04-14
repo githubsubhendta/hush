@@ -38,7 +38,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import AppLovinMAX, { AdView, AdFormat } from 'react-native-applovin-max';
 
-const BANNER_AD_UNIT_ID = 'b195f8dd8ded45fe847ad89ed1d71f3e';
+const BANNER_AD_UNIT_ID = '5c47037d7f05d480';
 
 const BannerAd = () => {
   const [adLoadState, setAdLoadState] = useState('loading');

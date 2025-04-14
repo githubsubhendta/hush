@@ -54,7 +54,7 @@
 
 
 import React, { useMemo } from 'react';
-import { View, ImageBackground, StyleSheet } from 'react-native';
+import { View, ImageBackground, StyleSheet, StatusBar } from 'react-native';
 import Header from '../components/Header';
 import HotTabScreen from '../components/TabScreens/HotTabSceen';
 import GlobalTabScreen from '../components/TabScreens/GlobalTabScreen';
@@ -77,6 +77,11 @@ const HomeScreen = () => {
       resizeMode="cover"
       imageStyle={{ opacity: 1 }}
     >
+      <StatusBar
+              translucent
+              backgroundColor="transparent"
+              barStyle="light-content"
+            />
       <Header onTabPress={(tab) => setActiveTab('Home', tab)} />
 
       <View style={styles.container}>

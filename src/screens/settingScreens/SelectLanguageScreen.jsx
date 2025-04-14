@@ -7,12 +7,14 @@ import {
   StyleSheet,
   SafeAreaView,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {
   back_arrow_svg,
   Language_Selectd_SVG,
 } from '../../utils/constant/TabSVGimage';
+import {goBack, navigate} from '../../utils/NavigationUtil';
 // import { Ionicons } from '@expo/vector-icons'; // or 'react-native-vector-icons/Ionicons'
 
 const languages = [
@@ -34,38 +36,35 @@ const SelectLanguage = () => {
         source={require('../../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        <ImageBackground
-          source={require('../../images/headerBg.png')}
-          resizeMode="cover"
-          style={styles.background}>
-          <View style={styles.header}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={goBack}>
             <SvgXml xml={back_arrow_svg} width={30} height={30} />
-            <Text style={styles.headerTitle}>Select Language</Text>
-          </View>
-        </ImageBackground>
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Select Language</Text>
+        </View>
 
         {/* Content */}
         <View style={styles.contentWrapper}>
-        <Text style={styles.subHeading}>SELECT APP LANGUAGE</Text>
-        <View style={styles.card}>   
-          <FlatList
-            data={languages}
-            keyExtractor={item => item}
-            renderItem={({item}) => (
-              <Pressable
-                onPress={() => setSelectedLanguage(item)}
-                style={[
-                  styles.languageOption,
-                  selectedLanguage === item && styles.selectedOption,
-                ]}>
-                <Text style={styles.languageText}>{item}</Text>
-                {selectedLanguage === item && (
-                  <SvgXml xml={Language_Selectd_SVG} width={16} height={16} />
-                )}
-              </Pressable>
-            )}
-          />
-        </View>
+          <Text style={styles.subHeading}>SELECT APP LANGUAGE</Text>
+          <View style={styles.card}>
+            <FlatList
+              data={languages}
+              keyExtractor={item => item}
+              renderItem={({item}) => (
+                <Pressable
+                  onPress={() => setSelectedLanguage(item)}
+                  style={[
+                    styles.languageOption,
+                    selectedLanguage === item && styles.selectedOption,
+                  ]}>
+                  <Text style={styles.languageText}>{item}</Text>
+                  {selectedLanguage === item && (
+                    <SvgXml xml={Language_Selectd_SVG} width={16} height={16} />
+                  )}
+                </Pressable>
+              )}
+            />
+          </View>
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -77,13 +76,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  contentWrapper: {
+  background: {
     flex: 1,
+  },
+  contentWrapper: {
+    flex:1,
     backgroundColor: '#fff',
-    padding:20,
+    padding: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
 
   header: {
@@ -114,17 +116,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 12,
-    paddingHorizontal:12,
+    paddingHorizontal: 12,
     borderTopColor: '#eee8d5',
-    borderTopWidth: 1, 
-    
-
+    borderTopWidth: 1,
   },
   selectedOption: {
     backgroundColor: '#eee8d5',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    
   },
   languageText: {
     fontSize: 12,
