@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  FlatList,
-  Pressable,
   StyleSheet,
   SafeAreaView,
   ImageBackground,
@@ -12,21 +10,21 @@ import {
   StatusBar,
   ScrollView,
   Platform,
+  Image,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {
   back_arrow_svg,
   global_svg,
   GroupIcon,
-  Language_Selectd_SVG,
   Selected_SVG,
   SVG_not_slected,
 } from '../utils/constant/TabSVGimage';
 import {goBack} from '../utils/NavigationUtil';
-// import { Ionicons } from '@expo/vector-icons'; // or 'react-native-vector-icons/Ionicons'
 
 const {width, height} = Dimensions.get('window');
-const PostSCreen = () => {
+
+const PostScreen = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const options = [
@@ -37,6 +35,7 @@ const PostSCreen = () => {
           title: 'Everyone',
           description: 'Your post will be visible to everyone',
           members: null,
+          image: require('../images/post1.png'),
         },
       ],
     },
@@ -46,14 +45,17 @@ const PostSCreen = () => {
         {
           title: 'Movie Buffs',
           members: '78.1k members',
+          image: require('../images/post1.png'),
         },
         {
           title: 'Alice Boderland',
           members: '78.1k members',
+          image: require('../images/post1.png'),
         },
         {
           title: 'Whisper Refugees',
           members: '78.1k members',
+          image: require('../images/post1.png'),
         },
       ],
     },
@@ -61,9 +63,9 @@ const PostSCreen = () => {
 
   const handleSelect = option => {
     if (selectedOptions.includes(option)) {
-      setSelectedOptions(prev => prev.filter(item => item !== option)); // remove
+      setSelectedOptions(prev => prev.filter(item => item !== option));
     } else {
-      setSelectedOptions(prev => [...prev, option]); // add
+      setSelectedOptions(prev => [...prev, option]);
     }
   };
 
@@ -73,15 +75,13 @@ const PostSCreen = () => {
         return <SvgXml xml={global_svg} width={14} height={14} />;
       case 'Post to a Group':
         return <SvgXml xml={GroupIcon} width={14} height={14} />;
-
       default:
         return null;
     }
   };
 
   const handleNext = () => {
-    // Handle next button action
-    console.log('Selected option:', selectedOption);
+    console.log('Selected options:', selectedOptions);
   };
 
   return (
@@ -102,23 +102,17 @@ const PostSCreen = () => {
           <Text style={styles.headerTitle}>Post To</Text>
         </View>
 
-        {/* Content */}
         <View style={styles.contentWrapper}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             {options.map((section, sectionIndex) => (
               <View key={sectionIndex} style={styles.section}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                  }}>
-                  <Text style={{paddingRight: 10}}>
-                    {' '}
+                <View style={styles.sectionHeader}>
+                  <View style={styles.sectionIcon}>
                     {getCategoryIcon(section.category)}
-                  </Text>
+                  </View>
                   <Text style={styles.sectionTitle}>{section.category}</Text>
                 </View>
+
                 {section.items.map((item, itemIndex) => (
                   <TouchableOpacity
                     key={itemIndex}
@@ -129,30 +123,42 @@ const PostSCreen = () => {
                     ]}
                     onPress={() => handleSelect(item.title)}>
                     <View style={styles.optionContent}>
-                      <Text style={styles.optionTitle}>{item.title}</Text>
-                      {item.description && (
-                        <Text style={styles.optionDescription}>
-                          {item.description}
-                        </Text>
-                      )}
-                      {item.members && (
-                        <Text style={styles.optionMembers}>{item.members}</Text>
+                      <Image source={item.image} style={styles.groupImage} />
+                      <View style={styles.optionTextWrapper}>
+                        <Text style={styles.optionTitle}>{item.title}</Text>
+                        {item.description && (
+                          <Text style={styles.optionDescription}>
+                            {item.description}
+                          </Text>
+                        )}
+                        {item.members && (
+                          <Text style={styles.optionMembers}>
+                            {item.members}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                    <View style={styles.optionCheck}>
+                      {selectedOptions.includes(item.title) ? (
+                        <SvgXml xml={Selected_SVG} width={20} height={20} />
+                      ) : (
+                        <SvgXml xml={SVG_not_slected} width={20} height={20} />
                       )}
                     </View>
-                    {selectedOptions.includes(item.title) ? (
-                      <SvgXml xml={Selected_SVG} width={20} height={20} />
-                    ) : (
-                      <SvgXml xml={SVG_not_slected} width={20} height={20} />
-                    )}
                   </TouchableOpacity>
                 ))}
               </View>
             ))}
           </ScrollView>
-          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+
+          
+        </View>
+        <View style={styles.bottomBar}>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
             <Text style={styles.nextButtonText}>Next</Text>
           </TouchableOpacity>
         </View>
+        
       </ImageBackground>
     </SafeAreaView>
   );
@@ -163,19 +169,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  contentWrapper: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    justifyContent: 'center',
+  background: {
+    flex: 1,
   },
-
   header: {
-    height: 110,
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop:25,
   },
   headerTitle: {
     color: '#fff',
@@ -183,68 +185,96 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginLeft: 8,
   },
-
+  contentWrapper: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
   scrollContainer: {
-    paddingBottom: 150,
+    paddingBottom: 120,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 30,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  sectionIcon: {
+    paddingRight: 8,
   },
   sectionTitle: {
     fontSize: Platform.isPad ? 20 : 18,
     fontWeight: '700',
-    color: '#000000',
-    paddingVertical: 15,
+    color: '#000',
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    justifyContent: 'space-between',
     paddingVertical: 15,
+    marginBottom: 10,
+    width: '100%',
   },
   selectedOption: {
     backgroundColor: '#f0f8ff',
   },
   optionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  groupImage: {
+    width: 80,
+    height: 60,
+    marginRight: 12,
+    borderRadius: 10,
+  },
+  optionTextWrapper: {
     flex: 1,
   },
   optionTitle: {
     fontSize: Platform.isPad ? 16 : 14,
     fontWeight: '700',
-    color: '#00000',
-    marginBottom: 3,
+    color: '#000',
   },
   optionDescription: {
-    fontSize: Platform.isPad ? 16 : 14,
+    fontSize: Platform.isPad ? 14 : 12,
     color: '#666',
+    marginTop: 2,
   },
   optionMembers: {
-    fontSize: Platform.isPad ? 16 : 14,
+    fontSize: Platform.isPad ? 14 : 12,
     color: '#888',
-    marginTop: 3,
+    marginTop: 2,
   },
-  selectedIndicator: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#1e88e5',
+  optionCheck: {
+    paddingLeft: 10,
+  },
+  bottomBar: {
+    width: '100%',
+    backgroundColor: '#fffef5',
+    alignItems: 'flex-end',
+    paddingHorizontal: 10,
   },
   nextButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-    backgroundColor: '#fffef4',
-    borderRadius: 8,
-    paddingVertical: 15,
+    backgroundColor: '#392EBD',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 16,
   },
+  
   nextButtonText: {
     color: '#fff',
-    fontSize: Platform.isPad ? 18 : 16,
-    fontWeight: 'bold',
+    fontSize: Platform.isPad ? 16 : 14,
+    fontWeight: '500',
   },
 });
 
-export default PostSCreen;
+export default PostScreen;

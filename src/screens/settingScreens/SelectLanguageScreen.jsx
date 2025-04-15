@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {
@@ -15,6 +16,7 @@ import {
   Language_Selectd_SVG,
 } from '../../utils/constant/TabSVGimage';
 import {goBack, navigate} from '../../utils/NavigationUtil';
+const {width, height} = Dimensions.get('window');
 // import { Ionicons } from '@expo/vector-icons'; // or 'react-native-vector-icons/Ionicons'
 
 const languages = [
@@ -80,25 +82,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentWrapper: {
-    flex:1,
+    flex: 1,
     backgroundColor: '#fff',
     padding: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    // justifyContent: 'center',
   },
 
   header: {
-    height: 110,
+    height: height * 0.14,
     flexDirection: 'row',
+    justifyContent: 'left',
     alignItems: 'center',
-    padding: 16,
+    paddingHorizontal: width * 0.05,
+    paddingTop: height * 0.03,
   },
   headerTitle: {
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
-    marginLeft: 8,
+    marginLeft: 20,
   },
   card: {
     borderRadius: 20,

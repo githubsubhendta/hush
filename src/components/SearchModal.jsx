@@ -1,241 +1,423 @@
-// import React from 'react';
+// import React, {useState} from 'react';
 // import {
 //   View,
 //   Text,
-//   StyleSheet,
-//   TouchableOpacity,
 //   TextInput,
+//   TouchableOpacity,
+//   FlatList,
 //   Image,
-//   ImageBackground,
+//   StyleSheet,
 //   StatusBar,
+//   ImageBackground,
+//   Dimensions,
+//   KeyboardAvoidingView,
+//   Platform,
+//   Keyboard,
+//   TouchableWithoutFeedback,
 // } from 'react-native';
 // import {SvgXml} from 'react-native-svg';
-// import {
-//   back_arrow_svg,
-//   plus_svg,
-//   search_button_svg,
-//   search_svg,
-// } from '../utils/constant/TabSVGimage';
+// import {SafeAreaView} from 'react-native-safe-area-context';
+// import {arrow_svg, back_arrow_svg} from '../utils/constant/TabSVGimage';
+
+// const {width, height} = Dimensions.get('window');
 
 // const SearchModal = ({onClose}) => {
-//   const recentSearches = ['Alice', 'Whisper', 'Grou', 'Piku'];
+//   const [searchText, setSearchText] = useState('');
+//   const [activeTab, setActiveTab] = useState('Top');
 
-//   const visitedGroups = [
+//   const recentSearches = [
+//     {id: '1', term: 'Alice'},
+//     {id: '2', term: 'Whisper'},
+//     {id: '3', term: 'Orou'},
+//     {id: '4', term: 'Pitu'},
+//   ];
+
+//   const recentGroups = [
 //     {
+//       id: '1',
 //       name: 'Alice Boderland',
 //       members: '78.1k members',
-//       image: 'https://via.placeholder.com/48x48.png?text=👁️',
+//       image: require('../images/post1.png'),
 //       nsfw: false,
+//       new: false,
 //     },
 //     {
+//       id: '2',
 //       name: 'Whisper Refugees',
 //       members: '78.1k members',
-//       image: 'https://via.placeholder.com/48x48.png?text=🌅',
+//       image: require('../images/post1.png'),
 //       nsfw: false,
+//       new: false,
 //     },
 //     {
-//       name: 'Group__group',
+//       id: '3',
+//       name: 'Group_group',
 //       members: '36.7k members',
-//       image: 'https://via.placeholder.com/48x48.png?text=🏜️',
+//       image: require('../images/post1.png'),
 //       nsfw: false,
+//       new: false,
 //     },
 //     {
+//       id: '4',
 //       name: 'Whisper Refugees',
 //       members: '78.1k members',
-//       image: 'https://via.placeholder.com/48x48.png?text=🌸',
-//       nsfw: true,
+//       image: require('../images/post1.png'),
+//       nsfw: false,
+//       new: true,
 //     },
 //   ];
 
+//   const topGroups = [
+//     {id: '1', name: 'all_user_1234', type: 'group'},
+//     {id: '2', name: 'alice_swan_official', type: 'group'},
+//     {id: '3', name: 'alladin_blackbird', type: 'group'},
+//     {
+//       id: '4',
+//       name: 'Alice Boderland',
+//       members: '78.1k members',
+//       type: 'visited',
+//     },
+//     {
+//       id: '5',
+//       name: 'Alove',
+//       members: '78.1k members',
+//       type: 'visited',
+//     },
+//     {
+//       id: '6',
+//       name: 'Alone_Pe',
+//       members: '36.7k members',
+//       type: 'visited',
+//     },
+//   ];
+
+//   const renderGroupItem = ({item}) => (
+//     <View style={styles.groupItem}>
+//       <Image source={item.image} style={styles.groupImage} />
+//       <View style={styles.groupInfo}>
+//         <Text style={styles.groupName}>{item.name}</Text>
+//         {item.members && (
+//           <Text style={styles.groupMembers}>{item.members}</Text>
+//         )}
+//       </View>
+//       {item.new && (
+//         <View style={styles.newBadge}>
+//           <Text style={styles.newText}>NEW</Text>
+//         </View>
+//       )}
+//       {item.type === 'visited' && (
+//         <TouchableOpacity style={styles.joinButton}>
+//           <Text style={styles.joinButtonText}>Join</Text>
+//         </TouchableOpacity>
+//       )}
+//     </View>
+//   );
+
+//   const renderTopItem = ({item}) => {
+//     if (item.type === 'group') {
+//       return (
+//         <View style={styles.topItem}>
+//           <Text style={styles.topGroupName}>{item.name}</Text>
+//         </View>
+//       );
+//     } else {
+//       return renderGroupItem({item});
+//     }
+//   };
+
+//   const renderTabContent = () => {
+//     const filteredGroups = recentGroups.filter(g =>
+//       g.name.toLowerCase().includes(searchText.toLowerCase()),
+//     );
+
+//     switch (activeTab) {
+//       case 'Top':
+//         return (
+//           <FlatList
+//             data={topGroups}
+//             keyExtractor={item => item.id}
+//             renderItem={renderTopItem}
+//             ListEmptyComponent={
+//               <Text style={styles.noResults}>No results found</Text>
+//             }
+//             showsVerticalScrollIndicator={false}
+//           />
+//         );
+//       case 'Users':
+//         return <Text style={styles.noResults}>Users feature coming soon</Text>;
+//       case 'Groups':
+//         return (
+//           <FlatList
+//             data={filteredGroups}
+//             keyExtractor={item => item.id}
+//             renderItem={renderGroupItem}
+//             ListEmptyComponent={
+//               <Text style={styles.noResults}>No groups found</Text>
+//             }
+//             showsVerticalScrollIndicator={false}
+//           />
+//         );
+//       case 'Posts':
+//         return (
+//           <View style={styles.postContainer}>
+//             <Text style={styles.postText}>anyone want to rate me??</Text>
+//           </View>
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+
 //   return (
-//     <View style={styles.container}>
-//       {/* <StatusBar
-//         translucent
-//         backgroundColor="transparent"
-//         barStyle="light-content"
-//       /> */}
-
-//       <ImageBackground
-//         source={require('../images/headerBg.png')}
-//         resizeMode="cover"
-//         imageStyle={{opacity: 1}}>
-//         <StatusBar
-//           translucent
-//           backgroundColor="transparent"
-//           barStyle="light-content"
-//         />
-//         <View style={styles.header}>
-//           <View style={styles.backArrow}>
-//             <TouchableOpacity onPress={onClose}>
-//               <SvgXml xml={back_arrow_svg} width={30} height={30} />
-//             </TouchableOpacity>
-
-//             <View style={styles.searchBarContainer}>
-//               <SvgXml xml={search_svg} width={14} height={14} />
-//               <TextInput
-//                 placeholder="Search"
-//                 placeholderTextColor="#ccc"
-//                 style={styles.searchInput}
-//               />
-//             </View>
-//           </View>
-//         </View>
-//       </ImageBackground>
-
-//       <View style={styles.content}>
-//         <Text style={styles.sectionTitle}>Recent Searches</Text>
-//         {recentSearches.map((item, index) => (
-//           <View key={index} style={styles.recentSearchItem}>
-//             <Text style={styles.recentSearchText}>{item}</Text>
-//             {/* You can use Ionicons for close icon if needed */}
-//           </View>
-//         ))}
-
-//         <View style={styles.recentGroupsHeader}>
-//           <Text style={styles.sectionTitle}>Recently Visited Groups</Text>
-//           <TouchableOpacity>
-//             <Text style={styles.clearRecent}>Clear recent</Text>
-//           </TouchableOpacity>
-//         </View>
-
-//         {visitedGroups.map((group, index) => (
-//           <View key={index} style={styles.groupItem}>
-//             <View style={styles.groupLeft}>
-//               <Image source={{uri: group.image}} style={styles.groupImage} />
-//               <View>
-//                 <Text style={styles.groupName}>{group.name}</Text>
-//                 <Text style={styles.groupMembers}>{group.members}</Text>
+//     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+//       <KeyboardAvoidingView
+//         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+//         style={{flex: 1}}>
+//         <ImageBackground
+//           source={require('../images/headerBg.png')}
+//           style={{flex: 1, width: '100%', height: '100%'}}
+//           // style={StyleSheet.absoluteFill}
+//           resizeMode="cover">
+//           <SafeAreaView style={styles.container}>
+//             <StatusBar
+//               translucent
+//               backgroundColor="transparent"
+//               barStyle="light-content"
+//             />
+//             <View style={styles.headerWrapper}>
+//               <View style={styles.header}>
+//                 <TouchableOpacity onPress={onClose} style={styles.backButton}>
+//                   <SvgXml xml={back_arrow_svg} width={30} height={30} />
+//                 </TouchableOpacity>
+//                 <TextInput
+//                   style={styles.searchInput}
+//                   placeholder="Search"
+//                   placeholderTextColor="#999"
+//                   value={searchText}
+//                   onChangeText={setSearchText}
+//                   autoFocus
+//                 />
 //               </View>
 //             </View>
-//             <View style={styles.groupRight}>
-//               {group.nsfw && (
-//                 <View style={styles.nsfwBadge}>
-//                   <Text style={styles.nsfwText}>NSFW</Text>
-//                 </View>
+
+//             <View style={styles.content}>
+//               {searchText.length === 0 ? (
+//                 <>
+//                   <Text style={styles.sectionTitle}>Recent Searches</Text>
+//                   <FlatList
+//                     data={recentSearches}
+//                     keyExtractor={item => item.id}
+//                     renderItem={({item}) => (
+//                       <View style={styles.recentItem}>
+//                         <Text style={styles.recentText}>{item.term}</Text>
+//                       </View>
+//                     )}
+//                     showsVerticalScrollIndicator={false}
+//                   />
+
+//                   <Text style={[styles.sectionTitle, {marginTop: 20}]}>
+//                     Recently Visited Groups
+//                   </Text>
+//                   <Text style={styles.clearRecent}>Clear recent</Text>
+//                   <FlatList
+//                     data={recentGroups}
+//                     keyExtractor={item => item.id}
+//                     renderItem={renderGroupItem}
+//                     showsVerticalScrollIndicator={false}
+//                   />
+//                 </>
+//               ) : (
+//                 <>
+//                   <View style={styles.tabs}>
+//                     {['Top', 'Users', 'Groups', 'Posts'].map(tab => (
+//                       <TouchableOpacity
+//                         key={tab}
+//                         style={[
+//                           styles.tabButton,
+//                           activeTab === tab && styles.activeTab,
+//                         ]}
+//                         onPress={() => setActiveTab(tab)}>
+//                         <Text
+//                           style={[
+//                             styles.tabText,
+//                             activeTab === tab && styles.activeTabText,
+//                           ]}>
+//                           {tab}
+//                         </Text>
+//                       </TouchableOpacity>
+//                     ))}
+//                   </View>
+
+//                   {renderTabContent()}
+//                 </>
 //               )}
-//               <TouchableOpacity style={styles.joinButton}>
-//                 <Text style={styles.joinText}>Join</Text>
-//               </TouchableOpacity>
 //             </View>
-//           </View>
-//         ))}
-//       </View>
-//     </View>
+//           </SafeAreaView>
+//         </ImageBackground>
+//       </KeyboardAvoidingView>
+//     </TouchableWithoutFeedback>
 //   );
 // };
 
 // const styles = StyleSheet.create({
+//   mainBackground: {
+//     flex: 1,
+//     width: '100%',
+//     height: '100%',
+//   },
 //   container: {
 //     flex: 1,
-//     backgroundColor: '#12022F',
-//     width: '100%',
+//     width: Dimensions.get('window').width,
+//     backgroundColor: 'transparent',
+//   },
+//   headerWrapper: {
+//     paddingBottom: 8,
+//     backgroundColor: 'transparent',
 //   },
 //   header: {
+//     height: 60,
+//     flexDirection: 'row',
+//     alignItems: 'center',
 //     paddingHorizontal: 16,
-//     paddingTop: 16,
 //   },
-//   backArrow: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     gap: 12,
-//   },
-//   searchBarContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     backgroundColor: '#fff',
-//     borderRadius: 12,
-//     paddingHorizontal: 12,
-//     height: 40,
-//     flex: 1,
+//   backButton: {
+//     marginRight: 12,
 //   },
 //   searchInput: {
-//     // flex: 1,
-//     marginLeft: 10,
+//     flex: 1,
+//     height: 38,
+//     fontSize: 16,
 //     color: '#000',
+//     backgroundColor: '#fff',
+//     borderRadius: 20,
+//     paddingHorizontal: 15,
+//     // marginRight: 0, // ensure no margin
 //   },
 //   content: {
-//     backgroundColor: '#fff',
+//     flex: 1,
 //     borderTopLeftRadius: 16,
 //     borderTopRightRadius: 16,
-//     marginTop: 20,
-//     padding: 16,
-//     flex: 1,
+//     paddingHorizontal: 16,
+//     paddingTop: 12,
+//     backgroundColor: '#fff',
 //   },
 //   sectionTitle: {
+//     fontSize: 16,
 //     fontWeight: '600',
-//     fontSize: 14,
-//     marginBottom: 10,
-//   },
-//   recentSearchItem: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     paddingVertical: 8,
-//   },
-//   recentSearchText: {
-//     fontSize: 14,
 //     color: '#333',
+//     marginBottom: 8,
 //   },
-//   recentGroupsHeader: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     marginTop: 20,
-//     marginBottom: 10,
+//   recentItem: {
+//     paddingVertical: 12,
+//     borderBottomWidth: 0.5,
+//     borderBottomColor: '#e0e0e0',
+//   },
+//   recentText: {
+//     fontSize: 16,
+//     color: '#000',
 //   },
 //   clearRecent: {
 //     fontSize: 14,
 //     color: '#6e46ff',
+//     textAlign: 'right',
+//     marginBottom: 12,
 //   },
 //   groupItem: {
 //     flexDirection: 'row',
 //     alignItems: 'center',
-//     marginBottom: 16,
-//     justifyContent: 'space-between',
-//   },
-//   groupLeft: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
+//     paddingVertical: 12,
+//     borderBottomWidth: 0.5,
+//     borderBottomColor: '#e0e0e0',
 //   },
 //   groupImage: {
-//     width: 48,
-//     height: 48,
-//     borderRadius: 12,
+//     width: 50,
+//     height: 50,
+//     borderRadius: 10,
 //     marginRight: 12,
-//     backgroundColor: '#eee',
+//   },
+//   groupInfo: {
+//     flex: 1,
 //   },
 //   groupName: {
-//     fontSize: 15,
+//     fontSize: 16,
 //     fontWeight: '600',
+//     color: '#000',
+//     marginBottom: 2,
 //   },
 //   groupMembers: {
-//     fontSize: 13,
-//     color: '#777',
+//     fontSize: 14,
+//     color: '#666',
 //   },
-//   groupRight: {
-//     alignItems: 'flex-end',
-//   },
-//   nsfwBadge: {
-//     backgroundColor: '#FF5E5E',
+//   newBadge: {
+//     backgroundColor: '#6e46ff',
 //     borderRadius: 4,
 //     paddingHorizontal: 6,
 //     paddingVertical: 2,
-//     marginBottom: 6,
-//     alignSelf: 'flex-end',
+//     marginRight: 8,
 //   },
-//   nsfwText: {
+//   newText: {
 //     color: '#fff',
-//     fontSize: 10,
+//     fontSize: 12,
 //     fontWeight: 'bold',
 //   },
 //   joinButton: {
 //     backgroundColor: '#6e46ff',
-//     borderRadius: 8,
+//     borderRadius: 15,
 //     paddingHorizontal: 16,
 //     paddingVertical: 6,
 //   },
-//   joinText: {
-//     color: 'white',
+//   joinButtonText: {
+//     color: '#fff',
 //     fontWeight: '600',
 //     fontSize: 14,
+//   },
+//   tabs: {
+//     flexDirection: 'row',
+//     borderBottomWidth: 1,
+//     borderBottomColor: '#eee',
+//     marginBottom: 12,
+//   },
+//   tabButton: {
+//     paddingHorizontal: 16,
+//     paddingVertical: 12,
+//     marginRight: 8,
+//   },
+//   activeTab: {
+//     borderBottomWidth: 2,
+//     borderBottomColor: '#6e46ff',
+//   },
+//   tabText: {
+//     fontSize: 16,
+//     color: '#666',
+//   },
+//   activeTabText: {
+//     color: '#6e46ff',
+//     fontWeight: '600',
+//   },
+//   noResults: {
+//     textAlign: 'center',
+//     marginTop: 40,
+//     fontSize: 16,
+//     color: '#666',
+//   },
+//   topItem: {
+//     paddingVertical: 12,
+//     borderBottomWidth: 0.5,
+//     borderBottomColor: '#e0e0e0',
+//   },
+//   topGroupName: {
+//     fontSize: 16,
+//     color: '#000',
+//     fontWeight: 'bold',
+//   },
+//   postContainer: {
+//     paddingVertical: 16,
+//     borderBottomWidth: 0.5,
+//     borderBottomColor: '#e0e0e0',
+//   },
+//   postText: {
+//     fontSize: 16,
+//     color: '#000',
 //   },
 // });
 
@@ -245,300 +427,426 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   TextInput,
-  Image,
-  ImageBackground,
-  StatusBar,
+  TouchableOpacity,
   FlatList,
+  Image,
+  StyleSheet,
+  StatusBar,
+  ImageBackground,
   Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {
-  back_arrow_svg,
-  close_svg,
-  search_svg,
-} from '../utils/constant/TabSVGimage';
-import img1 from '../images/post1.png';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {arrow_svg, back_arrow_svg} from '../utils/constant/TabSVGimage';
 
 const {width, height} = Dimensions.get('window');
 
 const SearchModal = ({onClose}) => {
   const [searchText, setSearchText] = useState('');
-  const [activeTab, setActiveTab] = useState('discover'); // or 'joined'
+  const [activeTab, setActiveTab] = useState('Top');
 
-  const recentSearches = ['Alice', 'Whisper', 'Grou', 'Piku'];
+  const recentSearches = [
+    {id: '1', term: 'Alice'},
+    {id: '2', term: 'Whisper'},
+    {id: '3', term: 'Orou'},
+    {id: '4', term: 'Pitu'},
+  ];
 
-  const visitedGroups = [
+  const recentGroups = [
     {
+      id: '1',
       name: 'Alice Boderland',
       members: '78.1k members',
-      image: img1,
+      image: require('../images/post1.png'),
       nsfw: false,
       new: false,
-      joined: true,
     },
     {
+      id: '2',
       name: 'Whisper Refugees',
       members: '78.1k members',
-      image: img1,
+      image: require('../images/post1.png'),
       nsfw: false,
       new: false,
-      joined: true,
     },
     {
-      name: 'Group__group',
+      id: '3',
+      name: 'Group_group',
       members: '36.7k members',
-      image: img1,
+      image: require('../images/post1.png'),
       nsfw: false,
       new: false,
-      joined: false,
     },
     {
+      id: '4',
       name: 'Whisper Refugees',
       members: '78.1k members',
-      image: img1,
-      nsfw: true,
+      image: require('../images/post1.png'),
+      nsfw: false,
       new: true,
-      joined: false,
     },
   ];
 
-  const filteredGroups = visitedGroups.filter(group => {
-    const inSearch = group.name
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
-    const inTab = activeTab === 'discover' ? true : group.joined;
-    return inSearch && inTab;
-  });
-
-  const renderRecentSearch = ({item}) => (
-    <View style={styles.recentSearchItem}>
-      <Text style={styles.recentSearchText}>{item}</Text>
-      <SvgXml xml={close_svg} width={14} height={14} />
-    </View>
-  );
+  const topGroups = [
+    {id: '1', name: 'all_user_1234', type: 'group'},
+    {id: '2', name: 'alice_swan_official', type: 'group'},
+    {id: '3', name: 'alladin_blackbird', type: 'group'},
+    {
+      id: '4',
+      name: 'Alice Boderland',
+      members: '78.1k members',
+      type: 'visited',
+    },
+    {
+      id: '5',
+      name: 'Alove',
+      members: '78.1k members',
+      type: 'visited',
+    },
+    {
+      id: '6',
+      name: 'Alone_Pe',
+      members: '36.7k members',
+      type: 'visited',
+    },
+  ];
 
   const renderGroupItem = ({item}) => (
     <View style={styles.groupItem}>
-      <View style={styles.groupLeft}>
-        <Image source={item.image} style={styles.groupImage} />
-        <View>
-          <Text style={styles.groupName}>{item.name}</Text>
+      <Image source={item.image} style={styles.groupImage} />
+      <View style={styles.groupInfo}>
+        <Text style={styles.groupName}>{item.name}</Text>
+        {item.members && (
           <Text style={styles.groupMembers}>{item.members}</Text>
+        )}
+      </View>
+      {item.new && (
+        <View style={styles.newBadge}>
+          <Text style={styles.newText}>NEW</Text>
         </View>
-      </View>
-      <View style={styles.groupRight}>
-        {/* 
-        {item.nsfw && (
-          <View style={styles.nsfwBadge}>
-            <Text style={styles.nsfwText}>NSFW</Text>
-          </View>
-        )} */}
+      )}
+      {item.type === 'visited' && (
         <TouchableOpacity style={styles.joinButton}>
-          <Text style={styles.joinText}>Join</Text>
+          <Text style={styles.joinButtonText}>Join</Text>
         </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 
-  return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require('../images/headerBg.png')}
-        resizeMode="cover"
-        style={styles.background}>
-        <StatusBar
-          translucent
-          backgroundColor="transparent"
-          barStyle="light-content"
-        />
-        <View style={styles.header}>
-          <View style={styles.backArrow}>
-            <TouchableOpacity onPress={onClose}>
-              <SvgXml xml={back_arrow_svg} width={30} height={30} />
-            </TouchableOpacity>
-            <View style={styles.searchBarContainer}>
-              <SvgXml xml={search_svg} width={14} height={14} />
-              <TextInput
-                placeholder="Search"
-                placeholderTextColor="#ccc"
-                style={styles.searchInput}
-                autoFocus={true}
-                value={searchText}
-                onChangeText={text => setSearchText(text)}
-              />
-            </View>
-          </View>
+  const renderTopItem = ({item}) => {
+    if (item.type === 'group') {
+      return (
+        <View style={styles.topItem}>
+          <Text style={styles.topGroupName}>{item.name}</Text>
         </View>
+      );
+    } else {
+      return renderGroupItem({item});
+    }
+  };
 
-        <View style={styles.content}>
-          <Text style={styles.sectionTitle}>Recent Searches</Text>
+  const renderTabContent = () => {
+    const filteredGroups = recentGroups.filter(g =>
+      g.name.toLowerCase().includes(searchText.toLowerCase()),
+    );
+
+    switch (activeTab) {
+      case 'Top':
+        return (
           <FlatList
-            data={recentSearches}
-            renderItem={renderRecentSearch}
-            keyExtractor={(item, index) => index.toString()}
-            scrollEnabled={false}
+            data={topGroups}
+            keyExtractor={item => item.id}
+            renderItem={renderTopItem}
+            ListEmptyComponent={
+              <Text style={styles.noResults}>No results found</Text>
+            }
+            showsVerticalScrollIndicator={false}
           />
-
-          <View style={styles.recentGroupsHeader}>
-            <Text style={styles.sectionTitle}>Recently Visited Groups</Text>
-            <TouchableOpacity>
-              <Text style={styles.clearRecent}>Clear recent</Text>
-            </TouchableOpacity>
-          </View>
-
+        );
+      case 'Users':
+        return <Text style={styles.noResults}>Users feature coming soon</Text>;
+      case 'Groups':
+        return (
           <FlatList
             data={filteredGroups}
+            keyExtractor={item => item.id}
             renderItem={renderGroupItem}
-            keyExtractor={(item, index) => index.toString()}
-            scrollEnabled={false}
+            ListEmptyComponent={
+              <Text style={styles.noResults}>No groups found</Text>
+            }
+            showsVerticalScrollIndicator={false}
           />
-        </View>
-      </ImageBackground>
-    </View>
+        );
+      case 'Posts':
+        return (
+          <View style={styles.postContainer}>
+            <Text style={styles.postText}>anyone want to rate me??</Text>
+          </View>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <ImageBackground
+      source={require('../images/headerBg.png')}
+      style={styles.mainBackground}
+      resizeMode="cover">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : null}
+          style={styles.container}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
+          <SafeAreaView edges={['top']} style={styles.safeArea}>
+            <StatusBar
+              translucent
+              backgroundColor="transparent"
+              barStyle="light-content"
+            />
+            <View style={styles.header}>
+              <TouchableOpacity onPress={onClose} style={styles.backButton}>
+                <SvgXml xml={back_arrow_svg} width={30} height={30} />
+              </TouchableOpacity>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search"
+                placeholderTextColor="#999"
+                value={searchText}
+                onChangeText={setSearchText}
+                autoFocus
+              />
+            </View>
+
+            <View style={styles.contentContainer}>
+              <View style={styles.content}>
+                {searchText.length === 0 ? (
+                  <>
+                    <Text style={styles.sectionTitle}>Recent Searches</Text>
+                    <FlatList
+                      data={recentSearches}
+                      keyExtractor={item => item.id}
+                      renderItem={({item}) => (
+                        <View style={styles.recentItem}>
+                          <Text style={styles.recentText}>{item.term}</Text>
+                        </View>
+                      )}
+                      showsVerticalScrollIndicator={false}
+                    />
+
+                    <Text style={[styles.sectionTitle, {marginTop: 20}]}>
+                      Recently Visited Groups
+                    </Text>
+                    <Text style={styles.clearRecent}>Clear recent</Text>
+                    <FlatList
+                      data={recentGroups}
+                      keyExtractor={item => item.id}
+                      renderItem={renderGroupItem}
+                      showsVerticalScrollIndicator={false}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <View style={styles.tabs}>
+                      {['Top', 'Users', 'Groups', 'Posts'].map(tab => (
+                        <TouchableOpacity
+                          key={tab}
+                          style={[
+                            styles.tabButton,
+                            activeTab === tab && styles.activeTab,
+                          ]}
+                          onPress={() => setActiveTab(tab)}>
+                          <Text
+                            style={[
+                              styles.tabText,
+                              activeTab === tab && styles.activeTabText,
+                            ]}>
+                            {tab}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+
+                    {renderTabContent()}
+                  </>
+                )}
+              </View>
+            </View>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#fff'},
-
-  header: {
-    height: 90,
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: width * 0.05,
-    paddingTop: height * 0.05,
-  },
-  backArrow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    height: 35,
+  mainBackground: {
     flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: 'transparent',
+  },
+  backButton: {
+    marginRight: 12,
   },
   searchInput: {
     flex: 1,
-    paddingVertical: 10,
-    marginLeft: 10,
+    height: 40,
+    fontSize: 16,
     color: '#000',
-    fontSize: 14,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
   content: {
-    backgroundColor: '#fff',
+    flex: 1,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    marginTop: 2,
-    padding: 16,
-    flex: 1,
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    paddingTop: 12,
   },
   sectionTitle: {
-    fontWeight: 700,
-    fontSize: 12,
-    marginBottom: 12,
-    color: '#000',
-  },
-  recentSearchItem: {
-    paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  recentSearchText: {
     fontSize: 16,
+    fontWeight: '600',
     color: '#333',
+    marginBottom: 8,
   },
-  recentGroupsHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 24,
-    marginBottom: 12,
+  recentItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#e0e0e0',
+  },
+  recentText: {
+    fontSize: 16,
+    color: '#000',
   },
   clearRecent: {
     fontSize: 14,
     color: '#6e46ff',
-    fontWeight: '500',
+    textAlign: 'right',
+    marginBottom: 12,
   },
   groupItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  groupLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#e0e0e0',
   },
   groupImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
+    width: 50,
+    height: 50,
+    borderRadius: 10,
     marginRight: 12,
-    backgroundColor: '#eee',
+  },
+  groupInfo: {
+    flex: 1,
   },
   groupName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#000',
+    marginBottom: 2,
   },
   groupMembers: {
     fontSize: 14,
-    color: '#777',
-    marginTop: 2,
-  },
-  groupRight: {
-    alignItems: 'flex-end',
-    marginLeft: 12,
-  },
-  nsfwBadge: {
-    backgroundColor: '#FF5E5E',
-    borderRadius: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    marginBottom: 6,
-  },
-  nsfwText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: 'bold',
+    color: '#666',
   },
   newBadge: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#6e46ff',
     borderRadius: 4,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    marginBottom: 6,
+    marginRight: 8,
   },
-  newBadgeText: {
+  newText: {
     color: '#fff',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   joinButton: {
     backgroundColor: '#6e46ff',
-    borderRadius: 8,
+    borderRadius: 15,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    minWidth: 80,
-    alignItems: 'center',
+    paddingVertical: 6,
   },
-  joinText: {
-    color: 'white',
+  joinButtonText: {
+    color: '#fff',
     fontWeight: '600',
     fontSize: 14,
+  },
+  tabs: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    marginBottom: 12,
+  },
+  tabButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginRight: 8,
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#6e46ff',
+  },
+  tabText: {
+    fontSize: 16,
+    color: '#666',
+  },
+  activeTabText: {
+    color: '#6e46ff',
+    fontWeight: '600',
+  },
+  noResults: {
+    textAlign: 'center',
+    marginTop: 40,
+    fontSize: 16,
+    color: '#666',
+  },
+  topItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#e0e0e0',
+  },
+  topGroupName: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  postContainer: {
+    paddingVertical: 16,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#e0e0e0',
+  },
+  postText: {
+    fontSize: 16,
+    color: '#000',
   },
 });
 

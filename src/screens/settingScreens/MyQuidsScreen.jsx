@@ -31,9 +31,7 @@ const MyQuidsScreen = () => {
         source={require('../../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        <ImageBackground
-          source={require('../../images/headerBg.png')}
-          resizeMode="cover">
+        
           <View style={styles.header}>
             <View style={styles.backArrow}>
               <TouchableOpacity onPress={goBack}>
@@ -48,7 +46,7 @@ const MyQuidsScreen = () => {
               <Text style={styles.editButtonText}>Watch & Earn</Text>
             </TouchableOpacity>
           </View>
-        </ImageBackground>
+        
         <View style={styles.mainContainer}>
           <View style={styles.avatarContainer}>
             <SvgXml xml={quid_svg} width={80} height={80} />

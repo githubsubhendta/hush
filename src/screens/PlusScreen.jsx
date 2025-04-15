@@ -15,17 +15,29 @@ import {
   story_svg,
   video_svg_tab,
 } from '../utils/constant/TabSVGimage';
-import { navigate } from '../utils/NavigationUtil';
+import {useNavigation} from '@react-navigation/native';
+import {navigate} from '../utils/NavigationUtil';
 
 const options = [
-  {label: 'Post', onPress: () => navigate("PostScreen")},
+  {label: 'Post', onPress: () => navigate('PostScreen')},
   {label: 'Video', onPress: () => alert('Video Clicked')},
   {label: 'Story', onPress: () => alert('Story Clicked')},
   {label: 'Poll', onPress: () => alert('Poll Clicked')},
 ];
 
 const PlusScreen = ({visible, onClose}) => {
+  const navigation = useNavigation();
   const animations = useRef(options.map(() => new Animated.Value(0))).current;
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('state', () => {
+      if (visible) {
+        onClose?.();
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, visible, onClose]);
 
   useEffect(() => {
     if (visible) {

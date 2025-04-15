@@ -81,9 +81,6 @@ const GroupScreen = () => {
         source={require('../images/headerBg.png')}
         resizeMode="cover"
         style={styles.background}>
-        {/* <ImageBackground
-          source={require('../images/headerBg.png')}
-          resizeMode="cover"> */}
         <View style={styles.header}>
           <View style={styles.backArrow}>
             <TouchableOpacity
@@ -100,7 +97,6 @@ const GroupScreen = () => {
             <SvgXml xml={search_button_svg} width={20} height={20} />
           </TouchableOpacity>
         </View>
-       
 
         <View style={styles.mainContainer}>
           <View style={styles.tabContainer}>
@@ -169,18 +165,18 @@ const GroupScreen = () => {
               </View>
             ))}
           </ScrollView>
-          <Modal
-            visible={isSearchModalVisible}
-            // transparent={true}
-            animationType="slide"
-            hardwareAccelerated={true}
-            onRequestClose={() => setSearchModalVisible(false)}>
-            <View style={styles.modalOverlayStyle}>
-              <SearchModal onClose={() => setSearchModalVisible(false)} />
-            </View>
-          </Modal>
         </View>
       </ImageBackground>
+      <Modal
+        visible={isSearchModalVisible}
+        animationType="slide"
+        transparent={false}
+        statusBarTranslucent={true}
+        onRequestClose={() => setSearchModalVisible(false)}
+        style={styles.modalStyle} // Add custom style to ensure full width
+      >
+        <SearchModal onClose={() => setSearchModalVisible(false)} />
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -252,13 +248,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: width * 0.04,
-    // borderRadius: 14,
-    // backgroundColor: '#fff',
-    // shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 1},
-    // shadowOpacity: 0.1,
-    // shadowRadius: 4,
-    // elevation: 1,
+   
   },
   joinedGroupItem: {
     backgroundColor: '#fff',
@@ -300,11 +290,9 @@ const styles = StyleSheet.create({
   joinedButtonText: {
     color: '#000',
   },
-  modalOverlayStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  modalStyle: {
+    margin: 0, 
+    width: '100%',
   },
 });
 

@@ -46,6 +46,7 @@ const EditUserProfile = () => {
           </View>
 
           <Text style={styles.editText}>Edit Name</Text>
+          
 
           <TextInput
             style={styles.input}
@@ -74,8 +75,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     overflow: 'hidden',
     elevation: 4,
     shadowColor: '#000',
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: height * 0.14,
+    height: height * 0.13,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: width * 0.05,
