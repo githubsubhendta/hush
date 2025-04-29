@@ -72,9 +72,9 @@ const PostScreen = () => {
   const getCategoryIcon = category => {
     switch (category) {
       case 'Global':
-        return <SvgXml xml={global_svg} width={14} height={14} />;
+        return <SvgXml xml={global_svg} width={18} height={18} />;
       case 'Post to a Group':
-        return <SvgXml xml={GroupIcon} width={14} height={14} />;
+        return <SvgXml xml={GroupIcon} width={18} height={18} />;
       default:
         return null;
     }
@@ -140,9 +140,9 @@ const PostScreen = () => {
                     </View>
                     <View style={styles.optionCheck}>
                       {selectedOptions.includes(item.title) ? (
-                        <SvgXml xml={Selected_SVG} width={20} height={20} />
+                        <SvgXml xml={Selected_SVG} width={25} height={25} />
                       ) : (
-                        <SvgXml xml={SVG_not_slected} width={20} height={20} />
+                        <SvgXml xml={SVG_not_slected} width={25} height={25} />
                       )}
                     </View>
                   </TouchableOpacity>
@@ -188,22 +188,21 @@ const styles = StyleSheet.create({
   contentWrapper: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   },
   scrollContainer: {
     paddingBottom: 120,
+    paddingTop: 10,
   },
-  section: {
-    marginBottom: 30,
-  },
+  
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    paddingVertical: 10,
   },
   sectionIcon: {
+    paddingLeft: 12,
     paddingRight: 8,
   },
   sectionTitle: {
@@ -216,8 +215,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 15,
-    marginBottom: 10,
     width: '100%',
+    paddingHorizontal: 16,
   },
   selectedOption: {
     backgroundColor: '#f0f8ff',

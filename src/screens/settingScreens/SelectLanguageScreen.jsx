@@ -52,12 +52,14 @@ const SelectLanguage = () => {
             <FlatList
               data={languages}
               keyExtractor={item => item}
-              renderItem={({item}) => (
+              renderItem={({item, index}) => (
                 <Pressable
                   onPress={() => setSelectedLanguage(item)}
                   style={[
                     styles.languageOption,
                     selectedLanguage === item && styles.selectedOption,
+                    index === 0 && {borderTopWidth: 0,borderTopLeftRadius: 16,borderTopRightRadius: 16}, 
+                    index === languages.length - 1 && {borderBottomWidth: 0,borderBottomLeftRadius: 16,borderBottomRightRadius: 16}, 
                   ]}>
                   <Text style={styles.languageText}>{item}</Text>
                   {selectedLanguage === item && (
@@ -106,8 +108,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     backgroundColor: '#fffef4',
-    // margin:16,
-    // padding: 16,
   },
   subHeading: {
     fontWeight: '700',
@@ -120,13 +120,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 12,
-    borderTopColor: '#eee8d5',
-    borderTopWidth: 1,
+    borderBottomColor: '#eee8d5',
+    borderBottomWidth: 1,
+
+    // borderTopLeftRadius: 16,
+    // borderTopRightRadius: 16,
   },
   selectedOption: {
     backgroundColor: '#eee8d5',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
   },
   languageText: {
     fontSize: 12,
