@@ -20,11 +20,11 @@ import {
   Selected_SVG,
   SVG_not_slected,
 } from '../utils/constant/TabSVGimage';
-import {goBack, navigate} from '../utils/NavigationUtil';
+import {goBack} from '../utils/NavigationUtil';
 
 const {width, height} = Dimensions.get('window');
 
-const PostScreen = () => {
+const CreatePoll = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const options = [
@@ -82,7 +82,6 @@ const PostScreen = () => {
 
   const handleNext = () => {
     console.log('Selected options:', selectedOptions);
-    navigate('CreatePoll')
   };
 
   return (
@@ -152,12 +151,14 @@ const PostScreen = () => {
             ))}
           </ScrollView>
 
+          
         </View>
         <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
             <Text style={styles.nextButtonText}>Next</Text>
           </TouchableOpacity>
         </View>
+        
       </ImageBackground>
     </SafeAreaView>
   );
@@ -275,4 +276,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostScreen;
+export default CreatePoll;

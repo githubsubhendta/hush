@@ -149,6 +149,7 @@ import ErrorBoundary from './src/components/ErrorBoundary';
 import SelectLanguage from './src/screens/settingScreens/SelectLanguageScreen';
 import AppLovinMAX, { AdFormat, AdView } from 'react-native-applovin-max';
 import PostSCreen from './src/screens/PostScreen';
+import CreatePoll from './src/screens/CreatePollScreen';
 
 const Stack = createStackNavigator();
 
@@ -215,6 +216,8 @@ const App = () => {
               <Stack.Screen name="CreateGroup" component={CreateGroup} />
               <Stack.Screen name="SelectLanguage" component={SelectLanguage} />
               <Stack.Screen name="PostScreen" component={PostSCreen} />
+              <Stack.Screen name="CreatePoll" component={CreatePoll} />
+
 
             </Stack.Navigator>
           </View>
