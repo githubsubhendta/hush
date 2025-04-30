@@ -13,6 +13,7 @@ import {
 import PostItem from '../PostItem';
 import {GlobalPosts} from '../../services/api';
 import {useNetworkStatus} from '../../hooks/useNetworkStatus';
+import {useTheme} from '../../context/ThemeContext';
 
 const GlobalTabScreen = () => {
   const [posts, setPosts] = useState([]);
@@ -22,6 +23,11 @@ const GlobalTabScreen = () => {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const isOnline = useNetworkStatus();
+
+  const {isDarkModeOn} = useTheme(); 
+    const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+  const textColor = isDarkModeOn ? '#fff' : '#000'; 
+
 
   const fetchPosts = useCallback(
     async (pageNumber, isInitial = false) => {
@@ -101,7 +107,7 @@ const GlobalTabScreen = () => {
       style={{flex: 1}}
       resizeMode="cover"
       imageStyle={{opacity: 1}}>
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor}]}>
         <FlatList
           data={posts}
           numColumns={2}
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    backgroundColor: '#fff',
+    
   },
   list: {
     paddingBottom: 20,

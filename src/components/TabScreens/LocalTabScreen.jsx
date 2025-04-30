@@ -100,21 +100,28 @@
 
 // export default LocalTabScreen;
 
-import React, { useCallback, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, FlatList } from 'react-native';
+import React, {useCallback, useMemo, useState} from 'react';
+import {View, Text, StyleSheet, Dimensions, FlatList} from 'react-native';
 import Slider from '@react-native-community/slider';
-import { posts } from '../../utils/PostData';
+import {posts} from '../../utils/PostData';
 import PostItems from '../PostItem';
 import BannerAd from '../AppLovinMax';
+import {useTheme} from '../../context/ThemeContext';
+import { Thumb_Tint_Image } from '../../utils/constant/TabSVGimage';
 
-const { width } = Dimensions.get('window');
+
+const {width} = Dimensions.get('window');
 
 const LocalTabScreen = () => {
   const [value, setValue] = useState(0);
+  
 
+  const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+  const sliderBackgroundColor = isDarkModeOn ? '#fff' : '#EEE8D5';
   const dataWithAds = useMemo(() => getPostsWithAds(posts), [posts]);
 
-  const renderItem = useCallback(({ item }) => {
+  const renderItem = useCallback(({item}) => {
     if (item.type === 'ad') {
       return (
         <View style={styles.adWrapper}>
@@ -134,25 +141,33 @@ const LocalTabScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.sliderContainer}>
+    <View style={[styles.container, {backgroundColor}]}>
+      <View
+        style={[
+          styles.sliderContainer,
+          {backgroundColor: sliderBackgroundColor},
+        ]}>
         <Text style={styles.label}>CLOSER</Text>
         <Slider
           style={styles.slider}
-          maximumValue={0.0000001}
-          step={0.00000001}
+          maximumValue={1}
+          minimumValue={0}
+          step={0.1}
           value={value}
-          onValueChange={(val) => setValue(val)}
+          onValueChange={val => setValue(val)}
           minimumTrackTintColor="#392EBD"
-          maximumTrackTintColor="#66645E"
-          thumbTintColor="#fff"
+          maximumTrackTintColor={isDarkModeOn ? '#000000' : '#66645E'}
+          thumbImage={'<SvgXml xml={Thumb_Tint_Image} width={60} height={60} />'}
+          // thumbTintColor="transparent"
+          // thumbStyle={{width: 50, height: 50}}
         />
+
         <Text style={styles.label}>FARTHER</Text>
       </View>
       <FlatList
         data={dataWithAds}
         numColumns={2}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.list}
         columnWrapperStyle={styles.columnWrapper}
@@ -161,12 +176,12 @@ const LocalTabScreen = () => {
   );
 };
 
-const getPostsWithAds = (posts) => {
+const getPostsWithAds = posts => {
   const result = [];
   posts.forEach((post, index) => {
-    result.push({ type: 'post', ...post });
+    result.push({type: 'post', ...post});
     if ((index + 1) % 5 === 0) {
-      result.push({ type: 'ad', id: `ad-${index}` });
+      result.push({type: 'ad', id: `ad-${index}`});
     }
   });
   return result;
@@ -175,14 +190,14 @@ const getPostsWithAds = (posts) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   sliderContainer: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#EEE8D5',
+    // backgroundColor: '#EEE8D5',
     paddingHorizontal: 15,
   },
   slider: {

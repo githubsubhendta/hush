@@ -14,6 +14,7 @@ import {TrendingPosts} from '../../services/api';
 import {useNetworkStatus} from '../../hooks/useNetworkStatus';
 // import ErrorBoundary from '../../components/ErrorBoundary';
 import PostItem from '../PostItem';
+import {useTheme} from '../../context/ThemeContext';
 
 const HotTabScreen = () => {
   const [posts, setPosts] = useState([]);
@@ -21,8 +22,12 @@ const HotTabScreen = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const {isDarkModeOn} = useTheme(); 
 
   const isOnline = useNetworkStatus();
+
+  const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+  const textColor = isDarkModeOn ? '#fff' : '#000';
 
   // Fetch posts with API integration
   const fetchPosts = useCallback(
@@ -78,7 +83,7 @@ const HotTabScreen = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={[styles.loadingContainer, {backgroundColor}]}>
         <ActivityIndicator size="large" color="#392EBD" />
       </View>
     );
@@ -86,7 +91,7 @@ const HotTabScreen = () => {
 
   if (!isOnline) {
     return (
-      <View style={styles.offlineContainer}>
+      <View style={[styles.offlineContainer, {backgroundColor}]}>
         <Text style={styles.offlineText}>
           You are offline. Please check your internet connection.
         </Text>
@@ -100,7 +105,7 @@ const HotTabScreen = () => {
       source={require('../../images/headerBg.png')}
       style={styles.background}
       resizeMode="cover">
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor}]}>
         <FlatList
           data={posts}
           numColumns={2}
@@ -130,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   list: {
     paddingBottom: 20,
@@ -139,14 +144,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   offlineContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   offlineText: {
     fontSize: 18,

@@ -205,9 +205,11 @@
 import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {chat_icon, heart_svg} from '../utils/constant/TabSVGimage';
+import {chat_icon, chat_icon_black, chat_icon_white, heart_svg, heart_svg_white} from '../utils/constant/TabSVGimage';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useTheme } from '../context/ThemeContext';
+
 
 dayjs.extend(relativeTime);
 
@@ -242,6 +244,9 @@ const formatLikes = count => {
 
 export default function PostItems({image, text, likes, comment, time, tag}) {
   const [error, setError] = useState(false);
+
+  const {isDarkModeOn} = useTheme(); // Get the theme context
+  const textColor = isDarkModeOn ? '#fff' : '#000'; 
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
@@ -264,10 +269,10 @@ export default function PostItems({image, text, likes, comment, time, tag}) {
 
       <View style={styles.footer}>
         <View style={styles.comment}>
-          <SvgXml xml={heart_svg} width={15.4} height={14} />
-          <Text style={styles.commentText}>{formatLikes(likes)}</Text>
-          <SvgXml xml={chat_icon} width={14.84} height={14} />
-          <Text style={styles.commentText}>{comment}</Text>
+          <SvgXml xml={isDarkModeOn ? heart_svg_white : heart_svg_white } width={15.4} height={14} />
+          <Text style={[styles.commentText,{ color: textColor }]}>{formatLikes(likes)}</Text>
+          <SvgXml xml={isDarkModeOn ? chat_icon_white : chat_icon_black } width={14.84} height={14} />
+          <Text style={[styles.commentText,{ color: textColor }]}>{comment}</Text>
         </View>
 
         <Text style={styles.timeText}>{formatTime(time)}</Text>

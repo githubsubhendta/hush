@@ -146,30 +146,43 @@ import {
   ChatIcon,
   GroupIcon,
   HomeIcon,
+  HomeIconWhite,
+  GroupIconWhite,
+  ChatIconWhite,
+  WatchIconWhite,
   WatchIcon,
   PlusIcon,
+  PlusIconWhite,
 } from '../utils/constant/TabSVGimage.js';
 import HomeScreen from '../screens/HomeScreen.jsx';
 import PlusScreen from '../screens/PlusScreen.jsx';
 import ChatScreen from '../screens/ChatScreen.jsx';
 import GroupScreen from '../screens/GroupScreen.jsx';
 import WatchScreen from '../screens/WatchScreen.jsx';
-import Loader from '../components/Loader.jsx';
+import { useTheme } from '../context/ThemeContext.js';
 
 const Tab = createBottomTabNavigator();
 const {width} = Dimensions.get('window');
 const iconSize = width * 0.08;
-const plusIconSize = width * 0.1;
 
-const CustomPlusButton = ({onPress}) => (
-  <TouchableOpacity style={styles.plusButton} onPress={onPress}>
-    <SvgXml xml={PlusIcon} width={42} height={42} />
-  </TouchableOpacity>
-);
+
+
+const CustomPlusButton = ({onPress}) => {
+  const {isDarkModeOn} = useTheme(); 
+  return (
+    <TouchableOpacity style={styles.plusButton} onPress={onPress}>
+      <SvgXml xml={isDarkModeOn ? PlusIconWhite : PlusIcon} width={42} height={42} />
+    </TouchableOpacity>
+  );
+};
 
 const BottomTabNavigator = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#191919' : '#fff'; 
+  const TextColorStyle = isDarkModeOn ? '#fff' : '#000';
 
   return (
     <View style={styles.container}>
@@ -180,11 +193,11 @@ const BottomTabNavigator = () => {
           headerShown: false,
           tabBarIcon: ({color}) => {
             let iconName = '';
-            if (route.name === 'Home') iconName = HomeIcon;
-            else if (route.name === 'Watch') iconName = WatchIcon;
+            if (route.name === 'Home' ) iconName =isDarkModeOn ? HomeIconWhite: HomeIcon;
+            else if (route.name === 'Watch') iconName = isDarkModeOn ? WatchIconWhite : WatchIcon;
             else if (route.name === 'Plus') return null;
-            else if (route.name === 'Groups') iconName = GroupIcon;
-            else if (route.name === 'Chat') iconName = ChatIcon;
+            else if (route.name === 'Groups') iconName = isDarkModeOn ? GroupIconWhite : GroupIcon;
+            else if (route.name === 'Chat') iconName = isDarkModeOn ? ChatIconWhite : ChatIcon;
             return (
               <View style={styles.iconContainer}>
                 <SvgXml
@@ -201,7 +214,7 @@ const BottomTabNavigator = () => {
             alignItems: 'center',
             justifyContent: 'center',
             paddingTop: 12,
-            backgroundColor: '#fff',
+            backgroundColor: backgroundColor,
             borderTopWidth: 0,
             borderColor: 'transparent',
             elevation: 5,
@@ -213,6 +226,7 @@ const BottomTabNavigator = () => {
           tabBarLabel: route.name,
           tabBarLabelStyle: {
             fontSize: 12,
+            color:TextColorStyle
           },
           tabBarActiveTintColor: '#000',
           tabBarInactiveTintColor: 'gray',
