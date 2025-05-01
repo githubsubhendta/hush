@@ -1,145 +1,7 @@
-// import React, { useState } from 'react';
-// import {
-//   Dimensions,
-//   StyleSheet,
-//   TouchableOpacity,
-//   StatusBar,
-//   View,
-// } from 'react-native';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { SvgXml } from 'react-native-svg';
-// import {
-//   ChatIcon,
-//   GroupIcon,
-//   HomeIcon,
-//   WatchIcon,
-//   PlusIcon,
-// } from '../utils/constant/TabSVGimage.js';
-// import HomeScreen from '../screens/HomeScreen.jsx';
-// import PlusScreen from '../screens/PlusScreen.jsx';
-// import ChatScreen from '../screens/ChatScreen.jsx';
-// import GroupScreen from '../screens/GroupScreen.jsx';
-// import WatchScreen from '../screens/WatchScreen.jsx';
-// import Loader from '../components/Loader.jsx';
-// import Header from '../components/Header.jsx';
 
-// const Tab = createBottomTabNavigator();
-// const { width } = Dimensions.get('window');
-// const iconSize = width * 0.06;
-// const plusIconSize = width * 0.1;
-
-// const CustomPlusButton = ({ onPress }) => (
-//   <TouchableOpacity style={styles.plusButton} onPress={onPress}>
-//     <SvgXml xml={PlusIcon} width={plusIconSize} height={plusIconSize} />
-//   </TouchableOpacity>
-// );
-
-// const BottomTabNavigator = () => {
-//   const [modalVisible, setModalVisible] = useState(false);
-//   const [loading, setLoading] = useState(false);
-
-//   return (
-//     <View style={styles.container}>
-//       <Loader visible={loading} />
-
-//       <Tab.Navigator
-//         screenOptions={({ route }) => ({
-//           tabBarIcon: ({ color }) => {
-//             let iconName = '';
-//             if (route.name === 'Home') iconName = HomeIcon;
-//             else if (route.name === 'Watch') iconName = WatchIcon;
-//             else if (route.name === 'Plus') return null;
-//             else if (route.name === 'Groups') iconName = GroupIcon;
-//             else if (route.name === 'Chat') iconName = ChatIcon;
-//             return (
-//               <SvgXml
-//                 xml={iconName}
-//                 width={iconSize}
-//                 height={iconSize}
-//                 fill={color}
-//               />
-//             );
-//           },
-//           header: () => (
-//             <View style={{ backgroundColor: 'transparent' }}>
-//               <Header onTabPress={tab => console.log('Selected:', tab)} />
-//             </View>
-//           ),
-//           tabBarStyle: {
-//             height: 60,
-//             alignItems: 'center',
-//             justifyContent: 'center',
-//             paddingBottom: 5,
-//             backgroundColor: '#fff',
-//             borderTopWidth: 0,
-//             elevation: 5,
-//             shadowColor: '#000',
-//             shadowOffset: { width: 0, height: -2 },
-//             shadowOpacity: 0.1,
-//             shadowRadius: 5,
-//           },
-//           tabBarLabel: () => null,
-//           tabBarActiveTintColor: '#000',
-//           tabBarInactiveTintColor: '#666',
-//         })}
-//         screenListeners={{
-//           state: () => {
-//             setLoading(true);
-//             setTimeout(() => setLoading(false), 500);
-//           },
-//         }}
-//       >
-//         <Tab.Screen name="Home" component={HomeScreen} />
-//         <Tab.Screen name="Watch" component={WatchScreen} />
-//         <Tab.Screen
-//           name="Plus"
-//           component={View}
-//           options={{
-//             tabBarButton: () => (
-//               <CustomPlusButton onPress={() => setModalVisible(true)} />
-//             ),
-//           }}
-//         />
-//         <Tab.Screen name="Groups" component={GroupScreen} />
-//         <Tab.Screen name="Chat" component={ChatScreen} />
-//       </Tab.Navigator>
-
-//       {modalVisible && (
-//         <PlusScreen
-//           visible={modalVisible}
-//           onClose={() => setModalVisible(false)}
-//         />
-//       )}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: 'transparent', // Ensure the container is transparent
-//   },
-//   plusButton: {
-//     width: 50,
-//     height: 50,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     bottom: 10,
-//     backgroundColor: '#392EBD',
-//     borderRadius: 25,
-//   },
-// });
-
-// export default BottomTabNavigator;
 
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  StatusBar,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SvgXml} from 'react-native-svg';
 import {
@@ -153,25 +15,32 @@ import {
   WatchIcon,
   PlusIcon,
   PlusIconWhite,
+  cross_svg,
 } from '../utils/constant/TabSVGimage.js';
 import HomeScreen from '../screens/HomeScreen.jsx';
 import PlusScreen from '../screens/PlusScreen.jsx';
 import ChatScreen from '../screens/ChatScreen.jsx';
 import GroupScreen from '../screens/GroupScreen.jsx';
 import WatchScreen from '../screens/WatchScreen.jsx';
-import { useTheme } from '../context/ThemeContext.js';
+import {useTheme} from '../context/ThemeContext.js';
+
 
 const Tab = createBottomTabNavigator();
 const {width} = Dimensions.get('window');
 const iconSize = width * 0.08;
 
+export const CustomPlusButton = ({onPress, isActive}) => {
+  const {isDarkModeOn} = useTheme();
 
+  const iconXml = isActive
+    ? cross_svg
+    : isDarkModeOn
+    ? PlusIconWhite
+    : PlusIcon;
 
-const CustomPlusButton = ({onPress}) => {
-  const {isDarkModeOn} = useTheme(); 
   return (
     <TouchableOpacity style={styles.plusButton} onPress={onPress}>
-      <SvgXml xml={isDarkModeOn ? PlusIconWhite : PlusIcon} width={42} height={42} />
+      <SvgXml xml={iconXml} width={42} height={42} />
     </TouchableOpacity>
   );
 };
@@ -180,8 +49,15 @@ const BottomTabNavigator = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
+
+  const toggleModal = () => {
+    console.log('Toggling modal');
+    setModalVisible(prev => !prev);
+  };
+  
+
   const {isDarkModeOn} = useTheme();
-  const backgroundColor = isDarkModeOn ? '#191919' : '#fff'; 
+  const backgroundColor = isDarkModeOn ? '#191919' : '#fff';
   const TextColorStyle = isDarkModeOn ? '#fff' : '#000';
 
   return (
@@ -193,11 +69,15 @@ const BottomTabNavigator = () => {
           headerShown: false,
           tabBarIcon: ({color}) => {
             let iconName = '';
-            if (route.name === 'Home' ) iconName =isDarkModeOn ? HomeIconWhite: HomeIcon;
-            else if (route.name === 'Watch') iconName = isDarkModeOn ? WatchIconWhite : WatchIcon;
+            if (route.name === 'Home')
+              iconName = isDarkModeOn ? HomeIconWhite : HomeIcon;
+            else if (route.name === 'Watch')
+              iconName = isDarkModeOn ? WatchIconWhite : WatchIcon;
             else if (route.name === 'Plus') return null;
-            else if (route.name === 'Groups') iconName = isDarkModeOn ? GroupIconWhite : GroupIcon;
-            else if (route.name === 'Chat') iconName = isDarkModeOn ? ChatIconWhite : ChatIcon;
+            else if (route.name === 'Groups')
+              iconName = isDarkModeOn ? GroupIconWhite : GroupIcon;
+            else if (route.name === 'Chat')
+              iconName = isDarkModeOn ? ChatIconWhite : ChatIcon;
             return (
               <View style={styles.iconContainer}>
                 <SvgXml
@@ -222,11 +102,12 @@ const BottomTabNavigator = () => {
             shadowOffset: {width: 0, height: -2},
             shadowOpacity: 0.1,
             shadowRadius: 5,
+            
           },
           tabBarLabel: route.name,
           tabBarLabelStyle: {
             fontSize: 12,
-            color:TextColorStyle
+            color: TextColorStyle,
           },
           tabBarActiveTintColor: '#000',
           tabBarInactiveTintColor: 'gray',
@@ -257,15 +138,20 @@ const BottomTabNavigator = () => {
             ),
           }}
         />
+
         <Tab.Screen
           name="Plus"
-          component={View}
+          component={() => null} 
           options={{
             tabBarButton: () => (
-              <CustomPlusButton onPress={() => setModalVisible(true)} />
+              <CustomPlusButton
+                isActive={modalVisible}
+                onPress={toggleModal}
+              />
             ),
           }}
         />
+
         <Tab.Screen
           name="Groups"
           component={GroupScreen}
@@ -289,7 +175,7 @@ const BottomTabNavigator = () => {
       {modalVisible && (
         <PlusScreen
           visible={modalVisible}
-          onClose={() => setModalVisible(false)}
+          onClose={toggleModal}
         />
       )}
     </View>
@@ -300,11 +186,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
+    
   },
   plusButton: {
     paddingTop: 3,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 1000,
   },
   iconContainer: {
     flex: 1,
