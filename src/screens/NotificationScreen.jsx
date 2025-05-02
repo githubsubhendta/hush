@@ -22,6 +22,7 @@ import {
   vote_svg,
 } from '../utils/constant/TabSVGimage';
 import {useNavigation} from '@react-navigation/native';
+import {useTheme} from '../context/ThemeContext';
 
 const notifications = [
   {id: '1', user: 'los_Nagel', action: 'replied to your post', time: '3m ago'},
@@ -91,6 +92,9 @@ const NotificationItem = ({user = '', action = '', time = ''}) => (
 );
 
 const NotificationsScreen = () => {
+const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+
   const navigation = useNavigation();
 
   return (
@@ -168,7 +172,7 @@ const NotificationsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    // backgroundColor: '#F5F5F5',
   },
 
   mainContainer: {
@@ -251,6 +255,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   notificationText: {
+    flexDirection: 'row',
     color: '#000',
     fontSize: 14,
   },
@@ -262,7 +267,6 @@ const styles = StyleSheet.create({
     fontSize: 8,
     marginTop: 2,
   },
-
   iconContainer2: {
     position: 'relative',
     alignItems: 'center',

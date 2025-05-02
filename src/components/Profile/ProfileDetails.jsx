@@ -12,10 +12,16 @@ import {
 import {SvgXml} from 'react-native-svg';
 import {avatar_svg, back_arrow_svg} from '../../utils/constant/TabSVGimage';
 import {goBack} from '../../utils/NavigationUtil';
+import { useTheme } from '../../context/ThemeContext';
 
 const {width, height} = Dimensions.get('window');
 
 const ProfileDetails = () => {
+
+const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+const labelTextColor = isDarkModeOn ? '#fff' : '#000';
+
   const genders = ['Male', 'Female', 'Other'];
   const ageGroups = [
     '15-17',
@@ -31,7 +37,7 @@ const ProfileDetails = () => {
   const [selectedAge, setSelectedAge] = useState('45+');
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor}]}>
       <ImageBackground
         source={require('../../images/headerBg.png')}
         resizeMode="cover"
@@ -43,12 +49,12 @@ const ProfileDetails = () => {
           <Text style={styles.headerTitle}>Profile Details</Text>
         </View>
 
-        <View style={styles.mainContainer}>
+        <View style={[styles.mainContainer, {backgroundColor}]}>
           <View style={styles.avatarContainer}>
             <SvgXml xml={avatar_svg} width={80} height={80} />
           </View>
 
-          <Text style={styles.label}>
+          <Text style={[styles.label, {color: labelTextColor}]}>
             I AM <Text style={styles.required}>*</Text>
           </Text>
           <View style={styles.row}>
@@ -64,7 +70,7 @@ const ProfileDetails = () => {
                 ]}>
                 <Text
                   style={[
-                    styles.buttonText,
+                    styles.buttonText,{color: labelTextColor},
                     selectedGender === gender && styles.selectedButtonText,
                   ]}>
                   {gender}
@@ -73,7 +79,7 @@ const ProfileDetails = () => {
             ))}
           </View>
 
-          <Text style={styles.label}>
+          <Text style={[styles.label, {color: labelTextColor}]}>
             MY AGE <Text style={styles.required}>*</Text>
           </Text>
           <View style={styles.ageGrid}>
@@ -89,7 +95,7 @@ const ProfileDetails = () => {
                 ]}>
                 <Text
                   style={[
-                    styles.buttonText,
+                    styles.buttonText,{color: labelTextColor},
                     selectedAge === age && styles.selectedButtonText,
                   ]}>
                   {age}
@@ -98,11 +104,11 @@ const ProfileDetails = () => {
             ))}
           </View>
 
-          <Text style={styles.label}>
+          <Text style={[styles.label, {color: labelTextColor}]}>
             MY LOCATION <Text style={styles.required}>*</Text>
           </Text>
-          <View style={styles.locationBox}>
-            <Text style={styles.locationText}>California, USA</Text>
+          <View style={[styles.locationBox,{backgroundColor:isDarkModeOn ? '#191919':'#EAEAEA'}]}>
+            <Text style={[styles.locationText,{color:labelTextColor}]}>California, USA</Text>
           </View>
         </View>
       </ImageBackground>
@@ -113,7 +119,6 @@ const ProfileDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   mainContainer: {
     flex: 1,
@@ -207,12 +212,13 @@ const styles = StyleSheet.create({
   locationBox: {
     marginTop: 10,
     padding: 15,
-    backgroundColor: '#EAEAEA',
+    // backgroundColor: '#EAEAEA',
     borderRadius: 10,
   },
   locationText: {
     fontSize: 16,
-    color: '#555',
+    textAlign: 'center',
+    // color: '#555',
   },
 });
 

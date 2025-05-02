@@ -10,6 +10,7 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  Pressable,
 } from 'react-native';
 
 import {goBack, navigate} from '../utils/NavigationUtil';
@@ -18,16 +19,26 @@ const {width, height} = Dimensions.get('window');
 import {SvgXml} from 'react-native-svg';
 import {
   arrow_svg,
+  arrow_svg_white,
   avatar_svg,
   back_arrow_svg,
   Selected_SVG,
+  Selected_Svg_dark,
   SVG_not_slected,
 } from '../utils/constant/TabSVGimage';
 import ChatRatingModal from '../components/ChatRatingModal';
+import {useTheme} from '../context/ThemeContext';
 
 const SettingScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNotifications, setSelectedNotifications] = useState({});
+  const {isDarkModeOn} = useTheme();
+
+  const backgroundColor = isDarkModeOn ? '#030303' : '#FFFFFF';
+  const textColor = isDarkModeOn ? '#FFFFFF' : '#000000';
+  const cardBackgroundColor = isDarkModeOn ? '#191919' : '#FFFFFF';
+  const titleColor = isDarkModeOn ? '#FFFFFF' : '#000000';
+  const borderColor = isDarkModeOn ? '#1e1e1e' : '#f8f5e7 ';
 
   const notifications = [
     'Poll',
@@ -68,7 +79,7 @@ const SettingScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor}]}>
       <ImageBackground
         source={require('../images/headerBg.png')}
         resizeMode="cover"
@@ -80,30 +91,49 @@ const SettingScreen = () => {
           <Text style={styles.headerTitle}>Setting</Text>
         </View>
 
-        <View style={styles.mainContainer}>
+        <View style={[styles.mainContainer, {backgroundColor}]}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <View style={styles.profileSection}>
-              {/* <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.avatar} /> */}
               <View style={styles.avatar}>
                 <SvgXml xml={avatar_svg} width={80} height={80} />
               </View>
 
-              <Text style={styles.username}>cyan_blackbird</Text>
+              <Text style={[styles.username, {color: textColor}]}>
+                cyan_blackbird
+              </Text>
               <TouchableOpacity
-                style={styles.editButton}
+                style={[
+                  styles.editButton,
+                  {backgroundColor: isDarkModeOn ? '#FFFFFF' : '#5A31F4'},
+                ]}
                 onPress={handleEditProfile}>
-                <Text style={styles.editButtonText}>Edit Name</Text>
+                <Text
+                  style={[
+                    styles.editButtonText,
+                    {color: isDarkModeOn ? '#000000' : '#FFFFFF'},
+                  ]}>
+                  Edit Name
+                </Text>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.sectionTitle}>MY PROFILE</Text>
-            <View style={styles.card}>
+            <Text style={[styles.sectionTitle, {color: titleColor}]}>
+              MY PROFILE
+            </Text>
+            <View style={[styles.card, {backgroundColor: cardBackgroundColor}]}>
               {profileOptions.map((option, index) => (
-                <TouchableOpacity
+                <Pressable
                   key={index}
-                  style={styles.optionItem}
+                  style={[
+                    styles.optionItem,
+                    {
+                      borderBottomColor: borderColor,
+                      borderBottomWidth:
+                        index !== profileOptions.length - 1 ? 1 : 0,
+                    },
+                  ]}
                   onPress={() => {
                     if (option.name === 'Chat Votes') {
                       setModalVisible(true);
@@ -111,54 +141,102 @@ const SettingScreen = () => {
                       navigate(option.screen);
                     }
                   }}>
-                  <Text style={styles.optionText}>{option.name}</Text>
-                  <SvgXml xml={arrow_svg} width={7.37} height={12} />
-                </TouchableOpacity>
+                  <Text style={[styles.optionText, {color: textColor}]}>
+                    {option.name}
+                  </Text>
+                  <SvgXml
+                    xml={isDarkModeOn ? arrow_svg_white : arrow_svg}
+                    width={8}
+                    height={12}
+                  />
+                </Pressable>
               ))}
             </View>
 
-            <Text style={styles.sectionTitle}>PUSH NOTIFICATIONS</Text>
-            <View style={styles.card}>
+            <Text style={[styles.sectionTitle, {color: titleColor}]}>
+              PUSH NOTIFICATIONS
+            </Text>
+            <View style={[styles.card, {backgroundColor: cardBackgroundColor}]}>
               {notifications.map((notif, index) => (
-                <TouchableOpacity
+                <Pressable
                   key={index}
-                  style={styles.notificationItem}
+                  style={[
+                    styles.notificationItem,
+                    {
+                      borderBottomColor: borderColor,
+                      borderBottomWidth:
+                        index !== notifications.length - 1 ? 1 : 0,
+                    },
+                  ]}
                   onPress={() => toggleNotification(notif)}>
-                  <Text style={styles.optionText}>{notif}</Text>
+                  <Text style={[styles.optionText, {color: textColor}]}>
+                    {notif}
+                  </Text>
                   <SvgXml
                     xml={
-                      selectedNotifications[notif]
+                      isDarkModeOn && !selectedNotifications[notif]
+                        ? Selected_Svg_dark
+                        : selectedNotifications[notif]
                         ? Selected_SVG
                         : SVG_not_slected
                     }
                     width={16}
                     height={16}
                   />
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </View>
 
-            <Text style={styles.sectionTitle}>SPREAD THE WORLD</Text>
-            <View style={styles.card}>
+            <Text style={[styles.sectionTitle, {color: titleColor}]}>
+              SPREAD THE WORLD
+            </Text>
+            <View style={[styles.card, {backgroundColor: cardBackgroundColor}]}>
               {spreadWorld.map((spread, index) => (
-                <View key={index} style={styles.notificationItem}>
-                  <Text style={styles.optionText}>{spread}</Text>
+                <View
+                  key={index}
+                  style={[
+                    styles.notificationItem,
+                    {
+                      borderBottomColor: borderColor,
+                      borderBottomWidth:
+                        index !== spreadWorld.length - 1 ? 1 : 0,
+                    },
+                  ]}>
+                  <Text style={[styles.optionText, {color: textColor}]}>
+                    {spread}
+                  </Text>
                 </View>
               ))}
             </View>
 
-            <Text style={styles.sectionTitle}>SUPPORT</Text>
-            <View style={styles.card}>
+            <Text style={[styles.sectionTitle, {color: titleColor}]}>
+              SUPPORT
+            </Text>
+            <View style={[styles.card, {backgroundColor: cardBackgroundColor}]}>
               {support.map((supp, index) => (
-                <View key={index} style={styles.notificationItem}>
-                  <Text style={styles.optionText}>{supp}</Text>
+                <View
+                  key={index}
+                  style={[
+                    styles.notificationItem,
+                    {
+                      borderBottomColor: borderColor,
+                      borderBottomWidth: index !== support.length - 1 ? 1 : 0,
+                    },
+                  ]}>
+                  <Text style={[styles.optionText, {color: textColor}]}>
+                    {supp}
+                  </Text>
                 </View>
               ))}
             </View>
 
             <View style={styles.logo}>
               <Image
-                source={require('../images/Hush.png')}
+                source={
+                  isDarkModeOn
+                    ? require('../images/Hush_Dark.png') 
+                    : require('../images/Hush.png') 
+                }
                 style={{width: 100, height: 100, resizeMode: 'contain'}}
               />
             </View>
@@ -211,6 +289,7 @@ const styles = StyleSheet.create({
     marginLeft: width * 0.05,
   },
   profileSection: {
+    marginTop: height * 0.03,
     alignItems: 'center',
   },
   avatar: {
@@ -226,14 +305,13 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   editButton: {
-    backgroundColor: '#5A31F4',
     paddingVertical: height * 0.015,
     paddingHorizontal: width * 0.1,
     borderRadius: 10,
     marginTop: 8,
   },
   editButtonText: {
-    color: '#fff',
+    // color: '#fff',
     fontWeight: '700',
     fontSize: width * 0.04,
   },
@@ -244,8 +322,9 @@ const styles = StyleSheet.create({
     marginBottom: height * 0.015,
   },
   card: {
-    borderRadius: 10,
-    padding: width * 0.03,
+    borderRadius: 20,
+    paddingVertical: width * 0.03,
+    paddingHorizontal: width * 0.05,
     width: '100%',
   },
   optionItem: {
@@ -253,8 +332,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: height * 0.02,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomWidth: 1.3,
   },
   optionText: {
     fontSize: width * 0.035,
@@ -265,9 +343,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: height * 0.02,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
   },
   logo: {
+    marginTop: height * 0.03,
     width: width * 0.3,
     height: width * 0.3,
     justifyContent: 'center',

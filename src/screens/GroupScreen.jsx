@@ -1,5 +1,3 @@
-
-
 // import React, {useState} from 'react';
 // import {
 //   View,
@@ -31,29 +29,11 @@
 
 // const mockGroups = [
 //   {id: '1', name: 'Group_xyz', members: '36.7k', joined: false, image: img1},
-//   {
-//     id: '2',
-//     name: 'Whisper Refugees',
-//     members: '78.1k',
-//     joined: false,
-//     image: img2,
-//   },
+//   {id: '2', name: 'Whisper Refugees', members: '78.1k', joined: false, image: img2},
 //   {id: '3', name: 'Deban_Xyz', members: '31.1k', joined: true, image: img3},
 //   {id: '4', name: 'Movie Buffs', members: '78.1k', joined: false, image: img4},
-//   {
-//     id: '5',
-//     name: 'Alice Boderland',
-//     members: '78.1k',
-//     joined: false,
-//     image: img5,
-//   },
-//   {
-//     id: '6',
-//     name: 'Whisper Refugees',
-//     members: '78.1k',
-//     joined: false,
-//     image: img2,
-//   },
+//   {id: '5', name: 'Alice Boderland', members: '78.1k', joined: false, image: img5},
+//   {id: '6', name: 'Whisper Refugees', members: '78.1k', joined: false, image: img2},
 //   {id: '7', name: 'Group_group', members: '78.1k', joined: false, image: img1},
 // ];
 
@@ -69,9 +49,7 @@
 //   const textColor = isDarkModeOn ? '#000000' : '#FFFFFF';
 
 //   const filteredGroups = groups.filter(group => {
-//     const inSearch = group.name
-//       .toLowerCase()
-//       .includes(searchText.toLowerCase());
+//     const inSearch = group.name.toLowerCase().includes(searchText.toLowerCase());
 //     const inTab = activeTab === 'discover' ? true : group.joined;
 //     return inSearch && inTab;
 //   });
@@ -110,7 +88,10 @@
 
 //         <View style={[styles.mainContainer, {backgroundColor}]}>
 //           <View
-//             style={[styles.tabContainer, {backgroundColor: isDarkModeOn ? '#191919' : '#EFE7DE'}]}>
+//             style={[
+//               styles.tabContainer,
+//               {backgroundColor: isDarkModeOn ? '#191919' : '#EFE7DE'},
+//             ]}>
 //             <TouchableOpacity
 //               onPress={() => setActiveTab('discover')}
 //               style={[
@@ -123,7 +104,9 @@
 //                 style={[
 //                   styles.tabText,
 //                   activeTab === 'discover' && styles.activeTabText,
-//                   {color: textColor},
+//                   activeTab === 'discover'
+//                     ? {color: isDarkModeOn ? '#000000' : '#FFFFFF'}
+//                     : undefined,
 //                 ]}>
 //                 Discover Groups
 //               </Text>
@@ -132,13 +115,17 @@
 //               onPress={() => setActiveTab('my')}
 //               style={[
 //                 styles.tabButton,
-//                 activeTab === 'my' && {backgroundColor: isDarkModeOn ? '#FFFFFF' : '#392EBD'},
+//                 activeTab === 'my' && {
+//                   backgroundColor: isDarkModeOn ? '#FFFFFF' : '#392EBD',
+//                 },
 //               ]}>
 //               <Text
 //                 style={[
 //                   styles.tabText,
 //                   activeTab === 'my' && styles.activeTabText,
-//                   {color: isDarkModeOn ? '#000000' : '#FFFFFF'},
+//                   activeTab === 'my'
+//                     ? {color: isDarkModeOn ? '#000000' : '#FFFFFF'}
+//                     : undefined,
 //                 ]}>
 //                 My Groups
 //               </Text>
@@ -171,21 +158,54 @@
 //                     </Text>
 //                   </View>
 //                 </View>
-//                 <TouchableOpacity
+//                 {/* <TouchableOpacity
 //                   onPress={() => handleJoin(item.id)}
 //                   style={[
 //                     styles.joinButton,
-//                     item.joined && styles.joinedButton,
+//                     item.joined && styles.joinedButton,{
+//                       backgroundColor:isDarkModeOn ? '#FFFFFF' : '#4B1FA2',
+//                     }
 //                   ]}>
 //                   <Text
-//                     style={
+//                     style={[
 //                       item.joined
 //                         ? styles.joinedButtonText
-//                         : styles.joinButtonText
-//                     }>
+//                         : styles.joinButtonText,{color:isDarkModeOn ? '#000000' : '#FFFFFF'}
+//                     ]}>
 //                     {item.joined ? 'Joined' : 'Join'}
 //                   </Text>
-//                 </TouchableOpacity>
+//                 </TouchableOpacity> */}
+
+// <TouchableOpacity
+//   onPress={() => {
+//     if (!item.joined) {
+//       handleJoin(item.id); // Join
+//     } else if (item.joined && !item.confirmed) {
+//       handleConfirm(item.id); // Confirm to allow leaving later
+//     } else {
+//       handleLeave(item.id); // Leave
+//     }
+//   }}
+//   style={[
+//     styles.joinButton,
+//     item.joined && styles.joinedButton,
+//     {
+//       backgroundColor: isDarkModeOn ? '#FFFFFF' : '#4B1FA2',
+//     },
+//   ]}>
+//   <Text
+//     style={[
+//       item.joined ? styles.joinedButtonText : styles.joinButtonText,
+//       { color: isDarkModeOn ? '#000000' : '#FFFFFF' },
+//     ]}>
+//     {!item.joined
+//       ? 'Join'
+//       : item.joined && !item.confirmed
+//       ? 'Joined'
+//       : 'Leave'}
+//   </Text>
+// </TouchableOpacity>
+
 //               </View>
 //             ))}
 //           </ScrollView>
@@ -249,17 +269,14 @@
 //     paddingVertical: 20,
 //     backgroundColor: 'transparent',
 //   },
-//   // activeTab: {
-//   //   backgroundColor: '#392EBD',
-//   // },
 //   tabText: {
 //     fontSize: 14,
 //     textAlign: 'center',
-//     fontWeight: 500,
+//     fontWeight: '500',
 //   },
 //   activeTabText: {
 //     fontSize: 14,
-//     fontWeight: 700,
+//     fontWeight: '700',
 //   },
 //   groupItem: {
 //     flexDirection: 'row',
@@ -280,12 +297,12 @@
 //   },
 //   groupName: {
 //     fontSize: 14,
-//     fontWeight: 700,
+//     fontWeight: '700',
 //     marginBottom: 2,
 //   },
 //   groupMembers: {
 //     fontSize: 10,
-//     fontWeight: 500,
+//     fontWeight: '500',
 //   },
 //   joinButton: {
 //     backgroundColor: '#4B1FA2',
@@ -328,26 +345,74 @@ import {
 import {SvgXml} from 'react-native-svg';
 import {plus_svg, search_button_svg} from '../utils/constant/TabSVGimage';
 import {useTheme} from '../context/ThemeContext';
-
 import SearchModal from '../components/SearchModal';
-
-const {width, height} = Dimensions.get('window');
+import {navigate} from '../utils/NavigationUtil';
 
 import img1 from '../images/post1.png';
 import img2 from '../images/post1.png';
 import img3 from '../images/post1.png';
 import img4 from '../images/post1.png';
 import img5 from '../images/post1.png';
-import {navigate} from '../utils/NavigationUtil';
+
+const {width, height} = Dimensions.get('window');
 
 const mockGroups = [
-  {id: '1', name: 'Group_xyz', members: '36.7k', joined: false, image: img1},
-  {id: '2', name: 'Whisper Refugees', members: '78.1k', joined: false, image: img2},
-  {id: '3', name: 'Deban_Xyz', members: '31.1k', joined: true, image: img3},
-  {id: '4', name: 'Movie Buffs', members: '78.1k', joined: false, image: img4},
-  {id: '5', name: 'Alice Boderland', members: '78.1k', joined: false, image: img5},
-  {id: '6', name: 'Whisper Refugees', members: '78.1k', joined: false, image: img2},
-  {id: '7', name: 'Group_group', members: '78.1k', joined: false, image: img1},
+  {
+    id: '1',
+    name: 'Group_xyz',
+    members: '36.7k',
+    joined: false,
+    confirmed: false,
+    image: img1,
+  },
+  {
+    id: '2',
+    name: 'Whisper Refugees',
+    members: '78.1k',
+    joined: false,
+    confirmed: false,
+    image: img2,
+  },
+  {
+    id: '3',
+    name: 'Deban_Xyz',
+    members: '31.1k',
+    joined: true,
+    confirmed: true,
+    image: img3,
+  },
+  {
+    id: '4',
+    name: 'Movie Buffs',
+    members: '78.1k',
+    joined: false,
+    confirmed: false,
+    image: img4,
+  },
+  {
+    id: '5',
+    name: 'Alice Boderland',
+    members: '78.1k',
+    joined: false,
+    confirmed: false,
+    image: img5,
+  },
+  {
+    id: '6',
+    name: 'Whisper Refugees',
+    members: '78.1k',
+    joined: false,
+    confirmed: false,
+    image: img2,
+  },
+  {
+    id: '7',
+    name: 'Group_group',
+    members: '78.1k',
+    joined: false,
+    confirmed: false,
+    image: img1,
+  },
 ];
 
 const GroupScreen = () => {
@@ -357,38 +422,64 @@ const GroupScreen = () => {
   const [isSearchModalVisible, setSearchModalVisible] = useState(false);
 
   const {isDarkModeOn} = useTheme();
-
   const backgroundColor = isDarkModeOn ? '#030303' : '#FFFFFF';
   const textColor = isDarkModeOn ? '#000000' : '#FFFFFF';
 
   const filteredGroups = groups.filter(group => {
-    const inSearch = group.name.toLowerCase().includes(searchText.toLowerCase());
+    const inSearch = group.name
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
     const inTab = activeTab === 'discover' ? true : group.joined;
     return inSearch && inTab;
   });
 
-  const handleJoin = id => {
-    const updatedGroups = groups.map(group =>
-      group.id === id ? {...group, joined: !group.joined} : group,
+  const updateGroupState = (id, updates) => {
+    setGroups(prev =>
+      prev.map(group => (group.id === id ? {...group, ...updates} : group)),
     );
-    setGroups(updatedGroups);
+  };
+
+  const handleJoin = id => {
+    updateGroupState(id, {joined: true, confirmed: false});
+  };
+
+  const handleConfirm = id => {
+    updateGroupState(id, {confirmed: true});
+  };
+
+  const handleLeave = id => {
+    updateGroupState(id, {joined: false, confirmed: false});
+  };
+
+  const getButtonLabel = group => {
+    if (!group.joined) return 'Join';
+    if (group.joined && !group.confirmed) return 'Joined';
+    return 'Leave';
+  };
+
+  const handleButtonPress = group => {
+    if (!group.joined) {
+      handleJoin(group.id);
+    } else if (group.joined && !group.confirmed) {
+      handleConfirm(group.id);
+    } else {
+      handleLeave(group.id);
+    }
   };
 
   return (
-    <SafeAreaView style={[styles.container]}>
+    <SafeAreaView style={styles.container}>
       <ImageBackground
         source={require('../images/headerBg.png')}
         resizeMode="cover"
-        style={[styles.background]}>
-        <View style={[styles.header]}>
+        style={styles.background}>
+        <View style={styles.header}>
           <View style={styles.backArrow}>
             <TouchableOpacity
               onPress={() => navigate('CreateGroup')}
               style={{flexDirection: 'row', alignItems: 'center'}}>
               <SvgXml xml={plus_svg} width={14} height={14} />
-              <Text style={[styles.headerTitle]}>
-                Create Group
-              </Text>
+              <Text style={styles.headerTitle}>Create Group</Text>
             </TouchableOpacity>
           </View>
 
@@ -405,87 +496,99 @@ const GroupScreen = () => {
               styles.tabContainer,
               {backgroundColor: isDarkModeOn ? '#191919' : '#EFE7DE'},
             ]}>
-            <TouchableOpacity
-              onPress={() => setActiveTab('discover')}
-              style={[
-                styles.tabButton,
-                activeTab === 'discover' && {
-                  backgroundColor: isDarkModeOn ? '#FFFFFF' : '#392EBD',
-                },
-              ]}>
-              <Text
-                style={[
-                  styles.tabText,
-                  activeTab === 'discover' && styles.activeTabText,
-                  activeTab === 'discover'
-                    ? {color: isDarkModeOn ? '#000000' : '#FFFFFF'}
-                    : undefined,
-                ]}>
-                Discover Groups
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setActiveTab('my')}
-              style={[
-                styles.tabButton,
-                activeTab === 'my' && {
-                  backgroundColor: isDarkModeOn ? '#FFFFFF' : '#392EBD',
-                },
-              ]}>
-              <Text
-                style={[
-                  styles.tabText,
-                  activeTab === 'my' && styles.activeTabText,
-                  activeTab === 'my'
-                    ? {color: isDarkModeOn ? '#000000' : '#FFFFFF'}
-                    : undefined,
-                ]}>
-                My Groups
-              </Text>
-            </TouchableOpacity>
+            {['discover', 'my'].map(tab => {
+              const isActive = activeTab === tab;
+              return (
+                <TouchableOpacity
+                  key={tab}
+                  onPress={() => setActiveTab(tab)}
+                  style={[
+                    styles.tabButton,
+                    isActive && {
+                      backgroundColor: isDarkModeOn ? '#FFFFFF' : '#392EBD',
+                    },
+                  ]}>
+                  <Text
+                    style={[
+                      styles.tabText,
+                      {
+                        color: isActive
+                          ? isDarkModeOn
+                            ? '#000000'
+                            : '#FFFFFF'
+                          : isDarkModeOn
+                          ? '#FFFFFF'
+                          : '#000000',
+                        fontWeight: isActive ? 'bold' : 'normal',
+                      },
+                    ]}>
+                    {tab === 'discover' ? 'Discover Groups' : 'My Groups'}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
 
-          <ScrollView style={{backgroundColor: backgroundColor}}>
-            {filteredGroups.map(item => (
+          <ScrollView style={{backgroundColor}}>
+            {filteredGroups.map(group => (
               <View
-                key={item.id}
+                key={group.id}
                 style={[
                   styles.groupItem,
                   {backgroundColor},
-                  item.joined && {
+                  group.joined && {
                     backgroundColor: isDarkModeOn ? '#191919' : '#FFFFFF',
                   },
                 ]}>
                 <View style={styles.groupInfo}>
-                  <Image source={item.image} style={styles.groupImage} />
+                  <Image source={group.image} style={styles.groupImage} />
                   <View>
-                    <Text style={[styles.groupName, {color: textColor}]}>
-                      {item.name}
+                    <Text
+                      style={[
+                        styles.groupName,
+                        {color: isDarkModeOn ? '#FFFFFF' : '#000000'},
+                      ]}>
+                      {group.name}
                     </Text>
                     <Text
                       style={[
                         styles.groupMembers,
                         {color: isDarkModeOn ? '#AAAAAA' : '#66645E'},
                       ]}>
-                      {item.members} members
+                      {group.members} members
                     </Text>
                   </View>
                 </View>
                 <TouchableOpacity
-                  onPress={() => handleJoin(item.id)}
+                  onPress={() => handleButtonPress(group)}
                   style={[
                     styles.joinButton,
-                    item.joined && styles.joinedButton,{
-                      backgroundColor:isDarkModeOn ? '#FFFFFF' : '#4B1FA2',
-                    }
+                    getButtonLabel(group) === 'Leave' && {
+                      backgroundColor: '#FF3B30',
+                    }, 
+                    getButtonLabel(group) !== 'Leave' &&
+                      (group.joined
+                        ? {
+                            backgroundColor: isDarkModeOn
+                              ? '#FFFFFF'
+                              : '#EAE3D5',
+                          }
+                        : {
+                            backgroundColor: isDarkModeOn
+                              ? '#FFFFFF'
+                              : '#4B1FA2',
+                          }),
                   ]}>
                   <Text
                     style={[
-                      item.joined
-                        ? styles.joinedButtonText
-                        : styles.joinButtonText,{color:isDarkModeOn ? '#000000' : '#FFFFFF'}
+                      styles.joinButtonText,
+                      getButtonLabel(group) === 'Leave' && {color: '#FFFFFF'},
+                      getButtonLabel(group) !== 'Leave' &&
+                        (group.joined
+                          ? {color: isDarkModeOn ? '#000000' : '#000000'}
+                          : {color: isDarkModeOn ? '#000000' : '#FFFFFF'}),
                     ]}>
-                    {item.joined ? 'Joined' : 'Join'}
+                    {getButtonLabel(group)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -493,6 +596,7 @@ const GroupScreen = () => {
           </ScrollView>
         </View>
       </ImageBackground>
+
       <Modal
         visible={isSearchModalVisible}
         animationType="slide"
@@ -555,6 +659,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     fontWeight: '500',
+    // color: '#fff',
   },
   activeTabText: {
     fontSize: 14,
@@ -609,4 +714,3 @@ const styles = StyleSheet.create({
 });
 
 export default GroupScreen;
-

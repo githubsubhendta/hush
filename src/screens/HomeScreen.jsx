@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    // backgroundColor: 'white',
   },
   tabContent: {
     ...StyleSheet.absoluteFillObject,

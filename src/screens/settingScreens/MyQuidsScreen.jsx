@@ -10,19 +10,25 @@ import {
   Dimensions,
 } from 'react-native';
 
-
 import {SvgXml} from 'react-native-svg';
 import {
-  arrow_svg,
-  avatar_svg,
   back_arrow_svg,
   quid_svg,
 } from '../../utils/constant/TabSVGimage';
 import { goBack } from '../../utils/NavigationUtil';
+import { useTheme } from '../../context/ThemeContext';
+
+
+
+
 const { width, height } = Dimensions.get('window');
 
+
+
 const MyQuidsScreen = () => {
-  
+  const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#030303' : '#FFFFFF';
+  const textColor = isDarkModeOn ? '#FFFFFF' : '#000000';
   const [text, setText] = useState('');
 
   return (
@@ -47,14 +53,14 @@ const MyQuidsScreen = () => {
             </TouchableOpacity>
           </View>
         
-        <View style={styles.mainContainer}>
+        <View style={[styles.mainContainer, {backgroundColor}]}>
           <View style={styles.avatarContainer}>
             <SvgXml xml={quid_svg} width={80} height={80} />
           </View>
 
-          <Text style={styles.headingText}>You have 28 Quids!</Text>
+          <Text style={[styles.headingText,{color:textColor}]}>You have 28 Quids!</Text>
 
-          <Text style={{textAlign: 'center', fontWeight: 400, fontSize: 12}}>
+          <Text style={{textAlign: 'center', fontWeight: 400, fontSize: 12,color:textColor,lineHeight: 15}}>
             The quick brown fox jumps over the lazy dog. Swiftly running through
             the pastel fields, it dashes past blooming cherry blossoms and soft
             pink petals drifting in the breeze. With every leap, the fox paints
@@ -70,11 +76,10 @@ const MyQuidsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+   
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     overflow: 'hidden',
@@ -118,7 +123,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   editButtonText: {
-    color: '#000000',
     fontWeight: 700,
     fontSize: 14,
   },
