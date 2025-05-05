@@ -56,8 +56,11 @@ import { useTab } from '../context/TabContext';
 import VideoScreen from '../components/TabScreens/VideoScreen';
 import StoryScreen from '../components/TabScreens/StoryScreen';
 import PollScreen from '../components/TabScreens/PollScreen';
+import { useTheme } from '../context/ThemeContext';
 
 const WatchScreen = () => {
+  const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#030303' : '#fff'; 
   const { activeTabs, setActiveTab } = useTab();
   const activeTab = activeTabs['Watch'] || 'Video'; // Default to 'Video'
 
@@ -74,7 +77,7 @@ const WatchScreen = () => {
     >
       <WatchHeader onTabPress={(tab) => setActiveTab('Watch', tab)} /> 
 
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor }]}>
         <View style={[styles.tabContent, activeTab !== 'Video' && styles.hidden]}>{videoScreen}</View>
         <View style={[styles.tabContent, activeTab !== 'Story' && styles.hidden]}>{storyScreen}</View>
         <View style={[styles.tabContent, activeTab !== 'Poll' && styles.hidden]}>{pollScreen}</View>
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    backgroundColor: 'white',
+    
   },
   tabContent: {
     ...StyleSheet.absoluteFillObject, 

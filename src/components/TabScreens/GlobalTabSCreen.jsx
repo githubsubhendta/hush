@@ -1,4 +1,3 @@
-
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
@@ -14,6 +13,8 @@ import PostItem from '../PostItem';
 import {GlobalPosts} from '../../services/api';
 import {useNetworkStatus} from '../../hooks/useNetworkStatus';
 import {useTheme} from '../../context/ThemeContext';
+import {useModernMode} from '../../context/ModerModeContext';
+import PostItemModernMode from '../PostItemModernMode';
 
 const GlobalTabScreen = () => {
   const [posts, setPosts] = useState([]);
@@ -24,10 +25,10 @@ const GlobalTabScreen = () => {
 
   const isOnline = useNetworkStatus();
 
-  const {isDarkModeOn} = useTheme(); 
-    const backgroundColor = isDarkModeOn ? '#000' : '#fff';
-  const textColor = isDarkModeOn ? '#fff' : '#000'; 
-
+  const {isModernOn} = useModernMode();
+  const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+  const textColor = isDarkModeOn ? '#fff' : '#000';
 
   const fetchPosts = useCallback(
     async (pageNumber, isInitial = false) => {
@@ -44,9 +45,7 @@ const GlobalTabScreen = () => {
         console.log('Fetched posts:', response);
 
         if (Array.isArray(response) && response.length > 0) {
-          setPosts(prev =>
-            isInitial ? response : [...prev, ...response],
-          );
+          setPosts(prev => (isInitial ? response : [...prev, ...response]));
           setPage(pageNumber + 1);
         } else {
           setHasMore(false);
@@ -70,16 +69,27 @@ const GlobalTabScreen = () => {
   }, [isOnline, fetchPosts]);
 
   const renderItem = useCallback(
-    ({item}) => (
-      <PostItem
-        image={item?.mediaUrl}
-        text={item?.text}
-        likes={item?.heartsCount}
-        comment={item?.repliesCount}
-        time={item?.createdAt}
-      />
-    ),
-    [],
+    ({item}) => {
+      return isModernOn ? (
+        <PostItemModernMode
+          image={item?.mediaUrl}
+          avatar={require('../../images/avatar.png')}
+          postText={item?.text}
+          time={item?.createdAt}
+          commentCount={item?.repliesCount}
+          likes={item?.heartsCount}
+        />
+      ) : (
+        <PostItem
+          image={item?.mediaUrl}
+          text={item?.text}
+          likes={item?.heartsCount}
+          commentCount={item?.repliesCount}
+          time={item?.createdAt}
+        />
+      );
+    },
+    [isModernOn],
   );
 
   if (loading) {
@@ -110,17 +120,20 @@ const GlobalTabScreen = () => {
       <View style={[styles.container, {backgroundColor}]}>
         <FlatList
           data={posts}
-          numColumns={2}
+          numColumns={isModernOn ? 1 : 2}
           renderItem={renderItem}
-          keyExtractor={item => item?.id?.toString() || Math.random().toString()}
+          keyExtractor={item => item.id?.toString() || Math.random().toString()}
+          key={isModernOn ? 'singleColumn' : 'doubleColumn'}
           contentContainerStyle={styles.list}
           onEndReached={() => fetchPosts(page)}
           onEndReachedThreshold={0.5}
           ListFooterComponent={
-            isFetchingMore && (
-              <ActivityIndicator size="small" color="#392EBD" style={{marginVertical: 10}} />
-            )
+            isFetchingMore ? (
+              <ActivityIndicator size="small" color="#E63946" />
+            ) : null
           }
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </View>
     </ImageBackground>
@@ -137,7 +150,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    
   },
   list: {
     paddingBottom: 20,
@@ -161,8 +173,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-
 });
 
 export default GlobalTabScreen;
-

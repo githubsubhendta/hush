@@ -17,14 +17,24 @@ import {
   back_arrow_svg,
   global_svg,
   GroupIcon,
+  GroupIconBlack,
   Selected_SVG,
+  Selected_Svg_dark,
   SVG_not_slected,
+  SVG_selected,
 } from '../utils/constant/TabSVGimage';
 import {goBack, navigate} from '../utils/NavigationUtil';
+import {useTheme} from '../context/ThemeContext';
 
 const {width, height} = Dimensions.get('window');
 
 const PostScreen = () => {
+
+  const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#030303' : '#FFFFFF';
+  const bottomBackgroundColor = isDarkModeOn ? '#141414' : '#fffef5';
+  const nextButtonColor = isDarkModeOn ? '#fff' : '#392EBD';
+  const textColor = isDarkModeOn ? '#fff' : '#000';
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const options = [
@@ -74,7 +84,7 @@ const PostScreen = () => {
       case 'Global':
         return <SvgXml xml={global_svg} width={18} height={18} />;
       case 'Post to a Group':
-        return <SvgXml xml={GroupIcon} width={18} height={18} />;
+        return <SvgXml xml={isDarkModeOn? GroupIconBlack : GroupIcon} width={18} height={18} />;
       default:
         return null;
     }
@@ -103,7 +113,7 @@ const PostScreen = () => {
           <Text style={styles.headerTitle}>Post To</Text>
         </View>
 
-        <View style={styles.contentWrapper}>
+        <View style={[styles.contentWrapper, {backgroundColor}]}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             {options.map((section, sectionIndex) => (
               <View key={sectionIndex} style={styles.section}>
@@ -111,7 +121,7 @@ const PostScreen = () => {
                   <View style={styles.sectionIcon}>
                     {getCategoryIcon(section.category)}
                   </View>
-                  <Text style={styles.sectionTitle}>{section.category}</Text>
+                  <Text style={[styles.sectionTitle,{color:textColor}]}>{section.category}</Text>
                 </View>
 
                 {section.items.map((item, itemIndex) => (
@@ -120,30 +130,33 @@ const PostScreen = () => {
                     style={[
                       styles.option,
                       selectedOptions.includes(item.title) &&
-                        styles.selectedOption,
+                        (isDarkModeOn
+                          ? { backgroundColor: '#141414' }
+                          : { backgroundColor: '#f0f8ff' }),
                     ]}
+                    
                     onPress={() => handleSelect(item.title)}>
                     <View style={styles.optionContent}>
                       <Image source={item.image} style={styles.groupImage} />
                       <View style={styles.optionTextWrapper}>
-                        <Text style={styles.optionTitle}>{item.title}</Text>
+                        <Text style={[styles.optionTitle,{color:textColor}]}>{item.title}</Text>
                         {item.description && (
-                          <Text style={styles.optionDescription}>
+                          <Text style={[styles.optionDescription,{color:textColor}]}>
                             {item.description}
                           </Text>
                         )}
                         {item.members && (
-                          <Text style={styles.optionMembers}>
+                          <Text style={[styles.optionMembers,{color:textColor}]}>
                             {item.members}
                           </Text>
                         )}
                       </View>
                     </View>
                     <View style={styles.optionCheck}>
-                      {selectedOptions.includes(item.title) ? (
-                        <SvgXml xml={Selected_SVG} width={25} height={25} />
+                      { selectedOptions.includes(item.title) ? (
+                        <SvgXml xml={isDarkModeOn ? SVG_selected :Selected_SVG} width={25} height={25} />
                       ) : (
-                        <SvgXml xml={SVG_not_slected} width={25} height={25} />
+                        <SvgXml xml={isDarkModeOn ?Selected_Svg_dark : SVG_not_slected} width={25} height={25} />
                       )}
                     </View>
                   </TouchableOpacity>
@@ -153,9 +166,9 @@ const PostScreen = () => {
           </ScrollView>
 
         </View>
-        <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextButtonText}>Next</Text>
+        <View style={[styles.bottomBar, {backgroundColor: bottomBackgroundColor}]}>
+        <TouchableOpacity style={[styles.nextButton,{backgroundColor:nextButtonColor}]} onPress={handleNext}>
+            <Text style={[styles.nextButtonText,{color : isDarkModeOn ? '#000' : '#fff'}]}>Next</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -166,21 +179,22 @@ const PostScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
   },
   background: {
     flex: 1,
+    width: '100%',
+    height: '100%',
   },
   header: {
-    height: 100,
+    height: height * 0.12,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop:25,
+    paddingHorizontal: width * 0.04,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 25,
   },
   headerTitle: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: '600',
     marginLeft: 8,
   },
@@ -189,36 +203,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
+    overflow: 'hidden',
   },
   scrollContainer: {
-    paddingBottom: 120,
+    paddingBottom: height * 0.15,
     paddingTop: 10,
   },
-  
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
   },
   sectionIcon: {
-    paddingLeft: 12,
     paddingRight: 8,
+    paddingLeft: 10,
   },
   sectionTitle: {
-    fontSize: Platform.isPad ? 20 : 18,
+    fontSize: width * 0.045,
     fontWeight: '700',
-    color: '#000',
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 15,
+    paddingVertical: 12,
     width: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: width * 0.04,
   },
   selectedOption: {
-    backgroundColor: '#f0f8ff',
+    // backgroundColor: '#f0f8ff',
+    borderRadius: 10,
   },
   optionContent: {
     flexDirection: 'row',
@@ -226,8 +240,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   groupImage: {
-    width: 80,
-    height: 60,
+    width: width * 0.18,
+    height: width * 0.14,
     marginRight: 12,
     borderRadius: 10,
   },
@@ -235,18 +249,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   optionTitle: {
-    fontSize: Platform.isPad ? 16 : 14,
+    fontSize: width * 0.04,
     fontWeight: '700',
-    color: '#000',
   },
   optionDescription: {
-    fontSize: Platform.isPad ? 14 : 12,
-    color: '#666',
+    fontSize: width * 0.030,
     marginTop: 2,
   },
   optionMembers: {
-    fontSize: Platform.isPad ? 14 : 12,
-    color: '#888',
+    fontSize: width * 0.030,
     marginTop: 2,
   },
   optionCheck: {
@@ -254,25 +265,23 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     width: '100%',
-    backgroundColor: '#fffef5',
     alignItems: 'flex-end',
-    paddingHorizontal: 10,
+    paddingHorizontal: width * 0.03,
+    paddingBottom: Platform.OS === 'android' ? 10 : 20,
   },
   nextButton: {
-    backgroundColor: '#392EBD',
     borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.1,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 16,
   },
-  
   nextButtonText: {
-    color: '#fff',
-    fontSize: Platform.isPad ? 16 : 14,
+    fontSize: width * 0.04,
     fontWeight: '500',
   },
 });
+
 
 export default PostScreen;

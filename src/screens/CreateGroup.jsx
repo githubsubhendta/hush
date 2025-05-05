@@ -14,14 +14,23 @@ import {
 import {SvgXml} from 'react-native-svg';
 import {
   back_arrow_svg,
+  Selected_Svg_dark,
   SVG_not_slected,
   SVG_selected,
 } from '../utils/constant/TabSVGimage';
 import {goBack} from '../utils/NavigationUtil';
+import { useTheme } from '../context/ThemeContext';
 
 const {width, height} = Dimensions.get('window');
 
 const CreateGroup = () => {
+const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#030303' : '#fff';
+  const textColor = isDarkModeOn ? '#fff' : '#000';
+  const footerBgColor = isDarkModeOn ? '#141414' : '#FFFCF5';
+  const button_BG_COLOR = isDarkModeOn ? '#FFFFFF' : '#4B30DD';
+  const button_TEXT_COLOR = isDarkModeOn ? '#000000' : '#FFFFFF';
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [selected, setSelected] = useState(false);
@@ -44,22 +53,22 @@ const CreateGroup = () => {
         </View>
 
         <View style={{flex: 1}}>
-          <View style={styles.contentWrapper}>
+          <View style={[styles.contentWrapper, {backgroundColor}]}>
             <ScrollView
               contentContainerStyle={styles.scrollContent}
               keyboardShouldPersistTaps="handled">
-              <Text style={styles.label}>
+              <Text style={[styles.label, {color: textColor}]}>
                 Group Name <Text style={styles.required}>*</Text>
               </Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, {backgroundColor}]}
                 placeholder="Enter group name..."
                 placeholderTextColor="#CCC8BC"
                 value={name}
                 onChangeText={setName}
               />
 
-              <Text style={styles.label}>
+              <Text style={[styles.label, {color: textColor}]}>
                 Group Description & Rules <Text style={styles.required}>*</Text>
               </Text>
               <TextInput
@@ -73,21 +82,21 @@ const CreateGroup = () => {
             </ScrollView>
           </View>
 
-          <View style={styles.footerContainer}>
+          <View style={[styles.footerContainer, {backgroundColor: footerBgColor}]}>
             <TouchableOpacity
               style={styles.nsfwContainer}
               onPress={handleToggle}
               activeOpacity={0.8}>
               <Text style={styles.nsfwText}>NSFW</Text>
               <SvgXml
-                xml={selected ? SVG_selected : SVG_not_slected}
+                xml={isDarkModeOn ? (selected ? SVG_selected : Selected_Svg_dark) : (selected ? SVG_selected : SVG_not_slected)}
                 width={18}
                 height={18}
               />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.chooseImageBtn}>
-              <Text style={styles.chooseImageText}>Choose Image</Text>
+            <TouchableOpacity style={[styles.chooseImageBtn, {backgroundColor: button_BG_COLOR}]}>
+              <Text style={[styles.chooseImageText,{color:button_TEXT_COLOR}]}>Choose Image</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -141,7 +150,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   input: {
-    backgroundColor: '#fff',
+    
     borderColor: '#E4E4E4',
     borderWidth: 1,
     borderRadius: 12,
@@ -175,7 +184,7 @@ const styles = StyleSheet.create({
   },
 
   chooseImageBtn: {
-    backgroundColor: '#4B30DD',
+    // backgroundColor: '#4B30DD',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,

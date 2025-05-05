@@ -41,7 +41,7 @@ import {Easing} from 'react-native';
 import GetPremiumPopup from './GetPremiumPopup';
 import {navigate} from '../utils/NavigationUtil';
 import {useTheme} from '../context/ThemeContext';
-
+import { useModernMode} from '../context/ModerModeContext';
 const {width, height} = Dimensions.get('window');
 const isTablet = width > 600;
 
@@ -50,10 +50,11 @@ const Header = ({onTabPress}) => {
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [isNSFW, setIsNSFW] = useState(false);
   const [isBlurNSFW, setIsBlurNSFW] = useState(false);
+  const {isModernOn, toggleModernMode} = useModernMode();
 
   // const [isDarkModeOn, setIsDarkModeOn] = useState(false);
   const {isDarkModeOn,toggleTheme} = useTheme();
-  const [isModernOn, setIsModernOn] = useState(false);
+  // const [isModernOn, setIsModernOn] = useState(false);
   const slideAnim = useState(new Animated.Value(width))[0];
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -215,7 +216,7 @@ const Header = ({onTabPress}) => {
                   <View style={styles.settingItem}>
                     <Text style={[styles.settingLabel,textColorStyle]}>Modern Mode</Text>
                     <TouchableOpacity
-                      onPress={() => setIsModernOn(!isModernOn)}>
+                      onPress={toggleModernMode}>
                       <SvgXml
                         xml={
                           isModernOn ? modern_mode_on_svg : modern_mode_off_svg

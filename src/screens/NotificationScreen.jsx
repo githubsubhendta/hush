@@ -12,14 +12,17 @@ import {
 import {SvgXml} from 'react-native-svg';
 import {
   back_arrow_svg,
+  double_check_SVG,
   heart_svg,
   play_svg,
   pollIcon_svg,
   post_sign_svg,
   postIcon_svg,
   reply_svg,
+  reply_svg_dark,
   storyIcon_svg,
   vote_svg,
+  vote_svg_dark,
 } from '../utils/constant/TabSVGimage';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../context/ThemeContext';
@@ -43,14 +46,21 @@ const notifications = [
 ];
 
 const getIcon = action => {
+  const {isDarkModeOn} = useTheme();
   if (!action || typeof action !== 'string') return null;
 
   if (action.includes('replied')) {
-    return <SvgXml xml={reply_svg} width={20} height={20} />;
+    return (
+      <SvgXml
+        xml={isDarkModeOn ? reply_svg_dark : reply_svg}
+        width={20}
+        height={20}
+      />
+    );
   } else if (action.includes('liked')) {
     return <SvgXml xml={heart_svg} width={20} height={20} />;
   } else if (action.includes('voted')) {
-    return <SvgXml xml={vote_svg} width={20} height={20} />;
+    return <SvgXml xml={isDarkModeOn ?vote_svg_dark : vote_svg} width={20} height={20} />;
   }
   return null;
 };
@@ -71,29 +81,43 @@ const getRightIcon = action => {
   return null;
 };
 
-const NotificationItem = ({user = '', action = '', time = ''}) => (
-  <View style={styles.notificationItem}>
-    <View style={styles.iconContainer}>{getIcon(action)}</View>
-    <View style={styles.notificationTextContainer}>
-      <View style={styles.notificationText}>
-        <Text style={styles.username}>{user}</Text>
-        <Text> {action}</Text>
-      </View>
+const NotificationItem = ({user = '', action = '', time = ''}) => {
+  const {isDarkModeOn} = useTheme();
 
-      <Text style={styles.time}>{time}</Text>
-    </View>
-    <View style={styles.iconContainer2}>
-      <View style={styles.imageContainer}>
-        <Image source={require('../images/post1.png')} style={styles.image} />
+  const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+  const textColor = isDarkModeOn ? '#fff' : '#000';
+  const borderColor = isDarkModeOn ? '#131313' : '#FFFEF4';
+
+  return (
+    <View
+      style={[
+        styles.notificationItem,
+        {backgroundColor, borderBottomColor: borderColor, borderBottomWidth: 1},
+      ]}>
+      <View style={styles.iconContainer}>{getIcon(action)}</View>
+      <View style={styles.notificationTextContainer}>
+        <View style={styles.notificationText}>
+          <Text style={[styles.username, {color: textColor}]}>{user}</Text>
+          <Text style={{color: textColor}}> {action}</Text>
+        </View>
+        <Text style={styles.time}>{time}</Text>
       </View>
-      <View style={styles.iconWrapper}>{getRightIcon(action)}</View>
+      <View style={styles.iconContainer2}>
+        <View style={styles.imageContainer}>
+          <Image source={require('../images/post1.png')} style={styles.image} />
+        </View>
+        <View style={styles.iconWrapper}>{getRightIcon(action)}</View>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const NotificationsScreen = () => {
-const {isDarkModeOn} = useTheme();
+  const {isDarkModeOn} = useTheme();
   const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+  const textColor = isDarkModeOn ? '#fff' : '#000';
+  const borderColor = isDarkModeOn ? '#131313' : '#FFFEF4';
+  const backgroundColorStats = isDarkModeOn ? '#FFFFFF' : '#EEE8D5';
 
   const navigation = useNavigation();
 
@@ -110,7 +134,7 @@ const {isDarkModeOn} = useTheme();
           <Text style={styles.headerTitle}>Notifications</Text>
         </View>
 
-        <View style={styles.mainContainer}>
+        <View style={[styles.mainContainer, {backgroundColor}]}>
           <FlatList
             data={notifications}
             renderItem={({item}) => (
@@ -123,22 +147,27 @@ const {isDarkModeOn} = useTheme();
             keyExtractor={item => item.id}
             ListHeaderComponent={
               <View>
-                <View style={styles.statsContainer}>
-                  <View style={styles.statBox}>
+                <View style={[styles.statsContainer, {backgroundColor:backgroundColorStats}]}>
+                  <View
+                    style={[styles.statBox, {borderRightColor: borderColor}]}>
                     <SvgXml xml={post_sign_svg} width={12} height={12} />
                     <View style={styles.statTextContainer}>
                       <Text style={styles.statNumber}>24</Text>
-                      <Text style={styles.statLabel}>Posts</Text>
+                      <Text style={[styles.statLabel]}>
+                        Posts
+                      </Text>
                     </View>
                   </View>
-                  <View style={styles.statBox}>
+                  <View
+                    style={[styles.statBox, {borderRightColor: borderColor}]}>
                     <SvgXml xml={heart_svg} width={12} height={12} />
                     <View style={styles.statTextContainer}>
                       <Text style={styles.statNumber}>2721</Text>
                       <Text style={styles.statLabel}>Likes</Text>
                     </View>
                   </View>
-                  <View style={styles.statBox}>
+                  <View
+                    style={[styles.statBox, {borderRightColor: borderColor}]}>
                     <SvgXml xml={reply_svg} width={12} height={12} />
                     <View style={styles.statTextContainer}>
                       <Text style={styles.statNumber}>89</Text>
@@ -150,13 +179,19 @@ const {isDarkModeOn} = useTheme();
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    backgroundColor: '#fff',
+                    backgroundColor: 'transparent',
                     padding: 18,
+                    borderBottomColor: isDarkModeOn ? '#131313' : '#FFFEF4',
+                    borderBottomWidth: 1,
                   }}>
-                  <Text style={{fontSize: 16, fontWeight: 700}}>Activity</Text>
                   <Text
-                    style={{fontSize: 14, fontWeight: 700, color: '#FC4D2F'}}>
-                    ✔✔ Mark all Read
+                    style={{fontSize: 14, fontWeight: 700, color: textColor}}>
+                    Activity
+                  </Text>
+                  <Text
+                    style={{fontSize: 12, fontWeight: 700, color: '#FC4D2F'}}>
+                    <SvgXml xml={double_check_SVG} width={16} height={8.3} />{' '}
+                    Mark all Read
                   </Text>
                 </View>
               </View>
@@ -177,7 +212,7 @@ const styles = StyleSheet.create({
 
   mainContainer: {
     flex: 1,
-    backgroundColor: '#EDEAE3',
+    // backgroundColor: '#EDEAE3',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     overflow: 'hidden',
@@ -206,7 +241,7 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
     paddingVertical: 15,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
@@ -241,7 +276,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#FFFEF4',
+    borderBottomColor: '#131313',
     paddingHorizontal: 15,
   },
   iconContainer: {

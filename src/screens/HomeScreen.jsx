@@ -63,7 +63,7 @@ const HomeScreen = () => {
   const activeTab = activeTabs['Home'] || 'Hot';
 
   const {isDarkModeOn} = useTheme(); // Get the theme context
-  const backgroundColor = isDarkModeOn ? '#000' : '#fff'; // Set background color based on theme
+  const backgroundColor = isDarkModeOn ? '#000' : '#fff'; 
 
   // Use useMemo to prevent unnecessary re-renders
   const hotScreen = useMemo(() => <HotTabScreen />, []);

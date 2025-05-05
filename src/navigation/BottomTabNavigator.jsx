@@ -57,7 +57,7 @@ const BottomTabNavigator = () => {
   
 
   const {isDarkModeOn} = useTheme();
-  const backgroundColor = isDarkModeOn ? '#191919' : '#fff';
+  const backgroundColor = isDarkModeOn ? '#141414' : '#fff';
   const TextColorStyle = isDarkModeOn ? '#fff' : '#000';
 
   return (

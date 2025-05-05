@@ -21,6 +21,7 @@ import PostSCreen from './src/screens/PostScreen';
 import CreatePoll from './src/screens/CreatePollScreen';
 import WritePost from './src/screens/WritePostScreen';
 import { ThemeProvider } from './src/context/ThemeContext';
+import { ModernModeProvider } from './src/context/ModerModeContext';
 
 const Stack = createStackNavigator();
 
@@ -61,6 +62,7 @@ const App = () => {
   return (
     <ErrorBoundary>
       <ThemeProvider>
+        <ModernModeProvider>
       <TabProvider>
         <NavigationContainer ref={navigationRef}>
           <View style={styles.mainContainer}>
@@ -96,6 +98,7 @@ const App = () => {
           </View>
         </NavigationContainer>
       </TabProvider>
+      </ModernModeProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

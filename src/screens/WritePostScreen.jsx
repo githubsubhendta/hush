@@ -15,12 +15,21 @@ import {
 import {SvgXml} from 'react-native-svg';
 import {
   back_arrow_svg,
+  Selected_SVG,
+  Selected_Svg_dark,
   SVG_not_slected,
   SVG_selected,
 } from '../utils/constant/TabSVGimage';
 import {goBack} from '../utils/NavigationUtil';
+import {useTheme} from '../context/ThemeContext';
 
 const WritePost = () => {
+  const {isDarkModeOn} = useTheme();
+  const backgroundColor = isDarkModeOn ? '#030303' : '#FFFFFF';
+  const bottomBackgroundColor = isDarkModeOn ? '#191919' : '#fffef5';
+  const ChooseButtonColor = isDarkModeOn ? '#fff' : '#392EBD';
+  const textColor = isDarkModeOn ? '#fff' : '#000';
+
   const [isNfsw, setIsNfsw] = useState(false);
   const [isDM, setIsDM] = useState(false);
   const {width, height} = useWindowDimensions();
@@ -39,28 +48,33 @@ const WritePost = () => {
           backgroundColor="transparent"
           barStyle="light-content"
         />
-        <View style={[styles.header, {paddingTop: Platform.OS === 'android' ? 40 : 25}]}>
+        <View
+          style={[
+            styles.header,
+            {paddingTop: Platform.OS === 'android' ? 40 : 25},
+          ]}>
           <TouchableOpacity onPress={goBack}>
             <SvgXml xml={back_arrow_svg} width={30} height={30} />
           </TouchableOpacity>
-          <Text style={[styles.headerTitle, {fontSize: width * 0.045}]}>Write Post</Text>
+          <Text style={[styles.headerTitle, {fontSize: width * 0.045}]}>
+            Write Post
+          </Text>
         </View>
 
-        <View style={styles.contentWrapper}>
+        <View style={[styles.contentWrapper, {backgroundColor}]}>
           <TextInput
             placeholder="Write your thoughts here & pick a relevant image from the next step..."
-            placeholderTextColor="#66645E"
+            placeholderTextColor={textColor}
             style={[
               styles.input,
               {
+                color: textColor,
                 width: width * 0.9,
                 fontSize: width * 0.07,
               },
             ]}
             multiline
             numberOfLines={10}
-            // maxLength={500}
-            // lineHeight={height * 50 / 100}
             fontWeight="700"
             selectionColor="#392EBD"
             textAlign="center"
@@ -68,27 +82,53 @@ const WritePost = () => {
           />
         </View>
 
-        <View style={styles.bottomBar}>
-          <View style={{flexDirection: 'row', alignItems: 'center', columnGap: 10}}>
+        <View
+          style={[styles.bottomBar, {backgroundColor: bottomBackgroundColor}]}>
+          <View
+            style={{flexDirection: 'row', alignItems: 'center', columnGap: 10}}>
             <TouchableOpacity
               style={styles.nsfwContainer}
               onPress={handleToggle}
               activeOpacity={0.8}>
               <Text style={styles.nsfwText}>NSFW</Text>
-              <SvgXml xml={isNfsw ? SVG_selected : SVG_not_slected} width={18} height={18} />
+              <SvgXml
+                xml={
+                  isNfsw
+                    ? isDarkModeOn
+                      ? SVG_selected
+                      : Selected_SVG
+                    : isDarkModeOn
+                    ? Selected_Svg_dark
+                    : SVG_not_slected
+                }
+                width={18}
+                height={18}
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.nsfwContainer}
               onPress={handleDMToggle}
               activeOpacity={0.8}>
-              <Text style={styles.nsfwText}>DM</Text>
-              <SvgXml xml={isDM ? SVG_selected : SVG_not_slected} width={18} height={18} />
+              <Text style={[styles.nsfwText,{color: isDarkModeOn ? '#FFFFFF' :'#FF3E3E'}]}>DM</Text>
+              <SvgXml
+                xml={
+                  isDM
+                    ? isDarkModeOn
+                      ? SVG_selected
+                      : Selected_SVG
+                    : isDarkModeOn
+                    ? Selected_Svg_dark
+                    : SVG_not_slected
+                }
+                width={18}
+                height={18}
+              />
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.nextButton} onPress={() => {}}>
-            <Text style={styles.nextButtonText}>Choose Image</Text>
+          <TouchableOpacity style={[styles.nextButton,{backgroundColor:ChooseButtonColor}]} onPress={() => {}}>
+            <Text style={[styles.nextButtonText,{color:isDarkModeOn ? '#000' : '#fff'}]}>Choose Image</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -99,13 +139,12 @@ const WritePost = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   background: {
     flex: 1,
   },
   header: {
-    height: 100,
+    height: 110,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -117,7 +156,6 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    backgroundColor: '#fff',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     justifyContent: 'center',
@@ -128,13 +166,11 @@ const styles = StyleSheet.create({
     padding: 10,
     lineHeight: 30,
     fontSize: 24,
-    color: '#000',
     textAlign: 'center',
   },
   bottomBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#FFFCF5',
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
@@ -156,7 +192,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 16,
+    marginVertical: 10,
   },
   nextButtonText: {
     color: '#fff',
