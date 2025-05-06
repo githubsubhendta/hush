@@ -10,8 +10,6 @@ import {
   Animated,
   Pressable,
   Dimensions,
-  ImageBackground,
-  StatusBar,
   SafeAreaView,
   TouchableWithoutFeedback,
 } from 'react-native';

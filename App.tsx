@@ -22,6 +22,7 @@ import CreatePoll from './src/screens/CreatePollScreen';
 import WritePost from './src/screens/WritePostScreen';
 import { ThemeProvider } from './src/context/ThemeContext';
 import { ModernModeProvider } from './src/context/ModerModeContext';
+import StoryPostDetailScreen from './src/screens/storyScreens/StoryPostDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -92,8 +93,7 @@ const App = () => {
               <Stack.Screen name="PostScreen" component={PostSCreen} />
               <Stack.Screen name="WritePost" component={WritePost} />
               <Stack.Screen name="CreatePoll" component={CreatePoll} />
-
-
+              <Stack.Screen name="StoryPostDetail" component={StoryPostDetailScreen} />
             </Stack.Navigator>
           </View>
         </NavigationContainer>
