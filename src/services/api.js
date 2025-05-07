@@ -4,6 +4,8 @@ import { getTokenFromStorage } from './auth'; // Ensure this is implemented
 const API_BASE_URL = 'https://hush-trending-service.onrender.com';
 const API_BASE_URL_GLOBAL = 'https://hush-post-service.onrender.com';
 
+
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
@@ -68,6 +70,10 @@ export const TrendingPosts = {
 };
 
 export const GlobalPosts = {
-  getGlobalPosts: (params) => globalApi.get('/api/posts', { params }),
+  getGlobalPosts: (params) => globalApi.get('api/posts/global', { params }),
 };
+
+  export const WatchPosts = {
+    getWatchPosts:(params) => globalApi.get('/api/watch', { params }),
+  }
 
