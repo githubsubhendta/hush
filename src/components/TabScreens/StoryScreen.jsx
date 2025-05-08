@@ -7,6 +7,7 @@
 //   TouchableOpacity,
 //   FlatList,
 //   useWindowDimensions,
+//   Pressable,
 // } from 'react-native';
 // import LinearGradient from 'react-native-linear-gradient';
 // import {useTheme} from '../../context/ThemeContext';
@@ -15,20 +16,21 @@
 //   avatar_svg,
 //   block_user_svg,
 //   chat_icon_white,
-//   Flag_SVG,
 //   heart_svg2,
 //   menu_svg_white,
 //   share_svg,
 //   share_svg_dark,
+//   Flag_SVG,
 // } from '../../utils/constant/TabSVGimage';
 // import CustomActionModal from '../CustomActionModal';
+// import {navigate} from '../../utils/NavigationUtil';
 
 // const posts = [
 //   {
 //     id: '1',
 //     username: 'user_1234',
 //     time: '1h ago',
-//     nsfw: true,
+//     nsfw: false,
 //     title: 'The Club Owner Argues why',
 //     description:
 //       'We were having a blast at the club, dancing and laughing with friends, when suddenly a stern-looking person approached us. "You need to leave now," they said, their voice cutting through the music. Confused, we exchanged glances, unsure of what we had done wrong. Just as we were about to protest, the lights flickered and the music stopped. A hush fell over the crowd, and then we heard a loud crash from the back of the club. Our hearts raced as we realized something unexpected was unfolding, something we never could have imagined happening on such a fun night.',
@@ -38,7 +40,7 @@
 //   },
 //   {
 //     id: '2',
-//     username: 'user_1234',
+//     username: 'user_5678',
 //     time: '1h ago',
 //     nsfw: true,
 //     title: 'The Club Owner Argues why',
@@ -50,29 +52,26 @@
 //   },
 //   {
 //     id: '3',
-//     username: 'user_1234',
+//     username: 'user_9101',
 //     time: '1h ago',
 //     nsfw: true,
 //     title: 'The Club Owner Argues why',
 //     description:
-//       'We were having a blast at the club, dancing and laughing with friends, when suddenly a stern-looking person approached us...',
+//       'We were having a blast at the club, dancing and laughing with friends, when suddenly a stern-looking person approached us...As I looked at the address, I realized it was quite far from where we were standing. I could see the worry etched on his face, and I knew I had to do more than just give him directions. I offered to walk with him to the nearest subway station, which would take him closer to his destination. He seemed relieved and grateful, and we started walking together. ',
 //     image: require('../../images/post1.png'),
 //     likes: 22,
 //     comments: 14,
 //   },
 // ];
 
-// const StoryScreen = () => {
+// const StoryScreen = ({navigation}) => {
 //   const [isModalVisible, setIsModalVisible] = useState(false);
-
 //   const {isDarkModeOn} = useTheme();
 //   const backgroundColor = isDarkModeOn ? '#030303' : '#fff';
 //   const textColor = isDarkModeOn ? '#fff' : '#000';
 //   const ModalBackgroundColor = isDarkModeOn ? '#191919' : '#fff';
 //   const ModalTextColor = isDarkModeOn ? '#fff' : '#000';
 //   const {width} = useWindowDimensions();
-
-//   // const []
 
 //   const cardWidth = width * 0.92;
 //   const cardHeight = width * 0.98;
@@ -91,60 +90,75 @@
 //             <Text style={[styles.time, {color: textColor}]}>{item.time}</Text>
 //           </View>
 //         </View>
-
-//         <ImageBackground
-//           source={item.image}
-//           style={[styles.imageCard, {width: cardWidth, height: cardHeight}]}
-//           imageStyle={{borderRadius: 16}}>
-//           <View style={styles.topRow}>
-//             {item.nsfw && (
-//               <View style={styles.nsfwTag}>
-//                 <Text style={styles.nsfwText}>NSFW</Text>
-//               </View>
-//             )}
-//             <TouchableOpacity
-//               style={styles.menuIcon}
-//               onPress={() => setIsModalVisible(true)}>
-//               <SvgXml xml={menu_svg_white} width="20" height="10" />
-//             </TouchableOpacity>
-//           </View>
-
-//           <LinearGradient
-//             colors={['transparent', 'rgba(0, 0, 0, 0.7)', 'rgba(0,0,0,0.7)']}
-//             style={styles.bottomShadow}>
-//             <View style={styles.overlay}>
-//               <View style={{paddingBottom: 20}}>
-//                 <Text style={styles.title}>{item.title}</Text>
-//                 {item.description && (
-//                   <>
-//                     <Text style={styles.description} numberOfLines={5}>
-//                       {item.description}
-//                     </Text>
-//                     <TouchableOpacity style={styles.readMoreBtn}>
-//                       <Text style={styles.readMoreText}>READ MORE</Text>
-//                     </TouchableOpacity>
-//                   </>
-//                 )}
-//               </View>
-//               {item.likes !== undefined && (
-//                 <View style={styles.reactions}>
-//                   <SvgXml xml={heart_svg2} width="18" height="17" />
-//                   <Text style={styles.reactionText}>{item.likes}</Text>
-//                   <SvgXml
-//                     xml={chat_icon_white}
-//                     width="18"
-//                     height="17"
-//                     style={{marginLeft: 10}}
-//                   />
-//                   <Text style={styles.reactionText}>{item.comments}</Text>
+//         <Pressable
+//           onPress={() =>
+//             navigate('StoryPostDetail', {
+//               post: item,
+//               nsfw: item.nsfw,
+//             })
+//           }>
+//           <ImageBackground
+//             source={item.image}
+//             style={[styles.imageCard, {width: cardWidth, height: cardHeight}]}
+//             imageStyle={{borderRadius: 16}}>
+//             <View style={styles.topRow}>
+//               {item.nsfw && (
+//                 <View style={styles.nsfwTag}>
+//                   <Text style={styles.nsfwText}>NSFW</Text>
 //                 </View>
 //               )}
+//               <View style={{flex: 1}} />
+//               <TouchableOpacity
+//                 style={styles.menuIcon}
+//                 onPress={() => setIsModalVisible(true)}>
+//                 <SvgXml xml={menu_svg_white} width="20" height="10" />
+//               </TouchableOpacity>
 //             </View>
-//           </LinearGradient>
-//         </ImageBackground>
+
+//             <LinearGradient
+//               colors={['transparent', 'rgba(0, 0, 0, 0.7)', 'rgba(0,0,0,0.7)']}
+//               style={styles.bottomShadow}>
+//               <View style={styles.overlay}>
+//                 <View style={{paddingBottom: 20}}>
+//                   <Text style={styles.title}>{item.title}</Text>
+//                   {item.description && (
+//                     <>
+//                       <Text style={styles.description} numberOfLines={5}>
+//                         {item.description}
+//                       </Text>
+//                       <TouchableOpacity
+//                         style={styles.readMoreBtn}
+//                         onPress={() =>
+//                           navigate('StoryPostDetail', {
+//                             post: item,
+//                             nsfw: item.nsfw,
+//                           })
+//                         }>
+//                         <Text style={styles.readMoreText}>READ MORE</Text>
+//                       </TouchableOpacity>
+//                     </>
+//                   )}
+//                 </View>
+//                 {item.likes !== undefined && (
+//                   <View style={styles.reactions}>
+//                     <SvgXml xml={heart_svg2} width="18" height="17" />
+//                     <Text style={styles.reactionText}>{item.likes}</Text>
+//                     <SvgXml
+//                       xml={chat_icon_white}
+//                       width="18"
+//                       height="17"
+//                       style={{marginLeft: 10}}
+//                     />
+//                     <Text style={styles.reactionText}>{item.comments}</Text>
+//                   </View>
+//                 )}
+//               </View>
+//             </LinearGradient>
+//           </ImageBackground>
+//         </Pressable>
 //       </View>
 //     ),
-//     [textColor, cardWidth, cardHeight],
+//     [textColor, cardWidth, cardHeight, navigation],
 //   );
 
 //   return (
@@ -202,7 +216,6 @@
 //     bottom: 0,
 //     left: 0,
 //     right: 0,
-//     // paddingTop: 30,
 //     paddingBottom: 20,
 //     borderBottomLeftRadius: 16,
 //     borderBottomRightRadius: 16,
@@ -252,7 +265,6 @@
 //     fontWeight: 'bold',
 //   },
 //   imageCard: {
-//     // height: 260,
 //     borderRadius: 16,
 //     overflow: 'hidden',
 //     justifyContent: 'center',
@@ -261,14 +273,13 @@
 //   overlay: {
 //     backgroundColor: 'rgba(0,0,0,0.2)',
 //     paddingHorizontal: 16,
-//     // paddingVertical: 10,
 //     borderBottomLeftRadius: 16,
 //     borderBottomRightRadius: 16,
 //   },
 //   title: {
 //     fontSize: 22,
 //     fontWeight: '700',
-//     fontFamily: ' Arial',
+//     fontFamily: 'Arial',
 //     color: 'white',
 //     textAlign: 'center',
 //     marginBottom: 8,
@@ -346,8 +357,6 @@
 
 // export default StoryScreen;
 
-
-
 import React, {useCallback, useState} from 'react';
 import {
   View,
@@ -357,6 +366,7 @@ import {
   TouchableOpacity,
   FlatList,
   useWindowDimensions,
+  Pressable,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useTheme} from '../../context/ThemeContext';
@@ -372,14 +382,14 @@ import {
   Flag_SVG,
 } from '../../utils/constant/TabSVGimage';
 import CustomActionModal from '../CustomActionModal';
-import { navigate } from '../../utils/NavigationUtil';
+import {navigate} from '../../utils/NavigationUtil';
 
 const posts = [
   {
     id: '1',
     username: 'user_1234',
     time: '1h ago',
-    nsfw: true,
+    nsfw: false,
     title: 'The Club Owner Argues why',
     description:
       'We were having a blast at the club, dancing and laughing with friends, when suddenly a stern-looking person approached us. "You need to leave now," they said, their voice cutting through the music. Confused, we exchanged glances, unsure of what we had done wrong. Just as we were about to protest, the lights flickered and the music stopped. A hush fell over the crowd, and then we heard a loud crash from the back of the club. Our hearts raced as we realized something unexpected was unfolding, something we never could have imagined happening on such a fun night.',
@@ -396,8 +406,8 @@ const posts = [
     description:
       'We were having a blast at the club, dancing and laughing with friends, when suddenly a stern-looking person approached us...',
     image: require('../../images/post1.png'),
-    likes: 22,
-    comments: 14,
+    likes: 25,
+    comments: 18,
   },
   {
     id: '3',
@@ -406,10 +416,10 @@ const posts = [
     nsfw: true,
     title: 'The Club Owner Argues why',
     description:
-      'We were having a blast at the club, dancing and laughing with friends, when suddenly a stern-looking person approached us...',
+      'We were having a blast at the club, dancing and laughing with friends, when suddenly a stern-looking person approached us...As I looked at the address, I realized it was quite far from where we were standing. I could see the worry etched on his face, and I knew I had to do more than just give him directions. I offered to walk with him to the nearest subway station, which would take him closer to his destination. He seemed relieved and grateful, and we started walking together. ',
     image: require('../../images/post1.png'),
-    likes: 22,
-    comments: 14,
+    likes: 20,
+    comments: 11,
   },
 ];
 
@@ -426,7 +436,7 @@ const StoryScreen = ({navigation}) => {
   const cardHeight = width * 0.98;
 
   const renderPost = useCallback(
-    ({item}) => (
+    ({item,index}) => (
       <View style={styles.postContainer}>
         <View style={styles.userRow}>
           <View style={styles.avatar}>
@@ -439,59 +449,76 @@ const StoryScreen = ({navigation}) => {
             <Text style={[styles.time, {color: textColor}]}>{item.time}</Text>
           </View>
         </View>
-
-        <ImageBackground
-          source={item.image}
-          style={[styles.imageCard, {width: cardWidth, height: cardHeight}]}
-          imageStyle={{borderRadius: 16}}>
-          <View style={styles.topRow}>
-            {item.nsfw && (
-              <View style={styles.nsfwTag}>
-                <Text style={styles.nsfwText}>NSFW</Text>
-              </View>
-            )}
-            <TouchableOpacity
-              style={styles.menuIcon}
-              onPress={() => setIsModalVisible(true)}>
-              <SvgXml xml={menu_svg_white} width="20" height="10" />
-            </TouchableOpacity>
-          </View>
-
-          <LinearGradient
-            colors={['transparent', 'rgba(0, 0, 0, 0.7)', 'rgba(0,0,0,0.7)']}
-            style={styles.bottomShadow}>
-            <View style={styles.overlay}>
-              <View style={{paddingBottom: 20}}>
-                <Text style={styles.title}>{item.title}</Text>
-                {item.description && (
-                  <>
-                    <Text style={styles.description} numberOfLines={5}>
-                      {item.description}
-                    </Text>
-                    <TouchableOpacity
-                      style={styles.readMoreBtn}
-                      onPress={() => navigate('StoryPostDetail', {post: item})}>
-                      <Text style={styles.readMoreText}>READ MORE</Text>
-                    </TouchableOpacity>
-                  </>
-                )}
-              </View>
-              {item.likes !== undefined && (
-                <View style={styles.reactions}>
-                  <SvgXml xml={heart_svg2} width="18" height="17" />
-                  <Text style={styles.reactionText}>{item.likes}</Text>
-                  <SvgXml
-                    xml={chat_icon_white}
-                    width="18"
-                    height="17"
-                    style={{marginLeft: 10}}
-                  />
-                  <Text style={styles.reactionText}>{item.comments}</Text>
+        <Pressable
+          onPress={() =>
+            navigate('StoryPostDetail', {
+              post: item,
+              nsfw: item.nsfw,
+              posts, // Pass the full posts array
+              currentIndex: index, // Pass the current post index
+            })
+          }>
+          <ImageBackground
+            source={item.image}
+            style={[styles.imageCard, {width: cardWidth, height: cardHeight}]}
+            imageStyle={{borderRadius: 16}}>
+            <View style={styles.topRow}>
+              {item.nsfw && (
+                <View style={styles.nsfwTag}>
+                  <Text style={styles.nsfwText}>NSFW</Text>
                 </View>
               )}
+              <View style={{flex: 1}} />
+              <TouchableOpacity
+                style={styles.menuIcon}
+                onPress={() => setIsModalVisible(true)}>
+                <SvgXml xml={menu_svg_white} width="20" height="10" />
+              </TouchableOpacity>
             </View>
-          </LinearGradient>
-        </ImageBackground>
+
+            <LinearGradient
+              colors={['transparent', 'rgba(0, 0, 0, 0.7)', 'rgba(0,0,0,0.7)']}
+              style={styles.bottomShadow}>
+              <View style={styles.overlay}>
+                <View style={{paddingBottom: 20}}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  {item.description && (
+                    <>
+                      <Text style={styles.description} numberOfLines={5}>
+                        {item.description}
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.readMoreBtn}
+                        onPress={() =>
+                          navigate('StoryPostDetail', {
+                            post: item,
+                            nsfw: item.nsfw,
+                            posts, // Pass the full posts array
+                            currentIndex: index, // Pass the current post index
+                          })
+                        }>
+                        <Text style={styles.readMoreText}>READ MORE</Text>
+                      </TouchableOpacity>
+                    </>
+                  )}
+                </View>
+                {item.likes !== undefined && (
+                  <View style={styles.reactions}>
+                    <SvgXml xml={heart_svg2} width="18" height="17" />
+                    <Text style={styles.reactionText}>{item.likes}</Text>
+                    <SvgXml
+                      xml={chat_icon_white}
+                      width="18"
+                      height="17"
+                      style={{marginLeft: 10}}
+                    />
+                    <Text style={styles.reactionText}>{item.comments}</Text>
+                  </View>
+                )}
+              </View>
+            </LinearGradient>
+          </ImageBackground>
+        </Pressable>
       </View>
     ),
     [textColor, cardWidth, cardHeight, navigation],
@@ -692,3 +719,4 @@ const styles = StyleSheet.create({
 });
 
 export default StoryScreen;
+

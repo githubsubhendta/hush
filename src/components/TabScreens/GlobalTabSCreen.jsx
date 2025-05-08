@@ -112,11 +112,11 @@ const GlobalTabScreen = () => {
   }
 
   return (
-    <ImageBackground
-      source={require('../../images/headerBg.png')}
-      style={{flex: 1}}
-      resizeMode="cover"
-      imageStyle={{opacity: 1}}>
+    // <ImageBackground
+    //   source={require('../../images/headerBg.png')}
+    //   style={{flex: 1}}
+    //   resizeMode="cover"
+    //   imageStyle={{opacity: 1}}>
       <View style={[styles.container, {backgroundColor}]}>
         <FlatList
           data={posts}
@@ -136,7 +136,7 @@ const GlobalTabScreen = () => {
           showsHorizontalScrollIndicator={false}
         />
       </View>
-    </ImageBackground>
+    // </ImageBackground>
   );
 };
 

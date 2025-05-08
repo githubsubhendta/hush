@@ -288,10 +288,10 @@ const HotTabScreen = () => {
   }
 
   return (
-    <ImageBackground
-      source={require('../../images/headerBg.png')}
-      style={styles.background}
-      resizeMode="cover">
+    // <ImageBackground
+    //   source={require('../../images/headerBg.png')}
+    //   style={styles.background}
+    //   resizeMode="cover">
       <View style={[styles.container, {backgroundColor}]}>
         <FlatList
           data={posts}
@@ -311,7 +311,7 @@ const HotTabScreen = () => {
           showsHorizontalScrollIndicator={false}
         />
       </View>
-    </ImageBackground>
+    // </ImageBackground>
   );
 };
 
