@@ -333,6 +333,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
   offlineContainer: {
     flex: 1,

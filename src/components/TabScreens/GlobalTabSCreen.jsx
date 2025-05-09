@@ -28,7 +28,7 @@ const GlobalTabScreen = () => {
   const {isModernOn} = useModernMode();
   const {isDarkModeOn} = useTheme();
   const backgroundColor = isDarkModeOn ? '#000' : '#fff';
-  const textColor = isDarkModeOn ? '#fff' : '#000';
+  // const textColor = isDarkModeOn ? '#fff' : '#000';
 
   const fetchPosts = useCallback(
     async (pageNumber, isInitial = false) => {
@@ -117,25 +117,28 @@ const GlobalTabScreen = () => {
     //   style={{flex: 1}}
     //   resizeMode="cover"
     //   imageStyle={{opacity: 1}}>
-      <View style={[styles.container, {backgroundColor}]}>
-        <FlatList
-          data={posts}
-          numColumns={isModernOn ? 1 : 2}
-          renderItem={renderItem}
-          keyExtractor={item => item.id?.toString() || Math.random().toString()}
-          key={isModernOn ? 'singleColumn' : 'doubleColumn'}
-          contentContainerStyle={styles.list}
-          onEndReached={() => fetchPosts(page)}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={
-            isFetchingMore ? (
-              <ActivityIndicator size="small" color="#E63946" />
-            ) : null
-          }
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
+    <View style={[styles.container, {backgroundColor}]}>
+      <FlatList
+        data={posts}
+        numColumns={isModernOn ? 1 : 2}
+        renderItem={renderItem}
+        keyExtractor={item => item.id?.toString() || Math.random().toString()}
+        key={isModernOn ? 'singleColumn' : 'doubleColumn'}
+        contentContainerStyle={styles.list}
+        onEndReached={() => fetchPosts(page)}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isFetchingMore ? (
+            <ActivityIndicator size="small" color="#E63946" />
+          ) : null
+        }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={50}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      />
+    </View>
     // </ImageBackground>
   );
 };
@@ -159,6 +162,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
   offlineContainer: {
     flex: 1,

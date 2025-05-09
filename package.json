@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-community/checkbox": "^0.5.17",
+    "@react-native-community/geolocation": "^3.4.0",
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native-community/slider": "^4.5.6",
     "@react-navigation/bottom-tabs": "^7.3.1",
@@ -25,6 +26,7 @@
     "react-native-applovin-max": "^9.1.0",
     "react-native-dev-menu": "^4.1.1",
     "react-native-elements": "^3.4.3",
+    "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^2.24.0",
     "react-native-image-picker": "^8.2.0",
     "react-native-linear-gradient": "^2.8.3",

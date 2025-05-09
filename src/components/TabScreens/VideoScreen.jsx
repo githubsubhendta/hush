@@ -768,12 +768,10 @@ import { WatchPosts } from '../../services/api';
 const { width, height } = Dimensions.get('window');
 const videoHeight = (width * 19) / 16;
 
-// Utility function to detect video source and convert Instagram URLs to embed format
 const getVideoSource = (url) => {
   console.log('Processing URL:', url);
   if (!url) return { type: 'unknown', url };
 
-  // YouTube URL detection
   const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
   const youtubeMatch = url.match(youtubeRegex);
   if (youtubeMatch) {
@@ -781,16 +779,14 @@ const getVideoSource = (url) => {
     return { type: 'youtube', videoId: youtubeMatch[1] };
   }
 
-  // Instagram URL detection
   const instagramRegex = /instagram\.com/;
   if (instagramRegex.test(url)) {
     console.log('Instagram URL detected');
-    const postIdMatch = url.match(/\/p\/([^\/]+)/);
+    const postIdMatch = url.match(/\/p\/([^/]+)/);
     const embedUrl = postIdMatch ? `https://www.instagram.com/p/${postIdMatch[1]}/embed` : url;
     return { type: 'instagram', url: embedUrl };
   }
 
-  // Direct video file detection
   const videoFileRegex = /\.(mp4|mov|avi|webm)$/i;
   if (videoFileRegex.test(url)) {
     console.log('Direct video URL detected');
@@ -801,25 +797,22 @@ const getVideoSource = (url) => {
   return { type: 'unknown', url };
 };
 
-// Single video item component
 const VideoItem = ({ post, isVisible, onTap }) => {
   const { isDarkModeOn } = useTheme();
   const ModalBackgroundColor = isDarkModeOn ? '#191919' : '#fff';
   const ModalTextColor = isDarkModeOn ? '#fff' : '#000';
   const videoRef = useRef(null);
-  const [paused, setPaused] = useState(!isVisible); // Pause when not visible
+  const [paused, setPaused] = useState(!isVisible);
   const [muted, setMuted] = useState(false);
   const [buffering, setBuffering] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const videoSource = getVideoSource(post?.mediaUrl);
 
-  // Update paused state based on visibility
   useEffect(() => {
     setPaused(!isVisible);
   }, [isVisible]);
 
-  // Function to format createdAt to "time ago"
   const getTimeAgo = (createdAt) => {
     if (!createdAt) return 'Just now';
     const now = new Date();
@@ -836,14 +829,18 @@ const VideoItem = ({ post, isVisible, onTap }) => {
 
   return (
     <View style={styles.container}>
-      {/* NSFW Tag and Menu */}
+      {/* Header with NSFW tag and menu */}
       <View style={styles.headerContainer}>
         {post?.isNsfw && (
           <View style={styles.nsfwTag}>
             <Text style={styles.nsfwText}>NSFW</Text>
           </View>
         )}
-        <TouchableOpacity onPress={() => setIsModalVisible(true)} style={styles.menuButton}>
+        
+        <TouchableOpacity 
+          onPress={() => setIsModalVisible(true)} 
+          style={styles.menuButton}
+        >
           <SvgXml
             xml={menu_svg_dark}
             width={width * 0.05}
@@ -851,6 +848,13 @@ const VideoItem = ({ post, isVisible, onTap }) => {
           />
         </TouchableOpacity>
       </View>
+
+      {/* Caption text - positioned above the video like in the image */}
+      {post?.text && (
+        <Text style={styles.caption}>
+          {post.text}
+        </Text>
+      )}
 
       {/* Video Player */}
       <View style={styles.videoContainer}>
@@ -899,10 +903,7 @@ const VideoItem = ({ post, isVisible, onTap }) => {
         )}
       </View>
 
-      {/* Caption */}
-      {post?.text && <Text style={styles.caption}>{post.text}</Text>}
-
-      {/* Bottom Actions */}
+      {/* User info and actions */}
       <View style={styles.bottomContainer}>
         <View style={styles.userInfo}>
           <View style={styles.avatar}>
@@ -935,7 +936,6 @@ const VideoItem = ({ post, isVisible, onTap }) => {
         </View>
       </View>
 
-      {/* Modal */}
       <CustomActionModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
@@ -971,7 +971,7 @@ const VideoScreen = () => {
           response?.data?.posts ||
           response?.data ||
           response?.posts ||
-          (Array.isArray(response) ? response : []);
+          (Array.isArray(response) ? response : [])
         if (!Array.isArray(receivedPosts)) {
           throw new Error('Received posts data is not an array');
         }
@@ -986,14 +986,12 @@ const VideoScreen = () => {
     fetchPosts();
   }, []);
 
-  // Handle scroll to update current index
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
     }
   }).current;
 
-  // Render loading state
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -1005,7 +1003,6 @@ const VideoScreen = () => {
     );
   }
 
-  // Render error state
   if (error) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -1026,13 +1023,11 @@ const VideoScreen = () => {
     );
   }
 
-  // Render empty state
   if (!loading && posts.length === 0) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={[styles.container, styles.centerContent]}>
           <Text style={styles.emptyText}>No posts available</Text>
-
         </View>
       </SafeAreaView>
     );
@@ -1070,9 +1065,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    marginBottom: 20,
-    justifyContent: 'center', // Center the content vertically
-    alignItems: 'center', // Center the content horizontally
+    // marginBottom: 20,
   },
   safeArea: {
     flex: 1,
@@ -1089,7 +1082,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
-    width: '100%', // Ensure the header takes full width
+    width: '100%',
   },
   nsfwTag: {
     backgroundColor: '#FF0000',
@@ -1112,6 +1105,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     backgroundColor: '#000',
+    marginVertical: 10,
   },
   video: {
     width: '100%',
@@ -1126,16 +1120,16 @@ const styles = StyleSheet.create({
   caption: {
     color: '#fff',
     fontSize: width * 0.038,
-    marginVertical: 12,
+    marginBottom: 12,
     lineHeight: width * 0.05,
-    width: '100%', // Ensure the caption takes full width
+    width: '100%',
   },
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 8,
-    width: '100%', // Ensure the bottom container takes full width
+    width: '100%',
   },
   userInfo: {
     flexDirection: 'row',
