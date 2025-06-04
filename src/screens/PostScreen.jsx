@@ -186,11 +186,11 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   header: {
-    height: height * 0.12,
+    height: height * 0.14,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: width * 0.04,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 25,
+    paddingTop: Platform.OS === 'android' ? height * 0.04 : height * 0.04,
   },
   headerTitle: {
     color: '#fff',

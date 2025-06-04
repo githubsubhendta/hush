@@ -4,6 +4,7 @@ import {getTokenFromStorage} from './auth'; // Ensure this is implemented
 const API_BASE_URL = 'https://hush-trending-service.onrender.com';
 const API_BASE_URL_GLOBAL = 'https://hush-post-service.onrender.com';
 
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
@@ -76,14 +77,17 @@ export const WatchPosts = {
 };
 
 export const LocalPosts = {
-  getLocalPosts: ({
-    page,
-    limit,
-    latitude = 34.42985401,
-    longitude = -118.5238887,
-    range = 10,
-  }) =>
+  getLocalPosts: ({ page, limit, latitude, longitude, range }) =>
     api.get('/api/local/posts', {
-      params: {page, limit, latitude, longitude, range},
+      params: { page, limit, latitude, longitude, range },
     }),
 };
+
+export const StoryGetApi = {
+  getStories:params => globalApi.get('/api/stories', {params}),
+}
+
+export const PollGetApi = {
+  getPolls :params => globalApi.get('/api/polls', {params}),
+}
+  

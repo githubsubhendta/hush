@@ -78,36 +78,6 @@ const CustomActionModal = ({
   );
 };
 
-// const styles = StyleSheet.create({
-//   modalBackdrop: {
-//     flex: 1,
-//     justifyContent: 'flex-end',
-//     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-//   },
-//   modalOverlay: {
-//     borderTopLeftRadius: 16,
-//     borderTopRightRadius: 16,
-//     paddingVertical: 30,
-//     paddingHorizontal: 15,
-//   },
-//   modalContent: {
-//     paddingVertical: 10,
-//   },
-//   modalOption: {
-//     fontSize: 16,
-//     paddingVertical: 5,
-//   },
-//   modalOptionDanger: {
-//     fontSize: 16,
-//     color: 'red',
-//     paddingVertical: 12,
-//   },
-//   buttons: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     paddingVertical: 5,
-//     gap: 8,
-//   },
-// });
+
 
 export default CustomActionModal;

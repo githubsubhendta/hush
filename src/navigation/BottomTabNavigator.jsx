@@ -1,5 +1,3 @@
-
-
 import React, {useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -23,7 +21,7 @@ import ChatScreen from '../screens/ChatScreen.jsx';
 import GroupScreen from '../screens/GroupScreen.jsx';
 import WatchScreen from '../screens/WatchScreen.jsx';
 import {useTheme} from '../context/ThemeContext.js';
-
+import WatchStackNavigator from './WatchStackNavigator.jsx';
 
 const Tab = createBottomTabNavigator();
 const {width} = Dimensions.get('window');
@@ -49,12 +47,10 @@ const BottomTabNavigator = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
   const toggleModal = () => {
     console.log('Toggling modal');
     setModalVisible(prev => !prev);
   };
-  
 
   const {isDarkModeOn} = useTheme();
   const backgroundColor = isDarkModeOn ? '#141414' : '#fff';
@@ -102,7 +98,6 @@ const BottomTabNavigator = () => {
             shadowOffset: {width: 0, height: -2},
             shadowOpacity: 0.1,
             shadowRadius: 5,
-            
           },
           tabBarLabel: route.name,
           tabBarLabelStyle: {
@@ -129,7 +124,7 @@ const BottomTabNavigator = () => {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Watch"
           component={WatchScreen}
           options={{
@@ -137,9 +132,16 @@ const BottomTabNavigator = () => {
               <TouchableOpacity {...props} activeOpacity={1} />
             ),
           }}
-        />
+        /> */} 
 
-        <Tab.Screen
+        <Tab.Screen name="Watch" component={WatchStackNavigator} options={{
+            tabBarButton: props => (
+              <TouchableOpacity {...props} activeOpacity={1} />
+            ),
+          }} />
+
+
+        {/* <Tab.Screen
           name="Plus"
           component={() => null} 
           options={{
@@ -150,7 +152,17 @@ const BottomTabNavigator = () => {
               />
             ),
           }}
-        />
+        /> */}
+
+        <Tab.Screen
+          name="Plus"
+          options={{
+            tabBarButton: () => (
+              <CustomPlusButton isActive={modalVisible} onPress={toggleModal} />
+            ),
+          }}>
+          {() => null}
+        </Tab.Screen>
 
         <Tab.Screen
           name="Groups"
@@ -173,10 +185,7 @@ const BottomTabNavigator = () => {
       </Tab.Navigator>
 
       {modalVisible && (
-        <PlusScreen
-          visible={modalVisible}
-          onClose={toggleModal}
-        />
+        <PlusScreen visible={modalVisible} onClose={toggleModal} />
       )}
     </View>
   );
@@ -186,7 +195,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
-    
   },
   plusButton: {
     paddingTop: 3,

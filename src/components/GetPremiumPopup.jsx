@@ -637,7 +637,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    // backgroundColor: 'rgba(0, 0, 0, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
     bottom: 0,

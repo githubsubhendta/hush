@@ -45,7 +45,7 @@ const formatLikes = count => {
 export default function PostItems({image, text, likes, comment, time, tag}) {
   const [error, setError] = useState(false);
 
-  const {isDarkModeOn} = useTheme(); // Get the theme context
+  const {isDarkModeOn} = useTheme(); 
   const textColor = isDarkModeOn ? '#fff' : '#000';
   return (
     <View style={styles.card}>
@@ -83,7 +83,9 @@ export default function PostItems({image, text, likes, comment, time, tag}) {
             height={14}
           />
           <Text style={[styles.commentText, {color: textColor}]}>
-            {comment}
+            {comment >= 1000
+              ? (comment / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
+              : comment || 0}
           </Text>
         </View>
 
