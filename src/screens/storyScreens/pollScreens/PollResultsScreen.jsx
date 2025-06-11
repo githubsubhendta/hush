@@ -394,6 +394,7 @@ import {
   SafeAreaView,
   Dimensions,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import {useTheme} from '../../../context/ThemeContext';
 import StoryHeader from '../../../components/StoryHeader';
@@ -414,6 +415,7 @@ import {
   Star_svg,
 } from '../../../utils/constant/TabSVGimage';
 import CustomActionModal from '../../../components/CustomActionModal';
+import CommentInput from '../../../components/CommentInpuBox';
 
 const {width, height} = Dimensions.get('window');
 
@@ -423,6 +425,14 @@ const scaleHeight = size => (height / 667) * size;
 
 const PollResultsScreen = ({route}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [comment, setComment] = React.useState('');
+
+  const handleSend = () => {
+    if (comment.trim()) {
+      console.log('Sending:', comment);
+      setComment('');
+    }
+  };
   const {
     post: initialPost,
     nsfw: initialNsfw,
@@ -482,118 +492,128 @@ const PollResultsScreen = ({route}) => {
           </View>
 
           {/* Poll Card */}
-          <View style={[styles.card, {backgroundColor}]}>
-            <View style={styles.headerImage}>
-              <View
-                style={[
-                  styles.headerOverlay,
-                  {backgroundColor: headerOverlayBGColor},
-                ]}>
-                {currentNsfw && <Text style={styles.nsfw}>NSFW</Text>}
-                <View style={styles.pollContainer}>
-                  <Text style={[styles.title, {color: titleColor}]}>
-                    {currentPost.title}
-                  </Text>
-                  <View style={styles.pollOptionsContainer}>
-                    <View style={styles.pollOption}>
-                      <Text style={styles.pollOptionText}>No</Text>
-                    </View>
-                    <View style={styles.pollOption}>
-                      <Text style={styles.pollOptionText}>Yes</Text>
-                    </View>
-                    <View style={styles.pollOption}>
-                      <Text style={styles.pollOptionText}>Other</Text>
-                    </View>
-                  </View>
-                  <TouchableOpacity style={styles.viewResultsButton}>
-                    <Text style={[styles.viewResultsText, {color: textColor}]}>
-                      VIEW POLL RESULTS
+          <ScrollView contentContainerStyle={styles.contentContainer}>
+            <View style={[styles.card, {backgroundColor}]}>
+              <View style={styles.headerImage}>
+                <View
+                  style={[
+                    styles.headerOverlay,
+                    {backgroundColor: headerOverlayBGColor},
+                  ]}>
+                  {currentNsfw && <Text style={styles.nsfw}>NSFW</Text>}
+                  <View style={styles.pollContainer}>
+                    <Text style={[styles.title, {color: titleColor}]}>
+                      {currentPost.title}
                     </Text>
-                  </TouchableOpacity>
+                    <View style={styles.pollOptionsContainer}>
+                      <View style={styles.pollOption}>
+                        <Text style={styles.pollOptionText}>No</Text>
+                      </View>
+                      <View style={styles.pollOption}>
+                        <Text style={styles.pollOptionText}>Yes</Text>
+                      </View>
+                      <View style={styles.pollOption}>
+                        <Text style={styles.pollOptionText}>Other</Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity style={styles.viewResultsButton}>
+                      <Text
+                        style={[styles.viewResultsText, {color: textColor}]}>
+                        VIEW POLL RESULTS
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
 
-            {/* Bottom Action Row */}
-            <View style={styles.bottomRow}>
-              <View style={styles.leftSide}>
-                <SvgXml
-                  xml={isDarkModeOn ? heart_svg_white : heart_svg_black}
-                />
-                <Text
-                  style={{color: textColor, paddingRight: 8, paddingLeft: 3}}>
-                  {currentPost.likes}
-                </Text>
-                <SvgXml
-                  xml={isDarkModeOn ? chat_icon_white : chat_icon_black}
-                />
-                <Text
-                  style={{color: textColor, paddingRight: 8, paddingLeft: 3}}>
-                  {currentPost.comments}
-                </Text>
-                <SvgXml
-                  xml={isDarkModeOn ? Poll_Count_Svg : Poll_count_Svg_dark}
-                />
-                <Text
-                  style={{color: textColor, paddingRight: 8, paddingLeft: 3}}>
-                  {currentPost.comments}
-                </Text>
-              </View>
-              <View style={styles.rightSide}>
-                <View
-                  style={{
-                    padding: 10,
-                    backgroundColor: shareBGColor,
-                    borderRadius: 12,
-                  }}>
+              {/* Bottom Action Row */}
+              <View style={styles.bottomRow}>
+                <View style={styles.leftSide}>
                   <SvgXml
-                    xml={isDarkModeOn ? share_svg : share_svg_dark}
-                    width={16}
-                    height={14}
-                  />
-                </View>
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    paddingVertical: 8,
-                    backgroundColor: shareBGColor,
-                    borderRadius: 12,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <SvgXml
-                    xml={isDarkModeOn ? chat_icon_black : chat_icon_white}
-                    width={14}
-                    height={14}
+                    xml={isDarkModeOn ? heart_svg_white : heart_svg_black}
                   />
                   <Text
-                    style={{
-                      paddingLeft: 5,
-                      fontSize: 14,
-                      textAlign: 'center',
-                      color: isDarkModeOn ? '#000' : '#fff',
-                    }}>
-                    Chat
+                    style={{color: textColor, paddingRight: 8, paddingLeft: 3}}>
+                    {currentPost.likes}
+                  </Text>
+                  <SvgXml
+                    xml={isDarkModeOn ? chat_icon_white : chat_icon_black}
+                  />
+                  <Text
+                    style={{color: textColor, paddingRight: 8, paddingLeft: 3}}>
+                    {currentPost.comments}
+                  </Text>
+                  <SvgXml
+                    xml={isDarkModeOn ? Poll_Count_Svg : Poll_count_Svg_dark}
+                  />
+                  <Text
+                    style={{color: textColor, paddingRight: 8, paddingLeft: 3}}>
+                    {currentPost.comments}
                   </Text>
                 </View>
+                <View style={styles.rightSide}>
+                  <View
+                    style={{
+                      padding: 10,
+                      backgroundColor: shareBGColor,
+                      borderRadius: 12,
+                    }}>
+                    <SvgXml
+                      xml={isDarkModeOn ? share_svg : share_svg_dark}
+                      width={16}
+                      height={14}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      paddingHorizontal: 10,
+                      paddingVertical: 8,
+                      backgroundColor: shareBGColor,
+                      borderRadius: 12,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <SvgXml
+                      xml={isDarkModeOn ? chat_icon_black : chat_icon_white}
+                      width={14}
+                      height={14}
+                    />
+                    <Text
+                      style={{
+                        paddingLeft: 5,
+                        fontSize: 14,
+                        textAlign: 'center',
+                        color: isDarkModeOn ? '#000' : '#fff',
+                      }}>
+                      Chat
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.scrollArea}>
+                <Text style={{fontSize: scale(14), fontWeight: '700'}}>
+                  REPLIES
+                </Text>
+                <ScrollView
+                  contentContainerStyle={styles.contentContainer}
+                  showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}>
+                  <Text style={[styles.content, {color: textColor}]}>
+                    {currentPost.description
+                      ? currentPost.replies
+                      : 'No Replies yet!'}
+                  </Text>
+                </ScrollView>
               </View>
             </View>
-
-            <View style={styles.scrollArea}>
-                <Text style={{fontSize:scale(14),fontWeight:'700'}}>REPLIES</Text>
-              <ScrollView
-                contentContainerStyle={styles.contentContainer}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}>
-                <Text style={[styles.content, {color: textColor}]}>
-                  {currentPost.description
-                    ? currentPost.replies
-                    : 'No Replies yet!'}
-                </Text>
-              </ScrollView>
-            </View>
-          </View>
+          </ScrollView>
+          <CommentInput
+            comment={comment}
+            onChangeComment={setComment}
+            onSend={handleSend}
+          />
         </View>
       </ImageBackground>
 
@@ -630,7 +650,8 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: scale(16),
     borderTopRightRadius: scale(16),
-    paddingHorizontal: scale(16),
+    paddingHorizontal: scale(10),
+    alignItems: 'center',
   },
   userRow: {
     flexDirection: 'row',
@@ -638,6 +659,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingTop: scaleHeight(10),
+    paddingHorizontal: scale(10),
   },
   leftSide: {
     flexDirection: 'row',
@@ -666,24 +688,22 @@ const styles = StyleSheet.create({
     marginLeft: scale(10),
   },
   card: {
-    marginVertical: scale(16),
+    // marginVertical: scale(10),
     position: 'relative',
-    minHeight: scaleHeight(400),
-
+    minHeight: scaleHeight(200),
     overflow: 'hidden',
   },
   headerImage: {
-    height: scaleHeight(300),
+    height: scaleHeight(240),
     justifyContent: 'flex-end',
   },
   headerOverlay: {
     flex: 1,
     justifyContent: 'center',
     borderRadius: scale(16),
-    paddingHorizontal: scale(16),
+     padding: scale(16),
   },
   pollContainer: {
-    padding: scale(16),
     width: '100%',
   },
   title: {
@@ -691,13 +711,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'left',
     marginBottom: scale(16),
+    paddingTop: scale(8),
   },
   pollOptionsContainer: {
     // marginBottom: scale(20),
   },
   pollOption: {
     backgroundColor: '#FFFFFF',
-    padding: scale(20),
+    padding: scale(16),
     borderRadius: scale(14),
     marginBottom: scale(16),
   },
@@ -757,13 +778,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   scrollArea: {
-    maxHeight: scaleHeight(330),
+    maxHeight: scaleHeight(300),
   },
   contentContainer: {
     padding: scale(16),
   },
   content: {
-    textAlign:'center',
+    textAlign: 'center',
     fontSize: scale(14),
     marginBottom: scale(10),
     lineHeight: scale(24),

@@ -119,6 +119,7 @@
 
 import React, { useMemo } from 'react';
 import { View, ImageBackground, StyleSheet, StatusBar } from 'react-native';
+import { useBottomTab } from '../context/BottomTabContext';
 import Header from '../components/Header';
 import HotTabScreen from '../components/TabScreens/HotTabSceen';
 import GlobalTabScreen from '../components/TabScreens/GlobalTabScreen';

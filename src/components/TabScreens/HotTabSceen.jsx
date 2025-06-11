@@ -1,4 +1,4 @@
-// import React, {useState, useEffect, useCallback} from 'react';
+// import React, {useState, useEffect, useCallback, useRef} from 'react';
 // import {
 //   View,
 //   FlatList,
@@ -6,17 +6,19 @@
 //   ActivityIndicator,
 //   Text,
 //   Button,
-//   ImageBackground,
 // } from 'react-native';
 // import {TrendingPosts} from '../../services/api';
 // import {useNetworkStatus} from '../../hooks/useNetworkStatus';
-// // import ErrorBoundary from '../../components/ErrorBoundary';
 // import PostItem from '../PostItem';
 // import {useTheme} from '../../context/ThemeContext';
 // import {useModernMode} from '../../context/ModerModeContext';
 // import PostItemModernMode from '../PostItemModernMode';
+// import {useBottomTab} from '../../context/BottomTabContext';
+// import { useScrollDirection } from '../../context/scrollView';
 
 // const HotTabScreen = () => {
+//   const {hideTab, showTab} = useBottomTab();
+
 //   const [posts, setPosts] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [page, setPage] = useState(1);
@@ -24,16 +26,15 @@
 //   const [isFetchingMore, setIsFetchingMore] = useState(false);
 //   const {isDarkModeOn} = useTheme();
 //   const {isModernOn} = useModernMode();
-
 //   const isOnline = useNetworkStatus();
 
 //   const backgroundColor = isDarkModeOn ? '#000' : '#fff';
 
-//   // Fetch posts with API integration
+//   const handleScroll = useScrollDirection(showTab, hideTab);
+
 //   const fetchPosts = useCallback(
 //     async (pageNumber, isInitial = false) => {
 //       if (!hasMore || isFetchingMore || !isOnline) return;
-
 //       if (!isInitial) setIsFetchingMore(true);
 
 //       try {
@@ -41,17 +42,14 @@
 //           page: pageNumber,
 //           limit: 10,
 //         });
-//         console.log('Fetched posts:', response);
 //         if (Array.isArray(response) && response.length > 0) {
-//           setPosts(prevPosts =>
-//             isInitial ? response : [...prevPosts, ...response],
-//           );
+//           setPosts(prev => (isInitial ? response : [...prev, ...response]));
 //           setPage(pageNumber + 1);
 //         } else {
 //           setHasMore(false);
 //         }
-//       } catch (error) {
-//         console.error('Error fetching posts:', error.message || error);
+//       } catch (err) {
+//         console.error('Fetch error:', err.message || err);
 //       } finally {
 //         if (isInitial) setLoading(false);
 //         setIsFetchingMore(false);
@@ -61,35 +59,31 @@
 //   );
 
 //   useEffect(() => {
-//     if (isOnline) {
-//       fetchPosts(1, true);
-//     } else {
-//       setLoading(false);
-//     }
+//     if (isOnline) fetchPosts(1, true);
+//     else setLoading(false);
 //   }, [isOnline, fetchPosts]);
 
 //   const renderItem = useCallback(
-//     ({item}) => {
-//       return isModernOn ? (
+//     ({item}) =>
+//       isModernOn ? (
+//         <PostItemModernMode
+//           image={item?.mediaUrl}
+//           avatar={require('../../images/avatar.png')}
+//           postText={item?.text}
+//           time={item?.createdAt}
+//           commentCount={item?.repliesCount}
+//           likes={item?.heartsCount}
+//         />
+//       ) : (
 //         <PostItem
 //           image={item?.mediaUrl}
 //           text={item?.text}
 //           likes={item?.heartsCount}
-//           comment={item?.repliesCount}
+//           commentCount={item?.repliesCount}
 //           time={item?.createdAt}
 //         />
-//       ) : (
-//         <PostItemModernMode
-//         avatar={require('../../images/avatar.png')}
-//         // commentAvatar={item?.replies[0]?.user?.avatarUrl}
-//         postText={item?.text}
-//         time={item?.createdAt}
-//         comment={item?.repliesCount}
-//         likes={item?.heartsCount}
-//         />
-//       );
-//     },
-//     [isModernOn], // Include dependencies
+//       ),
+//     [isModernOn],
 //   );
 
 //   if (loading) {
@@ -112,57 +106,51 @@
 //   }
 
 //   return (
-//     <ImageBackground
-//       source={require('../../images/headerBg.png')}
-//       style={styles.background}
-//       resizeMode="cover">
-//       <View style={[styles.container, {backgroundColor}]}>
-//         <FlatList
-//           data={posts}
-//           // numColumns={2}
-//           renderItem={renderItem}
-//           keyExtractor={item => item.id?.toString() || Math.random().toString()}
-//           contentContainerStyle={styles.list}
-//           onEndReached={() => fetchPosts(page)}
-//           onEndReachedThreshold={0.5}
-//           ListFooterComponent={
-//             isFetchingMore ? (
-//               <ActivityIndicator size="small" color="#E63946" />
-//             ) : null
-//           }
-//         />
-//       </View>
-//     </ImageBackground>
+//     <View style={[styles.container, {backgroundColor}]}>
+//       <FlatList
+//         data={posts}
+//         numColumns={isModernOn ? 1 : 2}
+//         renderItem={renderItem}
+//         keyExtractor={item => item.id?.toString() || Math.random().toString()}
+//         key={isModernOn ? 'singleColumn' : 'doubleColumn'}
+//         contentContainerStyle={styles.list}
+//         onEndReached={() => fetchPosts(page)}
+//         onEndReachedThreshold={0.5}
+//         ListFooterComponent={
+//           isFetchingMore ? (
+//             <ActivityIndicator size="small" color="#E63946" />
+//           ) : null
+//         }
+//         showsVerticalScrollIndicator={false}
+//         showsHorizontalScrollIndicator={false}
+//         onScroll={handleScroll}
+//         scrollEventThrottle={16}
+//       />
+//     </View>
 //   );
 // };
 
 // const styles = StyleSheet.create({
-//   background: {
-//     flex: 1,
-//   },
 //   container: {
 //     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
 //     borderTopLeftRadius: 16,
 //     borderTopRightRadius: 16,
-//     // backgroundColor: '#fff',
 //   },
 //   list: {
-//     paddingBottom: 20,
+//     paddingBottom: 80,
 //   },
 //   loadingContainer: {
 //     flex: 1,
 //     justifyContent: 'center',
 //     alignItems: 'center',
-//     // backgroundColor: '#fff',
+//     borderTopLeftRadius: 16,
+//     borderTopRightRadius: 16,
 //   },
 //   offlineContainer: {
 //     flex: 1,
 //     justifyContent: 'center',
 //     alignItems: 'center',
 //     padding: 20,
-//     // backgroundColor: '#fff',
 //   },
 //   offlineText: {
 //     fontSize: 18,
@@ -182,34 +170,36 @@ import {
   ActivityIndicator,
   Text,
   Button,
-  ImageBackground,
 } from 'react-native';
 import {TrendingPosts} from '../../services/api';
 import {useNetworkStatus} from '../../hooks/useNetworkStatus';
-// import ErrorBoundary from '../../components/ErrorBoundary';
 import PostItem from '../PostItem';
 import {useTheme} from '../../context/ThemeContext';
 import {useModernMode} from '../../context/ModerModeContext';
 import PostItemModernMode from '../PostItemModernMode';
+import {useBottomTab} from '../../context/BottomTabContext';
+import {useScrollDirection} from '../../context/scrollView';
+import BannerAd from '../AppLovinMax';
+import {useNavigation} from '@react-navigation/native';
 
 const HotTabScreen = () => {
+  const {hideTab, showTab} = useBottomTab();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+
   const {isDarkModeOn} = useTheme();
   const {isModernOn} = useModernMode();
-
   const isOnline = useNetworkStatus();
-
+  const navigation = useNavigation();
   const backgroundColor = isDarkModeOn ? '#000' : '#fff';
+  const handleScroll = useScrollDirection(showTab, hideTab);
 
-  // Fetch posts with API integration
   const fetchPosts = useCallback(
     async (pageNumber, isInitial = false) => {
       if (!hasMore || isFetchingMore || !isOnline) return;
-
       if (!isInitial) setIsFetchingMore(true);
 
       try {
@@ -217,17 +207,15 @@ const HotTabScreen = () => {
           page: pageNumber,
           limit: 10,
         });
-        console.log('Fetched posts:', response);
+
         if (Array.isArray(response) && response.length > 0) {
-          setPosts(prevPosts =>
-            isInitial ? response : [...prevPosts, ...response],
-          );
+          setPosts(prev => (isInitial ? response : [...prev, ...response]));
           setPage(pageNumber + 1);
         } else {
           setHasMore(false);
         }
-      } catch (error) {
-        console.error('Error fetching posts:', error.message || error);
+      } catch (err) {
+        console.error('Fetch error:', err?.message || err);
       } finally {
         if (isInitial) setLoading(false);
         setIsFetchingMore(false);
@@ -237,35 +225,102 @@ const HotTabScreen = () => {
   );
 
   useEffect(() => {
-    if (isOnline) {
-      fetchPosts(1, true);
-    } else {
-      setLoading(false);
-    }
+    if (isOnline) fetchPosts(1, true);
+    else setLoading(false);
   }, [isOnline, fetchPosts]);
+
+  const getModifiedData = () => {
+    const modifiedData = [];
+    posts.forEach((item, index) => {
+      modifiedData.push({type: 'post', data: item, postIndex: index});
+      if ((index + 1) % 5 === 0) {
+        modifiedData.push({type: 'ad', id: `ad-${index}`});
+      }
+    });
+    return modifiedData;
+  };
 
   const renderItem = useCallback(
     ({item}) => {
+      if (item.type === 'ad') {
+        return <BannerAd />;
+      }
+
+      const postItem = item.data;
+
+      // const onPress = () => {
+      //   navigation.navigate('PostDetailScreen', {
+      //     post: {
+      //       ...postItem,
+      //       title: postItem.text,
+
+      //     },
+      //     nsfw: postItem?.nsfw,
+      //     posts: posts,
+      //     currentIndex: item.postIndex,
+      //   });
+      // }; 
+
+const getRelativeTime = dateString => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    const units = [
+      {label: 'y', seconds: 31536000},
+      {label: 'm', seconds: 2592000},
+      {label: 'd', seconds: 86400},
+      {label: 'h', seconds: 3600},
+      {label: 'min', seconds: 60},
+      {label: 'second', seconds: 1},
+    ];
+
+    for (const unit of units) {
+      const interval = Math.floor(diffInSeconds / unit.seconds);
+      if (interval >= 1) {
+        return `${interval}${unit.label} ago`;
+      }
+    }
+    return 'just now';
+  };
+
+      const onPress = () => {
+  navigation.navigate('PostDetailScreen', {
+    post: {
+      ...postItem,
+      title: postItem.text,
+      likes: postItem.heartsCount,    
+      comments: postItem.repliesCount, 
+      time: getRelativeTime(postItem.createdAt),       
+    },
+    nsfw: postItem?.nsfw,
+    posts: posts,
+    currentIndex: item.postIndex,
+  });
+};
+
       return isModernOn ? (
         <PostItemModernMode
-          image={item?.mediaUrl}
+          image={postItem?.mediaUrl}
           avatar={require('../../images/avatar.png')}
-          postText={item?.text}
-          time={item?.createdAt}
-          commentCount={item?.repliesCount}
-          likes={item?.heartsCount}
+          postText={postItem?.text}
+          time={postItem?.createdAt}
+          commentCount={postItem?.repliesCount}
+          likes={postItem?.heartsCount}
+          onPress={onPress}
         />
       ) : (
         <PostItem
-          image={item?.mediaUrl}
-          text={item?.text}
-          likes={item?.heartsCount}
-          commentCount={item?.repliesCount}
-          time={item?.createdAt}
+          image={postItem?.mediaUrl}
+          text={postItem?.text}
+          likes={postItem?.heartsCount}
+          commentCount={postItem?.repliesCount}
+          time={postItem?.createdAt}
+          onPress={onPress}
         />
       );
     },
-    [isModernOn],
+    [isModernOn, navigation, posts],
   );
 
   if (loading) {
@@ -288,46 +343,41 @@ const HotTabScreen = () => {
   }
 
   return (
-    // <ImageBackground
-    //   source={require('../../images/headerBg.png')}
-    //   style={styles.background}
-    //   resizeMode="cover">
-      <View style={[styles.container, {backgroundColor}]}>
-        <FlatList
-          data={posts}
-          numColumns={isModernOn ? 1 : 2}
-          renderItem={renderItem}
-          keyExtractor={item => item.id?.toString() || Math.random().toString()}
-          key={isModernOn ? 'singleColumn' : 'doubleColumn'}
-          contentContainerStyle={styles.list}
-          onEndReached={() => fetchPosts(page)}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={
-            isFetchingMore ? (
-              <ActivityIndicator size="small" color="#E63946" />
-            ) : null
-          }
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-    // </ImageBackground>
+    <View style={[styles.container, {backgroundColor}]}>
+      <FlatList
+        data={getModifiedData()}
+        numColumns={isModernOn ? 1 : 2}
+        renderItem={renderItem}
+        keyExtractor={item =>
+          item.type === 'ad'
+            ? item.id
+            : item.data?.id?.toString() || `${item.postIndex}-${Date.now()}`
+        }
+        key={isModernOn ? 'singleColumn' : 'doubleColumn'}
+        contentContainerStyle={styles.list}
+        onEndReached={() => fetchPosts(page)}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isFetchingMore ? (
+            <ActivityIndicator size="small" color="#E63946" />
+          ) : null
+        }
+        showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   },
   list: {
-    paddingBottom: 20,
+    paddingBottom: 80,
   },
   loadingContainer: {
     flex: 1,

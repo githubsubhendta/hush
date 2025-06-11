@@ -122,6 +122,8 @@ import ErrorBoundary from './src/components/ErrorBoundary';
 import { ThemeProvider } from './src/context/ThemeContext';
 import { ModernModeProvider } from './src/context/ModerModeContext';
 import AppLovinMAX from 'react-native-applovin-max';
+import { BottomTabProvider } from './src/context/BottomTabContext';
+import PostDetailScreen from './src/screens/posts/PostDetailScreen';
 
 // Lazy-loaded screens
 const SplashScreen = lazy(() => import('./src/screens/SplashScreen'));
@@ -190,6 +192,7 @@ const App = () => {
       <Stack.Screen name="WritePost" component={WritePost} />
       <Stack.Screen name="CreatePoll" component={CreatePoll} />
       <Stack.Screen name="StoryPostDetail" component={StoryPostDetailScreen} />
+      <Stack.Screen name="PostDetailScreen" component={PostDetailScreen} />
     </Stack.Navigator>
   ), []);
 
@@ -213,6 +216,7 @@ const App = () => {
       <ThemeProvider>
         <ModernModeProvider>
           <TabProvider>
+            <BottomTabProvider>
             <NavigationContainer ref={navigationRef}>
               <View style={styles.mainContainer}>
                 <Suspense fallback={<View style={styles.splashFallback} />}>
@@ -220,6 +224,7 @@ const App = () => {
                 </Suspense>
               </View>
             </NavigationContainer>
+            </BottomTabProvider>
           </TabProvider>
         </ModernModeProvider>
       </ThemeProvider>

@@ -417,6 +417,8 @@ import PostItemModernMode from '../PostItemModernMode';
 import Geolocation from '@react-native-community/geolocation';
 import {LocalPosts} from '../../services/api';
 import {useNetworkStatus} from '../../hooks/useNetworkStatus';
+import {useScrollDirection} from '../../context/scrollView';
+import {useBottomTab} from '../../context/BottomTabContext';
 
 const LOCATION_KEY = 'USER_SELECTED_LOCATION';
 const {width} = Dimensions.get('window');
@@ -438,6 +440,8 @@ const requestLocationPermission = async () => {
 };
 
 const LocalTabScreen = () => {
+  const {hideTab, showTab} = useBottomTab();
+  const handleScroll = useScrollDirection(showTab, hideTab);
   const isOnline = useNetworkStatus();
   const [value, setValue] = useState(10);
   const [fetchedPosts, setFetchedPosts] = useState([]);
@@ -578,7 +582,7 @@ const LocalTabScreen = () => {
           time={item?.createdAt}
           commentCount={item?.repliesCount}
           likes={item?.heartsCount}
-          distance={distanceText} // Add distance to modern mode item
+          distance={distanceText}
         />
       ) : (
         <PostItem
@@ -638,6 +642,8 @@ const LocalTabScreen = () => {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           windowSize={21}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
         />
       )}
     </View>

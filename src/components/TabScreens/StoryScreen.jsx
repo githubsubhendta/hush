@@ -773,6 +773,41 @@ const styles = StyleSheet.create({
     marginTop: 40,
     alignItems: 'center',
   },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  modalOverlay: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 20,
+  },
+  modalOption: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+  },
+  modalOptionDanger: {
+    fontSize: 16,
+    color: '#FF3B30',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+  },
+  buttons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    gap: 12,
+  },
+  dragHandleDark: {
+    alignSelf: 'center',
+    width: 48,
+    height: 5,
+    borderRadius: 2.5,
+    marginBottom: 16,
+    backgroundColor: '#666666',
+  },
 });
 
 export default StoryScreen;

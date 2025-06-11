@@ -68,6 +68,7 @@ const PostItemModern = ({
   likes,
   username,
   commentCount,
+  onPress
 }) => {
   const {isDarkModeOn} = useTheme();
   const [error, setError] = useState(false);
@@ -108,6 +109,7 @@ const PostItemModern = ({
       </View>
 
       {/* Image */}
+      <TouchableOpacity onPress={onPress}>
       <View style={styles.imageContainer}>
         <Image
           source={
@@ -118,6 +120,7 @@ const PostItemModern = ({
         />
         {postText ? <Text style={styles.postText}>{postText}</Text> : null}
       </View>
+      </TouchableOpacity>
 
       {/* Actions */}
       <View style={styles.actions}>

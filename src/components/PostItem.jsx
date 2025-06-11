@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {
   chat_icon_black,
@@ -42,30 +42,32 @@ const formatLikes = count => {
   return count.toString();
 };
 
-export default function PostItems({image, text, likes, comment, time, tag}) {
+export default function PostItems({image, text, likes, comment, time, tag,onPress}) {
   const [error, setError] = useState(false);
 
-  const {isDarkModeOn} = useTheme(); 
+  const {isDarkModeOn} = useTheme();
   const textColor = isDarkModeOn ? '#fff' : '#000';
   return (
     <View style={styles.card}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={
-            error || !image ? require('../images/post1.png') : {uri: image}
-          }
-          style={styles.image}
-          onError={() => setError(true)}
-        />
-        {/* <Image source={post1} style={styles.image} /> */}
-        {tag && (
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>{tag} Hello</Text>
-          </View>
-        )}
-        <View style={styles.overlay} />
-        <Text style={styles.text}>{text}</Text>
-      </View>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={
+              error || !image ? require('../images/post1.png') : {uri: image}
+            }
+            style={styles.image}
+            onError={() => setError(true)}
+          />
+          {/* <Image source={post1} style={styles.image} /> */}
+          {tag && (
+            <View style={styles.tag}>
+              <Text style={styles.tagText}>{tag} Hello</Text>
+            </View>
+          )}
+          <View style={styles.overlay} />
+          <Text style={styles.text}>{text}</Text>
+        </View>
+      </TouchableOpacity>
 
       <View style={styles.footer}>
         <View style={styles.comment}>
