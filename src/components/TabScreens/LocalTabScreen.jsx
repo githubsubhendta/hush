@@ -1,400 +1,4 @@
-// import React, { useCallback, useEffect, useMemo, useState } from 'react';
-// import { View, Text, StyleSheet, Dimensions, FlatList } from 'react-native';
-// import Slider from '@react-native-community/slider';
-// import PostItem from '../PostItem';
-// import BannerAd from '../AppLovinMax';
-// import { useTheme } from '../../context/ThemeContext';
-// import { useModernMode } from '../../context/ModerModeContext';
-// import PostItemModernMode from '../PostItemModernMode';
 
-// const { width } = Dimensions.get('window');
-
-// const LocalTabScreen = () => {
-//   const [value, setValue] = useState(1);
-//   const [fetchedPosts, setFetchedPosts] = useState([]);
-//   const { isDarkModeOn } = useTheme();
-//   const { isModernOn } = useModernMode();
-
-//   const backgroundColor = isDarkModeOn ? '#000' : '#fff';
-//   const sliderBackgroundColor = isDarkModeOn ? '#fff' : '#EEE8D5';
-
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       try {
-//         const response = await fetch(
-//           `https://hush-trending-service.onrender.com/api/local/posts?latitude=34.42985401&longitude=-118.5238887&range=${value}`,
-//         );
-//         const data = await response.json();
-//         const formattedPosts = data.posts.map((item, index) => ({
-//           type: 'post',
-//           id: item.id,
-//           image: item.mediaUrl,
-//           text: item.text,
-//           likes: item.heartsCount,
-//           time: item.createdAt,
-//         }));
-//         setFetchedPosts(data.posts);
-//       } catch (error) {
-//         console.error('Failed to fetch posts:', error);
-//       }
-//     };
-
-//     fetchPosts();
-//   }, [value]);
-
-//   const dataWithAds = useMemo(() => getPostsWithAds(fetchedPosts), [fetchedPosts]);
-
-//   const renderItem = useCallback(
-//     ({ item }) => {
-//       if (item.type === 'ad') {
-//         return (
-//           <View style={styles.adWrapper}>
-//             <BannerAd />
-//           </View>
-//         );
-//       }
-
-//       return isModernOn ? (
-//         <PostItemModernMode
-//           image={item?.mediaUrl}
-//           avatar={require('../../images/avatar.png')}
-//           postText={item?.text}
-//           time={item?.createdAt}
-//           commentCount={item?.repliesCount}
-//           likes={item?.heartsCount}
-//         />
-//       ) : (
-//         <PostItem
-//           image={item?.mediaUrl}
-//           text={item?.text}
-//           likes={item?.heartsCount}
-//           commentCount={item?.repliesCount}
-//           time={item?.createdAt}
-//         />
-//       );
-//     },
-//     [isDarkModeOn],
-//   );
-
-//   return (
-//     <View style={[styles.container, { backgroundColor }]}>
-//       <View
-//         style={[
-//           styles.sliderContainer,
-//           { backgroundColor: sliderBackgroundColor },
-//         ]}>
-//         <Text style={styles.label}>CLOSER</Text>
-//         <Slider
-//           style={styles.slider}
-//           minimumValue={0}
-//           maximumValue={1}
-//           step={0.1}
-//           value={value}
-//           onValueChange={val => setValue(val)}
-//           minimumTrackTintColor="#392EBD"
-//           maximumTrackTintColor={isDarkModeOn ? '#000000' : '#66645E'}
-//         />
-//         <Text style={styles.label}>FARTHER</Text>
-//       </View>
-
-//       <FlatList
-//         data={dataWithAds}
-//         numColumns={isModernOn ? 1 : 2}
-//         key={isModernOn ? 'singleColumn' : 'multiColumn'} // Optimize re-renders
-//         keyExtractor={item =>
-//           item?.id != null ? item.id.toString() : `key-${Math.random()}`
-//         }
-//         renderItem={renderItem}
-//         contentContainerStyle={styles.list}
-//         columnWrapperStyle={isModernOn ? null : styles.columnWrapper}
-//       />
-//     </View>
-//   );
-// };
-
-// const getPostsWithAds = posts => {
-//   const result = [];
-//   posts.forEach((post, index) => {
-//     result.push(post);
-//     if ((index + 1) % 5 === 0) {
-//       result.push({ type: 'ad', id: `ad-${index}` });
-//     }
-//   });
-//   return result;
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   sliderContainer: {
-//     width: '100%',
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//     paddingHorizontal: 15,
-//   },
-//   slider: {
-//     width: '70%',
-//     height: 40,
-//   },
-//   label: {
-//     color: '#2F0E40',
-//     fontSize: 12,
-//     fontWeight: '700',
-//   },
-//   list: {
-//     paddingBottom: 20,
-//   },
-//   columnWrapper: {
-//     flex: 1,
-//     justifyContent: 'space-between',
-//   },
-//   adWrapper: {
-//     width: '100%',
-//     flex: 1,
-//     marginHorizontal: 0,
-//   },
-// });
-
-// export default LocalTabScreen;
-
-// import React, { useCallback, useEffect, useMemo, useState } from 'react';
-// import { View, Text, StyleSheet, Dimensions, FlatList, PermissionsAndroid, Platform } from 'react-native';
-// import Slider from '@react-native-community/slider';
-// import PostItem from '../PostItem';
-// import BannerAd from '../AppLovinMax';
-// import { useTheme } from '../../context/ThemeContext';
-// import { useModernMode } from '../../context/ModerModeContext';
-// import PostItemModernMode from '../PostItemModernMode';
-// import Geolocation from '@react-native-community/geolocation';
-// import { LocalPosts } from '../../services/api';
-
-// const { width } = Dimensions.get('window');
-
-// const LocalTabScreen = () => {
-//   const [value, setValue] = useState(10);
-//   const [fetchedPosts, setFetchedPosts] = useState([]);
-//   const { isDarkModeOn } = useTheme();
-//   const { isModernOn } = useModernMode();
-//   const [location, setLocation] = useState({
-//     latitude: 34.42985401,
-//     longitude: -118.5238887,
-//   });
-
-//   const backgroundColor = isDarkModeOn ? '#000' : '#fff';
-//   const sliderBackgroundColor = isDarkModeOn ? '#fff' : '#EEE8D5';
-
-//   const dataWithAds = useMemo(() => getPostsWithAds(fetchedPosts), [fetchedPosts]);
-
-//   useEffect(() => {
-//     async function requestPermissionAndFetchLocation() {
-//       let hasPermission = true;
-//       if (Platform.OS === 'android') {
-//         try {
-//           hasPermission = await PermissionsAndroid.check(
-//             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-//           );
-//           if (!hasPermission) {
-//             const granted = await PermissionsAndroid.request(
-//               PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-//               {
-//                 title: "Location Permission",
-//                 message: "This app needs access to your location",
-//                 buttonNeutral: "Ask Me Later",
-//                 buttonNegative: "Cancel",
-//                 buttonPositive: "OK",
-//               }
-//             );
-//             hasPermission = granted === PermissionsAndroid.RESULTS.GRANTED;
-//           }
-//         } catch (err) {
-//           console.warn('Permission request error:', err);
-//           hasPermission = false;
-//         }
-//       }
-
-//       if (hasPermission) {
-//         Geolocation.getCurrentPosition(
-//           position => {
-//             if (position && position.coords) {
-//               const { latitude, longitude } = position.coords;
-//               setLocation({ latitude, longitude });
-//             } else {
-//               console.warn('Position or coords not available');
-//             }
-//           },
-//           error => {
-//             console.warn('Geolocation error:', error);
-//           },
-//           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-//         );
-//       } else {
-//         console.warn('Location permission denied');
-//       }
-//     }
-
-//     requestPermissionAndFetchLocation();
-//   }, []);
-
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       try {
-//         const res = await LocalPosts.getLocalPosts({
-//           page: 1,
-//           limit: 20,
-//           latitude: location.latitude,
-//           longitude: location.longitude,
-//           range: value, // value is already in miles
-//         });
-
-//         if (!res) {
-//           console.error('API response is undefined or null');
-//           setFetchedPosts([]);
-//           return;
-//         }
-
-//         // Access posts at root (no .data)
-//         if (!res.posts) {
-//           console.error('API response missing posts property:', res);
-//           setFetchedPosts([]);
-//           return;
-//         }
-
-//         if (!Array.isArray(res.posts)) {
-//           console.error('API response posts is not an array:', res.posts);
-//           setFetchedPosts([]);
-//           return;
-//         }
-
-//         console.log("Local posts fetched", res.posts);
-//         setFetchedPosts(res.posts);
-//       } catch (error) {
-//         console.error('Error fetching local posts:', error);
-//         setFetchedPosts([]);
-//       }
-//     };
-
-//     fetchPosts();
-//   }, [value, location]);
-
-//   const renderItem = useCallback(
-//     ({ item }) => {
-//       if (item.type === 'ad') {
-//         return (
-//           <View style={styles.adWrapper}>
-//             <BannerAd />
-//           </View>
-//         );
-//       }
-
-//       return isModernOn ? (
-//         <PostItemModernMode
-//           image={item?.mediaUrl}
-//           avatar={require('../../images/avatar.png')}
-//           postText={item?.text}
-//           time={item?.createdAt}
-//           commentCount={item?.repliesCount}
-//           likes={item?.heartsCount}
-//         />
-//       ) : (
-//         <PostItem
-//           image={item?.mediaUrl}
-//           text={item?.text}
-//           likes={item?.heartsCount}
-//           commentCount={item?.repliesCount}
-//           time={item?.createdAt}
-//         />
-//       );
-//     },
-//     [isDarkModeOn, isModernOn]
-//   );
-
-//   return (
-//     <View style={[styles.container, { backgroundColor }]}>
-//       <View style={[styles.sliderContainer, { backgroundColor: sliderBackgroundColor }]}>
-//         <Text style={styles.label}>CLOSER</Text>
-//         <Slider
-//           style={styles.slider}
-//           minimumValue={0}
-//           maximumValue={10}    // Update max slider value to 10 miles
-//           step={1}
-//           value={value}
-//           onValueChange={setValue}
-//           minimumTrackTintColor="#392EBD"
-//           maximumTrackTintColor={isDarkModeOn ? '#000000' : '#66645E'}
-//         />
-//         <Text style={styles.label}>FARTHER</Text>
-//       </View>
-
-//       <FlatList
-//         data={dataWithAds}
-//         numColumns={isModernOn ? 1 : 2}
-//         key={isModernOn ? 'singleColumn' : 'multiColumn'}
-//         keyExtractor={(item, index) => {
-//           if (item.id) return item.id.toString();
-//           if (item.type === 'ad') return `ad-${index}`;
-//           return `item-${index}`;
-//         }}
-//         renderItem={renderItem}
-//         contentContainerStyle={styles.list}
-//         columnWrapperStyle={isModernOn ? null : styles.columnWrapper}
-//         removeClippedSubviews={true}
-//         initialNumToRender={10}
-//         maxToRenderPerBatch={10}
-//         windowSize={21}
-//       />
-//     </View>
-//   );
-// };
-
-// const getPostsWithAds = posts => {
-//   const result = [];
-//   posts.forEach((post, index) => {
-//     result.push(post);
-//     if ((index + 1) % 5 === 0) {
-//       result.push({ type: 'ad', id: `ad-${index}` });
-//     }
-//   });
-//   return result;
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   sliderContainer: {
-//     width: '100%',
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//     paddingHorizontal: 15,
-//     // paddingVertical: 10,
-//   },
-//   slider: {
-//     width: '70%',
-//     height: 40,
-//   },
-//   label: {
-//     color: '#2F0E40',
-//     fontSize: 12,
-//     fontWeight: '700',
-//   },
-//   list: {
-//     paddingBottom: 20,
-//   },
-//   columnWrapper: {
-//     flex: 1,
-//     justifyContent: 'space-between',
-//   },
-//   adWrapper: {
-//     width: '100%',
-//     flex: 1,
-//     marginHorizontal: 0,
-//   },
-// });
-
-// export default LocalTabScreen;
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -419,6 +23,7 @@ import {LocalPosts} from '../../services/api';
 import {useNetworkStatus} from '../../hooks/useNetworkStatus';
 import {useScrollDirection} from '../../context/scrollView';
 import {useBottomTab} from '../../context/BottomTabContext';
+import {useNavigation} from '@react-navigation/native';
 
 const LOCATION_KEY = 'USER_SELECTED_LOCATION';
 const {width} = Dimensions.get('window');
@@ -446,6 +51,7 @@ const LocalTabScreen = () => {
   const [value, setValue] = useState(10);
   const [fetchedPosts, setFetchedPosts] = useState([]);
   const {isDarkModeOn} = useTheme();
+  const navigation = useNavigation();
   const {isModernOn} = useModernMode();
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState({
@@ -561,7 +167,7 @@ const LocalTabScreen = () => {
   };
 
   const renderItem = useCallback(
-    ({item}) => {
+    ({item, index}) => {
       if (item.type === 'ad') {
         return (
           <View style={styles.adWrapper}>
@@ -570,9 +176,66 @@ const LocalTabScreen = () => {
         );
       }
 
+      const getRelativeTime = dateString => {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+
+        const units = [
+          {label: 'y', seconds: 31536000},
+          {label: 'm', seconds: 2592000},
+          {label: 'd', seconds: 86400},
+          {label: 'h', seconds: 3600},
+          {label: 'min', seconds: 60},
+          {label: 'second', seconds: 1},
+        ];
+
+        for (const unit of units) {
+          const interval = Math.floor(diffInSeconds / unit.seconds);
+          if (interval >= 1) {
+            return `${interval}${unit.label} ago`;
+          }
+        }
+        return 'just now';
+      };
+
       const distanceText = item.distance
         ? `${item.distance} miles away`
         : 'Nearby';
+
+      // const handlePress = () => {
+      //   navigation.navigate('PostDetailScreen', {
+      //     post: {
+      //       ...item,
+      //       title: item.text,
+      //       likes: item.heartsCount,
+      //       comments: item.repliesCount,
+      //       time: getRelativeTime(item.createdAt),
+      //     },
+      //     nsfw: item.nsfw,
+      //     posts: fetchedPosts,
+      //     currentIndex: index,
+      //   });
+      // };
+
+      const handlePress = () => {
+        setLoading(true);
+        setTimeout(() => {
+          navigation.navigate('PostDetailScreen', {
+            post: {
+              ...item,
+              title: item.text,
+              likes: item.heartsCount,
+              comments: item.repliesCount,
+              time: getRelativeTime(item.createdAt),
+            },
+            nsfw: item.nsfw,
+            posts: fetchedPosts,
+            currentIndex: index,
+          });
+          setLoading(false);
+        }, 300);
+      };
 
       return isModernOn ? (
         <PostItemModernMode
@@ -583,6 +246,7 @@ const LocalTabScreen = () => {
           commentCount={item?.repliesCount}
           likes={item?.heartsCount}
           distance={distanceText}
+          onPress={handlePress}
         />
       ) : (
         <PostItem
@@ -591,11 +255,12 @@ const LocalTabScreen = () => {
           likes={item?.heartsCount}
           commentCount={item?.repliesCount}
           time={item?.createdAt}
-          distance={distanceText} // Add distance to classic mode item
+          distance={distanceText}
+          onPress={handlePress}
         />
       );
     },
-    [isDarkModeOn, isModernOn],
+    [isModernOn, fetchedPosts],
   );
 
   return (

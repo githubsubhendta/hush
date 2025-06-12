@@ -96,7 +96,7 @@ const WritePost = () => {
                   isNfsw
                     ? isDarkModeOn
                       ? SVG_selected
-                      : Selected_SVG
+                      : SVG_selected
                     : isDarkModeOn
                     ? Selected_Svg_dark
                     : SVG_not_slected
@@ -116,7 +116,7 @@ const WritePost = () => {
                   isDM
                     ? isDarkModeOn
                       ? SVG_selected
-                      : Selected_SVG
+                      : SVG_selected
                     : isDarkModeOn
                     ? Selected_Svg_dark
                     : SVG_not_slected
