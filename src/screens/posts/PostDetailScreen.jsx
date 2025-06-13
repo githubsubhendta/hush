@@ -9,6 +9,8 @@ import {
   Dimensions,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  Image,
 } from 'react-native';
 import {useTheme} from '../../context/ThemeContext';
 import StoryHeader from '../../components/StoryHeader';
@@ -30,6 +32,7 @@ import {
 } from '../../utils/constant/TabSVGimage';
 import CustomActionModal from '../../components/CustomActionModal';
 import CommentInput from '../../components/CommentInpuBox';
+import {PostReplies} from '../../services/api';
 
 const {width, height} = Dimensions.get('window');
 
@@ -39,6 +42,8 @@ const scaleHeight = size => (height / 667) * size;
 const PostDetailScreen = ({route}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [comment, setComment] = React.useState('');
+  const [replies, setReplies] = useState([]);
+  const [loadingReplies, setLoadingReplies] = useState(true);
 
   const handleSend = () => {
     if (comment.trim()) {
@@ -54,7 +59,6 @@ const PostDetailScreen = ({route}) => {
     currentIndex = 0,
   } = route.params;
 
-  const [currentPost, setCurrentPost] = useState(initialPost || {});
   const [currentNsfw, setCurrentNsfw] = useState(initialNsfw || false);
   const [currentIndexState, setCurrentIndexState] = useState(currentIndex);
 
@@ -67,7 +71,6 @@ const PostDetailScreen = ({route}) => {
   const shareBGColor = isDarkModeOn ? '#FFFFFF' : '#392EBD';
   const ModalBackgroundColor = isDarkModeOn ? '#191919' : '#fff';
   const ModalTextColor = isDarkModeOn ? '#fff' : '#000';
-
   const getRelativeTime = dateString => {
     const date = new Date(dateString);
     const now = new Date();
@@ -90,6 +93,18 @@ const PostDetailScreen = ({route}) => {
     }
     return 'just now';
   };
+
+  const [currentPost, setCurrentPost] = useState(() => {
+    if (!initialPost) return {};
+    return {
+      ...initialPost,
+      postId: initialPost.id,
+      title: initialPost.text,
+      likes: initialPost.heartsCount,
+      comments: initialPost.repliesCount,
+      time: getRelativeTime(initialPost.createdAt),
+    };
+  });
   const handleNextPost = () => {
     if (posts.length === 0) return;
     const nextIndex = (currentIndexState + 1) % posts.length;
@@ -98,6 +113,7 @@ const PostDetailScreen = ({route}) => {
     setCurrentIndexState(nextIndex);
     setCurrentPost({
       ...nextPost,
+      postId: nextPost.id, // Fixed: Use nextPost's ID
       title: nextPost.text,
       likes: nextPost.heartsCount,
       comments: nextPost.repliesCount,
@@ -114,6 +130,7 @@ const PostDetailScreen = ({route}) => {
     setCurrentIndexState(prevIndex);
     setCurrentPost({
       ...prevPost,
+      postId: prevPost.id, 
       title: prevPost.text,
       likes: prevPost.heartsCount,
       comments: prevPost.repliesCount,
@@ -122,8 +139,28 @@ const PostDetailScreen = ({route}) => {
     setCurrentNsfw(prevPost.nsfw);
   };
 
-  console.log('Current Post:', currentPost);
-  console.log('Current Title:', currentPost?.comments);
+  const fetchReplies = async postId => {
+    try {
+      setLoadingReplies(true);
+      const response = await PostReplies.getPostReplies(postId);
+      const repliesData = response?.data || response || [];
+      console.log('Replies response ======<<<<<<<<', repliesData);
+      setReplies(Array.isArray(repliesData) ? repliesData : []);
+    } catch (error) {
+      console.error('Error fetching replies:', error);
+      setReplies([]);
+    } finally {
+      setLoadingReplies(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log('🧠 Current Post:', currentPost);
+    console.log('📌 Current Post ID:', currentPost?.postId);
+    if (currentPost?.postId) {
+      fetchReplies(currentPost.postId);
+    }
+  }, [currentPost?.postId]);
 
   if (!currentPost) {
     return (
@@ -134,6 +171,67 @@ const PostDetailScreen = ({route}) => {
       </SafeAreaView>
     );
   }
+
+  const renderReplies = () => {
+    if (loadingReplies) {
+      return <ActivityIndicator size="small" color="#392EBD" />;
+    }
+
+    if (replies.length === 0) {
+      return (
+        <Text style={[styles.content, {color: textColor}]}>
+          No replies yet!
+        </Text>
+      );
+    }
+
+    return replies.map(reply => (
+      <View key={reply.id} style={[styles.replyItem]}>
+        <View style={styles.replyHeader}>
+          <Image
+            source={require('../../images/avatar.png')}
+            style={styles.replyAvatar}
+          />
+          <View style={styles.replyUserInfo}>
+            <View style={{flexDirection: 'column'}}>
+              <Text style={[styles.replyUsername]}>{reply.username}</Text>
+              <Text style={[styles.replyText, {color: textColor}]}>
+                {reply.text}
+              </Text>
+              <View style={styles.replyActions}>
+                <TouchableOpacity style={styles.replyActionButton}>
+                  <Text style={[styles.replyActionText, {color: textColor}]}>
+                    Reply
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.replyActionButton}>
+                  <Text style={[styles.replyActionText, {color: textColor}]}>
+                    Chat
+                  </Text>
+                </TouchableOpacity>
+                <Text style={[styles.replyTime, {color: textColor}]}>
+                  {getRelativeTime(reply.createdAt)}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.replyLikes}>
+            <Text style={[styles.replyLikesCount, {color: textColor}]}>
+              {reply.heartsCount}
+            </Text>
+            <SvgXml
+              xml={isDarkModeOn ? heart_svg_white : heart_svg_black}
+              width={scale(14)}
+              height={scale(14)}
+              style={{marginRight: scale(8)}}
+            />
+
+            <SvgXml xml={menu_svg_dark} width={scale(14)} height={scale(14)} />
+          </View>
+        </View>
+      </View>
+    ));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -308,30 +406,24 @@ const PostDetailScreen = ({route}) => {
               </View>
             </View>
             <View style={styles.scrollArea}>
-              <Text style={{fontSize: scale(14), fontWeight: '700'}}>
-                REPLIES
+              <Text style={[styles.sectionTitle, {color: textColor}]}>
+                REPLIES ({replies.length})
               </Text>
               <ScrollView
-                contentContainerStyle={styles.contentContainer}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}>
-                <Text style={[styles.content, {color: textColor}]}>
-                  {currentPost.description
-                    ? currentPost.replies
-                    : 'No Replies yet!'}
-                </Text>
+                contentContainerStyle={styles.repliesContainer}
+                showsVerticalScrollIndicator={false}>
+                {renderReplies()}
               </ScrollView>
             </View>
             {/* </View> */}
-            
           </ScrollView>
           <View style={styles.commentInputWrapper}>
-              <CommentInput
-                comment={comment}
-                onChangeComment={setComment}
-                onSend={handleSend}
-              />
-            </View>
+            <CommentInput
+              comment={comment}
+              onChangeComment={setComment}
+              onSend={handleSend}
+            />
+          </View>
         </KeyboardAvoidingView>
 
         {/* Modal */}
@@ -398,7 +490,8 @@ const styles = StyleSheet.create({
     paddingRight: scale(8),
   },
   scrollArea: {
-    maxHeight: scaleHeight(300),
+    maxHeight: 'auto',
+    paddingBottom: scale(50),
   },
   contentContainer: {
     padding: scale(16),
@@ -420,12 +513,11 @@ const styles = StyleSheet.create({
     fontSize: scale(12),
     fontWeight: '400',
   },
-  
+
   card: {
     borderRadius: scale(16),
     marginVertical: width * 0.04,
     position: 'relative',
-
   },
   headerImage: {
     height: height * 0.5,
@@ -496,12 +588,73 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     marginHorizontal: 10,
-    // paddingHorizontal: scale(12),
-    // paddingBottom: scale(10),
     paddingTop: scale(6),
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+  },
+  sectionTitle: {
+    fontSize: scale(14),
+    fontWeight: '700',
+    marginBottom: scale(10),
+  },
+  repliesContainer: {
+    paddingBottom: scale(10),
+  },
+  replyItem: {
+    padding: scale(8),
+    marginBottom: scale(10),
+    borderRadius: scale(8),
+  },
+  replyHeader: {
+    flexDirection: 'row',
+    marginBottom: scale(8),
+  },
+  replyAvatar: {
+    width: scale(32),
+    height: scale(32),
+    borderRadius: scale(16),
+    marginRight: scale(8),
+  },
+  replyUserInfo: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  replyUsername: {
+    fontWeight: '500',
+    fontSize: scale(10),
+  },
+  replyTime: {
+    fontSize: scale(10),
+    opacity: 0.7,
+  },
+  replyText: {
+    fontSize: scale(11),
+    marginBottom: scale(5),
+    lineHeight: scale(20),
+  },
+  replyActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  replyActionButton: {
+    marginRight: scale(12),
+  },
+  replyActionText: {
+    fontSize: scale(10),
+    fontWeight: '700',
+    textTransform: 'uppercase',
+  },
+  replyLikes: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  replyLikesCount: {
+    fontSize: scale(11),
+    textAlign: 'center',
+    marginRight: scale(4),
   },
   modalBackdrop: {
     flex: 1,

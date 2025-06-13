@@ -90,4 +90,6 @@ export const StoryGetApi = {
 export const PollGetApi = {
   getPolls :params => globalApi.get('/api/polls', {params}),
 }
-  
+  export const PostReplies = {
+  getPostReplies: postId => globalApi.get(`/api/replies/post/${postId}`),
+};
